@@ -63,6 +63,11 @@ export function HeroSlider() {
   }, []);
 
   const go = (next: number) => setIndex((next + slides.length) % slides.length);
+  const slide = slides[index];
+
+  if (!slide) {
+    return null;
+  }
 
   return (
     <section className="relative h-[560px] overflow-hidden bg-forest md:h-[640px]">
@@ -91,20 +96,20 @@ export function HeroSlider() {
         <div key={index} className="fade-up max-w-2xl">
           <p className="eyebrow flex items-center gap-3 text-gold-deep">
             <span className="inline-block h-px w-10 bg-gold" />
-            {slides[index].eyebrow}
+            {slide.eyebrow}
           </p>
           <h1 className="mt-4 whitespace-pre-line font-display text-5xl font-semibold leading-[1.05] text-forest md:text-6xl">
-            {slides[index].title}
+            {slide.title}
           </h1>
           <p className="mt-5 max-w-lg text-lg leading-relaxed text-foreground/75">
-            {slides[index].subtitle}
+            {slide.subtitle}
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <a
-              href={slides[index].href}
+              href={slide.href}
               className="group inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-sm font-medium tracking-wide text-primary-foreground transition-all hover:bg-forest/90 hover:shadow-lg"
             >
-              {slides[index].cta}
+              {slide.cta}
               <span className="transition-transform group-hover:translate-x-1">→</span>
             </a>
             <a
