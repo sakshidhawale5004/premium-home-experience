@@ -380,14 +380,14 @@ function Index() {
       <HeroSlider />
 
       {/* Customer favourites (Bestsellers) */}
-      <section className="py-20 bg-background">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+      <section className="py-12 sm:py-20 bg-background">
+        <div className="mx-auto max-w-7xl px-3 sm:px-6">
           <SectionHeading
             eyebrow="Top Rated Essentials"
             title="Customer Favourites &amp; Bestsellers"
             subtitle="Our most-loved Vastu and crystal remedies, chosen again and again by thousands of households across India."
           />
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-8 sm:mt-12 grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-4">
             {favouriteSlugs.map((slug) => {
               const p = products.find((x) => x.slug === slug);
               return p ? <ProductCard key={p.slug} product={p} /> : null;
@@ -480,7 +480,7 @@ function Index() {
             )}
           </div>
 
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-8 sm:mt-10 grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-4">
             {homeFilteredProducts.map((p) => (
               <ProductCard key={p.slug} product={p} />
             ))}

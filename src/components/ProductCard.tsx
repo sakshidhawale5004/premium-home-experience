@@ -26,34 +26,34 @@ export function ProductCard({ product }: { product: Product }) {
         />
 
         {/* Badges */}
-        <div className="absolute left-3 top-3 flex flex-col gap-1 items-start">
+        <div className="absolute left-2 top-2 sm:left-3 sm:top-3 flex flex-col gap-1 items-start">
           {discount && (
-            <span className="rounded-full bg-forest px-2.5 py-1 text-[0.65rem] font-bold tracking-wider text-primary-foreground shadow-md">
+            <span className="rounded-full bg-forest px-2 sm:px-2.5 py-0.5 sm:py-1 text-[0.6rem] sm:text-[0.65rem] font-bold tracking-wider text-primary-foreground shadow-md">
               {discount}% OFF
             </span>
           )}
           {product.isBestseller && (
-            <span className="rounded-full bg-gold px-2 py-0.5 text-[0.6rem] font-bold uppercase tracking-wider text-forest shadow">
+            <span className="rounded-full bg-gold px-1.5 sm:px-2 py-0.5 text-[0.55rem] sm:text-[0.6rem] font-bold uppercase tracking-wider text-forest shadow">
               Bestseller
             </span>
           )}
         </div>
 
         {/* Free gift indicator */}
-        <span className="absolute bottom-2.5 left-2.5 right-2.5 rounded-lg bg-card/90 backdrop-blur-md px-2.5 py-1 text-[0.65rem] font-medium text-forest text-center border border-gold/30 shadow-sm truncate">
+        <span className="absolute bottom-1.5 left-1.5 right-1.5 sm:bottom-2.5 sm:left-2.5 sm:right-2.5 rounded-lg bg-card/90 backdrop-blur-md px-1.5 sm:px-2.5 py-0.5 sm:py-1 text-[0.58rem] sm:text-[0.65rem] font-medium text-forest text-center border border-gold/30 shadow-sm truncate">
           Incl. Free Selenite Plate
         </span>
       </Link>
 
-      <div className="flex flex-1 flex-col p-4">
+      <div className="flex flex-1 flex-col p-2.5 sm:p-4">
         {/* Rating */}
-        <div className="flex items-center gap-1.5 text-xs text-gold">
-          <div className="flex">
+        <div className="flex items-center gap-1 sm:gap-1.5 text-xs text-gold">
+          <div className="flex text-[0.65rem] sm:text-xs">
             {Array.from({ length: 5 }).map((_, i) => (
               <span key={i}>★</span>
             ))}
           </div>
-          <span className="text-[0.72rem] font-medium text-muted-foreground">
+          <span className="text-[0.65rem] sm:text-[0.72rem] font-medium text-muted-foreground truncate">
             {product.rating} ({product.reviewsCount})
           </span>
         </div>
@@ -61,20 +61,25 @@ export function ProductCard({ product }: { product: Product }) {
         <Link
           to="/products/$slug"
           params={{ slug: product.slug }}
-          className="mt-1.5 line-clamp-2 min-h-[2.8rem] font-display text-lg font-semibold leading-snug text-forest transition-colors hover:text-gold-deep"
+          className="mt-1 line-clamp-2 min-h-[2.2rem] sm:min-h-[2.8rem] font-display text-xs sm:text-base font-semibold leading-snug text-forest transition-colors hover:text-gold-deep"
         >
           {product.name}
         </Link>
 
-        <p className="mt-1 line-clamp-1 text-xs text-muted-foreground">
+        <p className="mt-0.5 line-clamp-1 text-[0.68rem] sm:text-xs text-muted-foreground">
           {product.blurb}
         </p>
 
-        <div className="mt-3 flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
-          <p className="font-display text-xl font-bold text-forest">{inr(product.price)}</p>
+        <div className="mt-2 sm:mt-3 flex flex-wrap items-baseline gap-x-1.5 sm:gap-x-2 gap-y-0.5">
+          <p className="font-display text-sm sm:text-xl font-bold text-forest">{inr(product.price)}</p>
           {product.mrp > product.price && (
-            <span className="text-xs text-muted-foreground line-through">
-              MRP {inr(product.mrp)}
+            <span className="text-[0.65rem] sm:text-xs text-muted-foreground line-through">
+              {inr(product.mrp)}
+            </span>
+          )}
+          {discount && (
+            <span className="text-[0.6rem] sm:text-[0.68rem] font-bold text-emerald-700 bg-emerald-50 px-1 py-0.2 rounded border border-emerald-200">
+              {discount}% OFF
             </span>
           )}
         </div>
@@ -85,14 +90,14 @@ export function ProductCard({ product }: { product: Product }) {
             add(product.slug);
             setCartOpen(true);
           }}
-          className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-forest px-4 py-2.5 text-[0.78rem] font-semibold tracking-wider text-primary-foreground transition-all hover:bg-forest/90 active:scale-98 shadow"
+          className="mt-2.5 sm:mt-4 inline-flex w-full items-center justify-center gap-1.5 rounded-xl bg-forest px-2 sm:px-4 py-2 sm:py-2.5 text-[0.68rem] sm:text-[0.78rem] font-bold tracking-wider text-primary-foreground transition-all hover:bg-forest/90 active:scale-98 shadow"
         >
-          <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-            <circle cx="9" cy="20" r="1.4" />
-            <circle cx="17" cy="20" r="1.4" />
-            <path d="M3 4h2l2.4 11.2a1.5 1.5 0 0 0 1.5 1.3h7.9a1.5 1.5 0 0 0 1.5-1.2L20 8H6" />
+          <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <path d="M3 6h18"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
           </svg>
-          ADD TO CART
+          <span className="truncate">ADD TO CART</span>
         </button>
       </div>
     </div>
