@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { categoryLinks, STORE } from "@/data/products";
+import logo from "@/assets/logo.png.asset.json";
 
 export function Footer() {
   return (
@@ -7,9 +8,7 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-16">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div>
-            <p className="font-display text-3xl font-semibold tracking-[0.14em] uppercase">
-              Vastu Adda
-            </p>
+            <img src={logo.url} alt="Vastu Adda" className="h-12 w-auto" width={144} height={36} />
             <p className="mt-4 text-sm leading-relaxed opacity-80">
               Thoughtfully selected Vastu products, crystals and remedies to invite balance,
               positivity and prosperity into your home and workplace.
@@ -34,6 +33,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link to="/collections" className="transition-colors hover:text-gold">
+                  Shop All Collections
+                </Link>
+              </li>
+              <li>
                 <Link to="/about" className="transition-colors hover:text-gold">
                   About Us
                 </Link>
@@ -44,19 +48,14 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <a href={STORE.site} className="transition-colors hover:text-gold">
-                  Shop All Products
-                </a>
+                <Link to="/refund-return-policy" className="transition-colors hover:text-gold">
+                  Refund & Return Policy
+                </Link>
               </li>
               <li>
-                <a href={STORE.cart} className="transition-colors hover:text-gold">
-                  Cart
-                </a>
-              </li>
-              <li>
-                <a href={STORE.checkout} className="transition-colors hover:text-gold">
-                  Checkout
-                </a>
+                <Link to="/shipping-policy" className="transition-colors hover:text-gold">
+                  Shipping Policy
+                </Link>
               </li>
             </ul>
           </div>
@@ -66,16 +65,16 @@ export function Footer() {
             <ul className="mt-5 space-y-3 text-sm opacity-90">
               {categoryLinks.map((c) => (
                 <li key={c.category}>
-                  <a href={c.href} className="transition-colors hover:text-gold">
+                  <Link to={c.href} className="transition-colors hover:text-gold">
                     {c.category}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
 
           <div>
-            <p className="eyebrow text-gold">Contact Us</p>
+            <p className="eyebrow text-gold">Contact & Policies</p>
             <ul className="mt-5 space-y-4 text-sm opacity-90">
               <li className="flex items-start gap-3">
                 <svg viewBox="0 0 24 24" className="mt-0.5 h-4 w-4 shrink-0 text-gold" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
@@ -90,14 +89,15 @@ export function Footer() {
                 </svg>
                 <span>Reach us anytime on WhatsApp — we reply within a few hours.</span>
               </li>
-              <li className="flex items-start gap-3">
-                <svg viewBox="0 0 24 24" className="mt-0.5 h-4 w-4 shrink-0 text-gold" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
-                  <circle cx="12" cy="12" r="9" />
-                  <path d="M3 12h18M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18Z" />
-                </svg>
-                <a href={STORE.site} className="transition-colors hover:text-gold">
-                  vastuadda.com
-                </a>
+              <li>
+                <Link to="/privacy-policy" className="transition-colors hover:text-gold">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link to="/terms-and-conditions" className="transition-colors hover:text-gold">
+                  Terms & Conditions
+                </Link>
               </li>
             </ul>
           </div>

@@ -1,28 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { categoryLinks, STORE } from "@/data/products";
-
-function LotusMark({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 48 32" fill="none" className={className} aria-hidden="true">
-      <path
-        d="M24 4c2.8 3.6 4.2 7.4 4.2 11.4S26.8 23.4 24 27.2c-2.8-3.8-4.2-7.8-4.2-11.8S21.2 7.6 24 4Z"
-        stroke="currentColor"
-        strokeWidth="1.6"
-      />
-      <path
-        d="M24 27.2c-4.8.8-9-.4-12.6-3.4-2.4-2-4-4.4-4.8-7.2 4.8-.8 9 .4 12.6 3.4 2.4 2 4 4.4 4.8 7.2Z"
-        stroke="currentColor"
-        strokeWidth="1.6"
-      />
-      <path
-        d="M24 27.2c4.8.8 9-.4 12.6-3.4 2.4-2 4-4.4 4.8-7.2-4.8-.8-9 .4-12.6 3.4-2.4 2-4 4.4-4.8 7.2Z"
-        stroke="currentColor"
-        strokeWidth="1.6"
-      />
-    </svg>
-  );
-}
+import { useShop } from "@/lib/shop";
+import logo from "@/assets/logo.png.asset.json";
 
 const navLink =
   "text-[0.95rem] tracking-wide text-foreground/85 transition-colors hover:text-gold-deep";
@@ -30,6 +10,7 @@ const navLink =
 export function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { count, setCartOpen, setSearchOpen } = useShop();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -49,17 +30,9 @@ export function Header() {
           scrolled ? "shadow-[0_10px_30px_-18px_rgba(0,0,0,0.35)]" : ""
         }`}
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3.5">
-          <Link to="/" className="flex items-center gap-3 text-forest">
-            <LotusMark className="h-8 w-12 text-gold-deep" />
-            <span className="leading-none">
-              <span className="font-display text-[1.65rem] font-semibold tracking-[0.14em] uppercase">
-                Vastu Adda
-              </span>
-              <span className="mt-1 block text-[0.6rem] tracking-[0.3em] uppercase text-muted-foreground">
-                Vedic Remedies · Crystals · Guidance
-              </span>
-            </span>
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3">
+          <Link to="/" className="flex items-center gap-2">
+            <img src={logo.url} alt="Vastu Adda" className="h-10 w-auto md:h-11" width={160} height={40} />
           </Link>
 
           <nav className="hidden items-center gap-8 lg:flex">
@@ -67,8 +40,8 @@ export function Header() {
               Home
             </Link>
             <div className="group relative">
-              <a
-                href={STORE.site}
+              <Link
+                to="/collections"
                 className={`${navLink} inline-flex items-center gap-1.5`}
                 aria-haspopup="true"
               >
@@ -76,18 +49,24 @@ export function Header() {
                 <svg viewBox="0 0 12 8" className="h-2 w-3 fill-current" aria-hidden="true">
                   <path d="M6 8 0 0h12L6 8Z" />
                 </svg>
-              </a>
+              </Link>
               <div className="invisible absolute left-1/2 top-full z-10 w-60 -translate-x-1/2 pt-3 opacity-0 transition-all group-hover:visible group-hover:opacity-100">
                 <div className="rounded-xl border border-gold/40 bg-card p-2 shadow-xl">
                   {categoryLinks.map((c) => (
-                    <a
+                    <Link
                       key={c.category}
-                      href={c.href}
+                      to={c.href}
                       className="block rounded-lg px-3 py-2.5 text-sm text-foreground/85 transition-colors hover:bg-secondary hover:text-gold-deep"
                     >
                       {c.category}
-                    </a>
+                    </Link>
                   ))}
+                  <Link
+                    to="/collections"
+                    className="mt-1 block rounded-lg border-t border-border px-3 pt-3 text-sm font-medium text-gold-deep"
+                  >
+                    View All Collections →
+                  </Link>
                 </div>
               </div>
             </div>
@@ -103,17 +82,34 @@ export function Header() {
           </nav>
 
           <div className="flex items-center gap-2">
-            <a
-              href={STORE.cart}
-              className="hidden items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-forest/90 sm:inline-flex"
+            <button
+              type="button"
+              onClick={() => setSearchOpen(true)}
+              aria-label="Search products"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:border-gold hover:text-gold-deep"
             >
-              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+                <circle cx="11" cy="11" r="7" />
+                <path d="m20 20-3.5-3.5" />
+              </svg>
+            </button>
+            <button
+              type="button"
+              onClick={() => setCartOpen(true)}
+              aria-label={`Open cart, ${count} items`}
+              className="relative inline-flex h-10 w-10 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:border-gold hover:text-gold-deep"
+            >
+              <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
                 <circle cx="9" cy="20" r="1.4" />
                 <circle cx="17" cy="20" r="1.4" />
                 <path d="M3 4h2l2.4 11.2a1.5 1.5 0 0 0 1.5 1.3h7.9a1.5 1.5 0 0 0 1.5-1.2L20 8H6" />
               </svg>
-              Cart
-            </a>
+              {count > 0 && (
+                <span className="absolute -right-1 -top-1 flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-forest px-1 text-[0.65rem] font-semibold text-primary-foreground">
+                  {count}
+                </span>
+              )}
+            </button>
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
@@ -133,6 +129,9 @@ export function Header() {
               <Link to="/" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2.5 hover:bg-secondary">
                 Home
               </Link>
+              <Link to="/collections" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2.5 hover:bg-secondary">
+                Shop All Collections
+              </Link>
               <Link to="/blogs" onClick={() => setOpen(false)} className="rounded-lg px-3 py-2.5 hover:bg-secondary">
                 Blogs
               </Link>
@@ -144,13 +143,20 @@ export function Header() {
               </a>
               <p className="eyebrow px-3 pt-3 text-muted-foreground">Shop Categories</p>
               {categoryLinks.map((c) => (
-                <a key={c.category} href={c.href} className="rounded-lg px-3 py-2.5 text-sm hover:bg-secondary">
+                <Link key={c.category} to={c.href} onClick={() => setOpen(false)} className="rounded-lg px-3 py-2.5 text-sm hover:bg-secondary">
                   {c.category}
-                </a>
+                </Link>
               ))}
-              <a href={STORE.cart} className="rounded-lg px-3 py-2.5 text-sm hover:bg-secondary">
-                Cart & Checkout
-              </a>
+              <button
+                type="button"
+                onClick={() => {
+                  setOpen(false);
+                  setCartOpen(true);
+                }}
+                className="rounded-lg px-3 py-2.5 text-left text-sm hover:bg-secondary"
+              >
+                My Cart{count > 0 ? ` (${count})` : ""}
+              </button>
             </div>
           </nav>
         )}
