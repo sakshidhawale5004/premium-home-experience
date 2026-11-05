@@ -14,7 +14,7 @@ const slides = [
     subtitle:
       "Citrine, Pyrite, 7 Chakra and Rudraksha trees that anchor auspicious wealth and peace in your home.",
     cta: "Explore Crystal Trees",
-    href: "/collections/crystal-trees",
+    slug: "crystal-trees",
     image: treeImg,
   },
   {
@@ -23,7 +23,7 @@ const slides = [
     subtitle:
       "High-clarity orgonite pyramids layered with pyrite and sacred copper coils to channel divine Lakshmi frequencies.",
     cta: "Explore Pyramids",
-    href: "/collections/crystal-pyramids",
+    slug: "crystal-pyramids",
     image: pyramidImg,
   },
   {
@@ -32,7 +32,7 @@ const slides = [
     subtitle:
       "Pyrite, Tiger Eye, South Indian Karungali, and Rudraksha wristbands — sacred protection for modern everyday life.",
     cta: "Explore Bracelets",
-    href: "/collections/crystal-bracelets",
+    slug: "crystal-bracelets",
     image: braceletsImg,
   },
   {
@@ -41,7 +41,7 @@ const slides = [
     subtitle:
       "Authentic 108-bead Himalayan rudraksha malas interwoven with pyrite, tiger eye, sphatik, and ebony wood.",
     cta: "Explore Malas",
-    href: "/collections/malas",
+    slug: "malas",
     image: malaImg,
   },
   {
@@ -50,7 +50,7 @@ const slides = [
     subtitle:
       "Solid pyrite tortoises, talismans and protective charms placed with deliberate Vedic alignment.",
     cta: "Explore Vastu Remedies",
-    href: "/collections/vastu-products",
+    slug: "vastu-products",
     image: vastuImg,
   },
 ];
@@ -59,47 +59,48 @@ export function HeroSlider() {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    const timer = setInterval(() => setIndex((i) => (i + 1) % slides.length), 6000);
+    const timer = setInterval(() => {
+      setIndex((i) => (i + 1) % slides.length);
+    }, 6500);
     return () => clearInterval(timer);
   }, []);
 
-  const go = (next: number) => setIndex((next + slides.length) % slides.length);
   const slide = slides[index];
 
-  if (!slide) {
-    return null;
-  }
-
   return (
-    <section className="relative h-[560px] overflow-hidden bg-forest md:h-[640px]">
+    <section
+      className="relative min-h-[580px] w-full overflow-hidden bg-forest sm:min-h-[640px] md:min-h-[680px]"
+      aria-label="Featured collections slider"
+    >
+      {/* Background Images */}
       {slides.map((s, i) => (
         <div
-          key={s.eyebrow}
-          className={`absolute inset-0 transition-opacity duration-[1200ms] ${
+          key={s.title}
+          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
             i === index ? "opacity-100" : "pointer-events-none opacity-0"
           }`}
           aria-hidden={i !== index}
         >
           <img
             src={s.image}
-            alt={s.eyebrow}
-            className={`h-full w-full object-cover ${i === index ? "hero-zoom" : ""}`}
+            alt=""
             loading={i === 0 ? "eager" : "lazy"}
             width={1920}
             height={1080}
+            className="h-full w-full object-cover object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-forest/95 via-forest/80 to-transparent sm:via-forest/70" />
+          <div className="absolute inset-0 bg-gradient-to-t from-forest/80 via-transparent to-transparent" />
         </div>
       ))}
 
-      <div className="relative mx-auto flex h-full max-w-7xl items-center px-4 sm:px-6">
-        <div key={index} className="fade-up max-w-2xl">
-          <p className="eyebrow flex items-center gap-3 text-gold-deep">
-            <span className="inline-block h-px w-10 bg-gold" />
+      {/* Slide Content */}
+      <div className="relative z-10 mx-auto flex min-h-[580px] max-w-7xl items-center px-4 py-16 sm:min-h-[640px] sm:px-6 md:min-h-[680px]">
+        <div className="max-w-2xl">
+          <p className="eyebrow text-gold transition-all duration-500">
             {slide.eyebrow}
           </p>
-          <h1 className="mt-3 font-display text-4xl font-semibold leading-[1.12] text-forest sm:text-5xl md:text-6xl whitespace-pre-line">
+          <h1 className="mt-3 font-display text-4xl font-semibold leading-tight text-primary-foreground sm:text-5xl md:text-6xl whitespace-pre-line drop-shadow-sm">
             {slide.title}
           </h1>
           <p className="mt-4 max-w-lg text-base leading-relaxed text-muted-foreground sm:text-lg">
@@ -108,7 +109,8 @@ export function HeroSlider() {
 
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <Link
-              to={slide.href}
+              to="/collections/$slug"
+              params={{ slug: slide.slug }}
               className="inline-flex items-center gap-2 rounded-full bg-forest px-8 py-3.5 text-xs font-semibold tracking-wider text-primary-foreground transition-all hover:bg-forest/90 hover:scale-[1.02] shadow-lg"
             >
               <span>{slide.cta}</span>
@@ -134,12 +136,12 @@ export function HeroSlider() {
           <div className="flex gap-2">
             {slides.map((s, i) => (
               <button
-                key={s.eyebrow}
+                key={s.title}
                 type="button"
                 onClick={() => setIndex(i)}
-                aria-label={`Go to slide ${i + 1}`}
-                className={`h-2 transition-all rounded-full ${
-                  i === index ? "w-8 bg-gold-deep" : "w-2 bg-foreground/30 hover:bg-foreground/50"
+                aria-label={`Go to slide ${i + 1}: ${s.title}`}
+                className={`h-2 rounded-full transition-all ${
+                  i === index ? "w-8 bg-gold" : "w-2 bg-primary-foreground/40 hover:bg-primary-foreground/70"
                 }`}
               />
             ))}
@@ -148,22 +150,22 @@ export function HeroSlider() {
           <div className="flex items-center gap-2">
             <button
               type="button"
-              onClick={() => go(index - 1)}
+              onClick={() => setIndex((i) => (i - 1 + slides.length) % slides.length)}
               aria-label="Previous slide"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card/80 text-foreground backdrop-blur-sm transition-colors hover:bg-secondary hover:text-forest"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-primary-foreground/20 bg-forest/40 text-primary-foreground backdrop-blur-sm transition-colors hover:bg-forest hover:text-gold"
             >
               <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="m15 19-7-7 7-7" />
+                <path d="M15 19l-7-7 7-7" />
               </svg>
             </button>
             <button
               type="button"
-              onClick={() => go(index + 1)}
+              onClick={() => setIndex((i) => (i + 1) % slides.length)}
               aria-label="Next slide"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card/80 text-foreground backdrop-blur-sm transition-colors hover:bg-secondary hover:text-forest"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-primary-foreground/20 bg-forest/40 text-primary-foreground backdrop-blur-sm transition-colors hover:bg-forest hover:text-gold"
             >
               <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="m9 5 7 7-7 7" />
+                <path d="M9 5l7 7-7 7" />
               </svg>
             </button>
           </div>

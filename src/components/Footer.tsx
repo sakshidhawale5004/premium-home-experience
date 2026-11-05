@@ -1,6 +1,14 @@
 import { Link } from "@tanstack/react-router";
 import { categoryLinks, STORE } from "@/data/products";
 
+const categoryIcons: Record<string, string> = {
+  "Crystal Trees": "🌳",
+  "Crystal Pyramids": "🔺",
+  "Crystal Bracelets": "📿",
+  Malas: "🕉️",
+  "Vastu Products": "🐢",
+};
+
 export function Footer() {
   return (
     <footer className="bg-forest text-primary-foreground border-t border-gold/30">
@@ -88,8 +96,13 @@ export function Footer() {
             <ul className="mt-5 space-y-3 text-sm text-primary-foreground/85">
               {categoryLinks.map((c) => (
                 <li key={c.category}>
-                  <Link to={c.href} className="transition-colors hover:text-gold">
-                    {c.category}
+                  <Link
+                    to="/collections/$slug"
+                    params={{ slug: c.slug }}
+                    className="flex items-center gap-2 transition-colors hover:text-gold"
+                  >
+                    <span className="text-xs">{categoryIcons[c.category] ?? "•"}</span>
+                    <span>{c.category}</span>
                   </Link>
                 </li>
               ))}
@@ -140,11 +153,19 @@ export function Footer() {
         {/* Bottom copyright & payment methods */}
         <div className="mt-14 border-t border-gold/20 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-primary-foreground/70">
           <p>© {new Date().getFullYear()} Vastu Adda. All Rights Reserved. Crafted for Spiritual Homes.</p>
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="rounded bg-background/20 px-2 py-1">UPI</span>
-            <span className="rounded bg-background/20 px-2 py-1">Cash on Delivery</span>
-            <span className="rounded bg-background/20 px-2 py-1">Visa / Mastercard</span>
-            <span className="rounded bg-background/20 px-2 py-1">Net Banking</span>
+          <div className="flex flex-wrap items-center gap-2.5">
+            <span className="rounded-lg bg-background/20 px-2.5 py-1 text-[0.7rem] font-medium border border-gold/20">
+              UPI Accepted
+            </span>
+            <span className="rounded-lg bg-background/20 px-2.5 py-1 text-[0.7rem] font-medium border border-gold/20">
+              Cash on Delivery (COD)
+            </span>
+            <span className="rounded-lg bg-background/20 px-2.5 py-1 text-[0.7rem] font-medium border border-gold/20">
+              Visa / Mastercard / RuPay
+            </span>
+            <span className="rounded-lg bg-background/20 px-2.5 py-1 text-[0.7rem] font-medium border border-gold/20">
+              Net Banking
+            </span>
           </div>
         </div>
       </div>

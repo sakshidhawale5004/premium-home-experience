@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { categoryLinks, STORE } from "@/data/products";
 import { useShop } from "@/lib/shop";
+
+const categoryIcons: Record<string, string> = {
+  "Crystal Trees": "🌳",
+  "Crystal Pyramids": "🔺",
+  "Crystal Bracelets": "📿",
+  Malas: "🕉️",
+  "Vastu Products": "🐢",
+};
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -172,16 +180,18 @@ export function Header() {
                 {categoryLinks.map((c) => (
                   <Link
                     key={c.category}
-                    to={c.href}
-                    className="block rounded-xl px-3.5 py-2.5 text-sm font-medium text-foreground/85 transition-colors hover:bg-secondary hover:text-forest"
+                    to="/collections/$slug"
+                    params={{ slug: c.slug }}
+                    className="flex items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-sm font-medium text-foreground/85 transition-colors hover:bg-secondary hover:text-forest"
                   >
-                    {c.category}
+                    <span>{categoryIcons[c.category] ?? "✨"}</span>
+                    <span>{c.category}</span>
                   </Link>
                 ))}
                 <div className="my-1 border-t border-border" />
                 <Link
                   to="/collections"
-                  className="block rounded-xl px-3.5 py-2 text-xs font-semibold uppercase tracking-wider text-gold-deep hover:bg-secondary"
+                  className="block rounded-xl px-3.5 py-2 text-xs font-semibold uppercase tracking-wider text-gold-deep hover:bg-secondary text-center"
                 >
                   View All Products →
                 </Link>
@@ -250,11 +260,13 @@ export function Header() {
               {categoryLinks.map((c) => (
                 <Link
                   key={c.category}
-                  to={c.href}
+                  to="/collections/$slug"
+                  params={{ slug: c.slug }}
                   onClick={() => setOpen(false)}
-                  className="block rounded-xl px-3 py-2 text-sm text-foreground/80 hover:bg-secondary hover:text-forest"
+                  className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-foreground/80 hover:bg-secondary hover:text-forest"
                 >
-                  {c.category}
+                  <span>{categoryIcons[c.category] ?? "✨"}</span>
+                  <span>{c.category}</span>
                 </Link>
               ))}
             </div>
