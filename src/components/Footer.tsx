@@ -8,8 +8,14 @@ export function Footer() {
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           {/* Col 1: Brand & Bio */}
           <div>
-            <Link to="/" className="inline-block">
-              <img src="/logo.svg" alt="Vastu Adda" className="h-12 w-auto brightness-110" width={220} height={44} />
+            <Link to="/" className="inline-block py-1">
+              <img
+                src="/cropped-VastuAdda-Golden-House-Logo-300x75.png"
+                alt="Vastu Adda"
+                className="h-12 w-auto brightness-110 object-contain"
+                width={300}
+                height={75}
+              />
             </Link>
             <p className="mt-4 text-sm leading-relaxed text-primary-foreground/80">
               Thoughtfully curated Vedic Vastu remedies, authentic energized crystals, sacred

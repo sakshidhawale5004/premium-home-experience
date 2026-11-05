@@ -8,7 +8,6 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [headerSearchQuery, setHeaderSearchQuery] = useState("");
   const { count, setCartOpen, setSearchOpen } = useShop();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
@@ -18,31 +17,30 @@ export function Header() {
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (headerSearchQuery.trim()) {
-      setSearchOpen(true);
-    } else {
-      setSearchOpen(true);
-    }
+    setSearchOpen(true);
   };
 
   return (
     <header className="sticky top-0 z-50 w-full transition-shadow">
-      {/* Top Announcement Bar */}
-      <div className="bg-forest px-4 py-2 text-primary-foreground border-b border-gold/20 shadow-sm">
-        <div className="mx-auto flex max-w-7xl items-center justify-between text-[0.72rem] tracking-[0.16em] uppercase">
-          <p className="hidden md:block opacity-90">
-            🕉️ 100% Certified Natural Gemstones · Vedic Astrologer Energized
+      {/* Top Announcement Bar - Seamless single-line layout */}
+      <div className="bg-forest px-4 py-2 text-primary-foreground border-b border-gold/20 shadow-sm overflow-hidden">
+        <div className="mx-auto flex max-w-7xl items-center justify-between text-[0.7rem] sm:text-[0.72rem] tracking-[0.14em] uppercase gap-4">
+          <p className="hidden xl:flex items-center gap-1.5 opacity-90 whitespace-nowrap">
+            <span>🕉️</span>
+            <span>100% Certified Gemstones · Vedic Energized</span>
           </p>
-          <p className="mx-auto md:mx-0 text-center font-medium text-gold-soft">
-            ✨ Special Offer: Free Raw Selenite Plate with Every Order | Free Pan-India Delivery
+
+          <p className="mx-auto xl:mx-0 text-center font-medium text-gold-soft whitespace-nowrap truncate max-w-full">
+            ✨ Special Offer: Free Raw Selenite Plate with Every Order &nbsp;|&nbsp; Free Pan-India Delivery
           </p>
+
           <a
             href={STORE.whatsapp}
             target="_blank"
             rel="noreferrer"
-            className="hidden lg:flex items-center gap-1.5 text-gold hover:text-primary-foreground transition-colors"
+            className="hidden md:flex items-center gap-1.5 text-gold hover:text-primary-foreground transition-colors whitespace-nowrap shrink-0"
           >
-            <span>Expert Help: {STORE.phone}</span>
+            <span>💬 Free Astrologer Help: {STORE.phone}</span>
           </a>
         </div>
       </div>
@@ -50,18 +48,18 @@ export function Header() {
       {/* Main Header Row */}
       <div
         className={`border-b border-border bg-background/95 backdrop-blur-md transition-all duration-300 ${
-          scrolled ? "py-2.5 shadow-[0_8px_30px_rgb(0,0,0,0.12)]" : "py-3.5"
+          scrolled ? "py-2 shadow-[0_8px_30px_rgb(0,0,0,0.12)]" : "py-3"
         }`}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 shrink-0">
+          {/* Logo with official cropped-VastuAdda-Golden-House-Logo */}
+          <Link to="/" className="flex items-center gap-2 shrink-0 py-0.5">
             <img
-              src="/logo.svg"
+              src="/cropped-VastuAdda-Golden-House-Logo-300x75.png"
               alt="Vastu Adda"
-              className="h-10 w-auto md:h-12 transition-transform hover:scale-[1.02]"
-              width={240}
-              height={48}
+              className="h-10 md:h-12 w-auto object-contain transition-transform hover:scale-[1.02]"
+              width={300}
+              height={75}
             />
           </Link>
 
@@ -191,12 +189,12 @@ export function Header() {
             </div>
           </div>
 
-          <Link to="/blogs" className="text-[0.92rem] font-medium tracking-wide text-foreground/90 transition-colors hover:text-gold-deep">
-            Vastu Blogs
-          </Link>
-
           <Link to="/about" className="text-[0.92rem] font-medium tracking-wide text-foreground/90 transition-colors hover:text-gold-deep">
             About Us
+          </Link>
+
+          <Link to="/blogs" className="text-[0.92rem] font-medium tracking-wide text-foreground/90 transition-colors hover:text-gold-deep">
+            Vastu Blogs
           </Link>
 
           <Link to="/refund-return-policy" className="text-[0.92rem] font-medium tracking-wide text-foreground/90 transition-colors hover:text-gold-deep">
@@ -242,6 +240,12 @@ export function Header() {
             <Link to="/collections" onClick={() => setOpen(false)} className="rounded-xl px-3 py-2.5 hover:bg-secondary font-medium">
               Shop All Collections
             </Link>
+            <Link to="/about" onClick={() => setOpen(false)} className="rounded-xl px-3 py-2.5 hover:bg-secondary font-medium">
+              About Our Heritage
+            </Link>
+            <Link to="/blogs" onClick={() => setOpen(false)} className="rounded-xl px-3 py-2.5 hover:bg-secondary font-medium">
+              Vastu Insights &amp; Blogs
+            </Link>
 
             <div className="my-2 border-t border-border pt-2">
               <p className="px-3 pb-2 text-[0.7rem] font-semibold uppercase tracking-widest text-muted-foreground">
@@ -261,14 +265,8 @@ export function Header() {
 
             <div className="my-2 border-t border-border pt-2">
               <p className="px-3 pb-2 text-[0.7rem] font-semibold uppercase tracking-widest text-muted-foreground">
-                Customer Care &amp; Info
+                Customer Care &amp; Policies
               </p>
-              <Link to="/blogs" onClick={() => setOpen(false)} className="block rounded-xl px-3 py-2 text-sm text-foreground/80 hover:bg-secondary">
-                Vastu Insights &amp; Blogs
-              </Link>
-              <Link to="/about" onClick={() => setOpen(false)} className="block rounded-xl px-3 py-2 text-sm text-foreground/80 hover:bg-secondary">
-                About Our Heritage
-              </Link>
               <Link to="/refund-return-policy" onClick={() => setOpen(false)} className="block rounded-xl px-3 py-2 text-sm text-foreground/80 hover:bg-secondary">
                 Refund &amp; Return Policy
               </Link>

@@ -104,6 +104,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
+      { rel: "icon", href: "/cropped-VastuAdda-Golden-House-Logo-300x75.png", type: "image/png" },
+      { rel: "apple-touch-icon", href: "/cropped-VastuAdda-Golden-House-Logo-300x75.png" },
       { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
     ],
   }),

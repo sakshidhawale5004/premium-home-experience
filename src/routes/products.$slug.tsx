@@ -511,64 +511,70 @@ function ProductDetailPage() {
           </div>
         </div>
 
-        {/* Verified Customer Reviews Section */}
+        {/* Verified Customer Reviews Section - Voices of Serenity Style */}
         <div className="mt-16 border-t border-border pt-12">
-          <div className="mx-auto max-w-4xl">
+          <div className="mx-auto max-w-5xl">
             <div className="text-center">
-              <p className="eyebrow text-gold-deep">Verified Experiences</p>
-              <h2 className="mt-2 font-display text-3xl font-bold text-forest">
-                What Customers Say About This Remedy
+              <p className="eyebrow text-gold-deep tracking-[0.25em]">TESTIMONIALS</p>
+              <h2 className="mt-3 font-display text-4xl font-semibold text-forest">
+                Voices of Serenity
               </h2>
+              <div className="gold-line mx-auto mt-4 w-28" />
+              <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
+                Real stories from homes and workspaces transformed by mindful Vastu placement.
+              </p>
             </div>
 
-            <div className="mt-8 grid gap-6 md:grid-cols-3">
+            <div className="mt-10 grid gap-6 md:grid-cols-3">
               {[
                 {
-                  author: "Pooja Sharma",
-                  city: "Mumbai, Maharashtra",
+                  author: "Meera & Raghav S.",
+                  city: "Bengaluru",
                   rating: 5,
-                  title: "Extremely pure and powerful",
                   review:
-                    "Received in magnificent packaging. You can physically feel the heavy positive vibration of the crystal. The included Selenite cleansing plate is a fantastic touch!",
-                  date: "3 days ago",
+                    "The Money Magnet pyramid brought an unmistakable shift in our home's atmosphere within two weeks. Their team even reviewed photos of our living room on WhatsApp to recommend the exact spot. That personal care is rare.",
                 },
                 {
-                  author: "Rajesh Kulkarni",
-                  city: "Pune, Maharashtra",
+                  author: "Dr. Ananya P.",
+                  city: "Pune",
                   rating: 5,
-                  title: "100% Genuine Lab Certified",
                   review:
-                    "I had my local jeweler test the pyrite nuggets and they confirmed authentic natural stone. Since placing it in my office cash counter, our sales momentum has definitely shifted.",
-                  date: "1 week ago",
+                    "I was sceptical about crystals until our Vastu consultant suggested a pyrite tree for the north corner of our clinic. Patients regularly comment on the calm vibe of the waiting room now. Exceptional authenticity.",
                 },
                 {
-                  author: "Dr. Ananya Sen",
-                  city: "Kolkata, West Bengal",
+                  author: "Vikramaditya K.",
+                  city: "Jaipur",
                   rating: 5,
-                  title: "Looks stunning in living room",
                   review:
-                    "Ordered with Cash on Delivery. Reached in 3 days in Kolkata. Beautiful golden branches and the astrologer energization card gave great peace of mind.",
-                  date: "2 weeks ago",
+                    "Finding authentic karungali and seven mukhi rudraksha online is hard. Vastu Adda's quality was certified, the beads felt heavy and energised, and delivery to Jaipur was prompt and beautifully packed.",
                 },
               ].map((rev, i) => (
                 <div
                   key={i}
-                  className="rounded-2xl border border-border bg-card p-5 shadow-sm hover:border-gold/40 transition-colors"
+                  className="card-lift flex flex-col justify-between rounded-3xl border border-border bg-card p-7 shadow-sm hover:border-gold/40 transition-all"
                 >
-                  <div className="flex items-center gap-1 text-gold text-sm">
-                    {Array.from({ length: rev.rating }).map((_, idx) => (
-                      <span key={idx}>★</span>
-                    ))}
+                  <div>
+                    <div className="flex gap-1 text-gold text-sm" aria-hidden="true">
+                      <span>★</span>
+                      <span>★</span>
+                      <span>★</span>
+                      <span>★</span>
+                      <span>★</span>
+                    </div>
+
+                    <blockquote className="mt-4 text-xs sm:text-[0.88rem] leading-relaxed italic text-foreground/85 font-body">
+                      "{rev.review}"
+                    </blockquote>
                   </div>
-                  <p className="mt-2 font-semibold text-forest text-sm">{rev.title}</p>
-                  <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
-                    "{rev.review}"
-                  </p>
-                  <div className="mt-4 border-t border-border/60 pt-3 flex items-center justify-between text-[0.7rem] text-muted-foreground">
-                    <span className="font-medium text-foreground">
-                      {rev.author} · {rev.city}
+
+                  <div className="mt-6 border-t border-border/70 pt-4 flex items-center justify-between">
+                    <div>
+                      <p className="font-display text-sm font-bold text-forest">{rev.author}</p>
+                      <p className="text-[0.72rem] text-muted-foreground">{rev.city}</p>
+                    </div>
+                    <span className="rounded-full bg-emerald-100 text-emerald-800 text-[0.62rem] font-bold uppercase tracking-wider px-2.5 py-0.5">
+                      VERIFIED BUYER
                     </span>
-                    <span className="text-emerald-700 font-semibold">✓ Verified Buyer</span>
                   </div>
                 </div>
               ))}

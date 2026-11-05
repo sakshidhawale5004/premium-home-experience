@@ -387,36 +387,65 @@ function Index() {
         </div>
       </section>
 
-      {/* Customer Testimonials */}
+      {/* Voices of Serenity - Testimonials */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
-        <SectionHeading
-          eyebrow="Kind Words"
-          title="What Our Customers Say"
-          subtitle="Real experiences shared by families, entrepreneurs, and meditators across India."
-        />
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {testimonials.map((t) => (
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="eyebrow text-gold-deep tracking-[0.25em]">TESTIMONIALS</p>
+          <h2 className="mt-3 font-display text-4xl sm:text-5xl font-semibold text-forest">
+            Voices of Serenity
+          </h2>
+          <div className="gold-line mx-auto mt-4 w-28" />
+          <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
+            Real stories from homes and workspaces transformed by mindful Vastu placement.
+          </p>
+        </div>
+
+        <div className="mt-12 grid gap-6 md:grid-cols-3">
+          {[
+            {
+              quote:
+                "The Money Magnet pyramid brought an unmistakable shift in our home's atmosphere within two weeks. Their team even reviewed photos of our living room on WhatsApp to recommend the exact spot. That personal care is rare.",
+              author: "Meera & Raghav S.",
+              city: "Bengaluru",
+            },
+            {
+              quote:
+                "I was sceptical about crystals until our Vastu consultant suggested a pyrite tree for the north corner of our clinic. Patients regularly comment on the calm vibe of the waiting room now. Exceptional authenticity.",
+              author: "Dr. Ananya P.",
+              city: "Pune",
+            },
+            {
+              quote:
+                "Finding authentic karungali and seven mukhi rudraksha online is hard. Vastu Adda's quality was certified, the beads felt heavy and energised, and delivery to Jaipur was prompt and beautifully packed.",
+              author: "Vikramaditya K.",
+              city: "Jaipur",
+            },
+          ].map((t, idx) => (
             <figure
-              key={t.name}
-              className="card-lift flex flex-col rounded-2xl border border-border bg-card p-6 shadow-sm hover:border-gold/40"
+              key={idx}
+              className="card-lift flex flex-col justify-between rounded-3xl border border-border bg-card p-8 shadow-sm hover:border-gold/40 transition-all"
             >
-              <div className="flex gap-1 text-gold" aria-hidden="true">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <span key={i} className="text-sm">★</span>
-                ))}
+              <div>
+                <div className="flex gap-1 text-gold text-sm" aria-hidden="true">
+                  <span>★</span>
+                  <span>★</span>
+                  <span>★</span>
+                  <span>★</span>
+                  <span>★</span>
+                </div>
+
+                <blockquote className="mt-5 text-sm sm:text-[0.92rem] leading-relaxed italic text-foreground/85 font-body">
+                  "{t.quote}"
+                </blockquote>
               </div>
-              <blockquote className="mt-4 flex-1 text-xs leading-relaxed text-foreground/80">
-                “{t.quote}”
-              </blockquote>
-              <figcaption className="mt-5 flex items-center gap-3 border-t border-border/60 pt-3">
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-forest font-display text-sm font-semibold text-primary-foreground">
-                  {t.name.charAt(0)}
-                </span>
-                <span>
-                  <span className="block font-display text-sm font-semibold text-forest">
-                    {t.name}
-                  </span>
-                  <span className="block text-[0.7rem] text-muted-foreground">{t.city}</span>
+
+              <figcaption className="mt-8 border-t border-border/70 pt-5 flex items-center justify-between">
+                <div>
+                  <p className="font-display text-base font-bold text-forest">{t.author}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">{t.city}</p>
+                </div>
+                <span className="rounded-full bg-emerald-100 text-emerald-800 text-[0.65rem] font-bold uppercase tracking-wider px-2.5 py-1">
+                  VERIFIED BUYER
                 </span>
               </figcaption>
             </figure>
