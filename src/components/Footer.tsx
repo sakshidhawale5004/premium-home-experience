@@ -134,27 +134,26 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Bottom copyright & payment methods */}
-        <div className="mt-14 border-t border-gold/20 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-primary-foreground/70">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3 text-center sm:text-left">
-            <p>© {new Date().getFullYear()} Vastu Adda. All Rights Reserved.</p>
-            <span className="hidden sm:inline text-gold/40">|</span>
-            <p className="text-gold-soft font-medium">Design by Digital Coyotes</p>
-          </div>
-          <div className="flex flex-wrap items-center gap-2.5">
-            <span className="rounded-lg bg-background/20 px-2.5 py-1 text-[0.7rem] font-medium border border-gold/20">
-              UPI Accepted
-            </span>
-            <span className="rounded-lg bg-background/20 px-2.5 py-1 text-[0.7rem] font-medium border border-gold/20">
-              Cash on Delivery (COD)
-            </span>
-            <span className="rounded-lg bg-background/20 px-2.5 py-1 text-[0.7rem] font-medium border border-gold/20">
-              Visa / Mastercard / RuPay
-            </span>
-            <span className="rounded-lg bg-background/20 px-2.5 py-1 text-[0.7rem] font-medium border border-gold/20">
-              Net Banking
-            </span>
-          </div>
+        {/* Payment Methods Badges (Above Divider Line) */}
+        <div className="mt-12 flex flex-wrap items-center gap-2.5">
+          <span className="rounded-full bg-background/20 px-3.5 py-1.5 text-xs font-medium border border-gold/25 text-primary-foreground/90">
+            UPI Accepted
+          </span>
+          <span className="rounded-full bg-background/20 px-3.5 py-1.5 text-xs font-medium border border-gold/25 text-primary-foreground/90">
+            Cash on Delivery (COD)
+          </span>
+          <span className="rounded-full bg-background/20 px-3.5 py-1.5 text-xs font-medium border border-gold/25 text-primary-foreground/90">
+            Visa / Mastercard / RuPay
+          </span>
+          <span className="rounded-full bg-background/20 px-3.5 py-1.5 text-xs font-medium border border-gold/25 text-primary-foreground/90">
+            Net Banking
+          </span>
+        </div>
+
+        {/* Divider line & Left-aligned copyright */}
+        <div className="mt-8 border-t border-gold/20 pt-6 flex flex-col text-left gap-1.5 text-xs text-primary-foreground/70">
+          <p>© {new Date().getFullYear()} Vastu Adda. All Rights Reserved.</p>
+          <p className="text-gold-soft font-medium">Design by Digital Coyotes</p>
         </div>
       </div>
     </footer>

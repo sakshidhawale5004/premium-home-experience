@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as BlogsRouteImport } from './routes/blogs'
+import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as CollectionsRouteImport } from './routes/collections'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as RefundReturnPolicyRouteImport } from './routes/refund-return-policy'
@@ -34,6 +35,11 @@ const AboutRoute = AboutRouteImport.update({
 const BlogsRoute = BlogsRouteImport.update({
   id: '/blogs',
   path: '/blogs',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutRoute = CheckoutRouteImport.update({
+  id: '/checkout',
+  path: '/checkout',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CollectionsRoute = CollectionsRouteImport.update({
@@ -81,6 +87,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/blogs': typeof BlogsRouteWithChildren
+  '/checkout': typeof CheckoutRoute
   '/collections': typeof CollectionsRouteWithChildren
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/refund-return-policy': typeof RefundReturnPolicyRoute
@@ -94,6 +101,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/blogs': typeof BlogsRouteWithChildren
+  '/checkout': typeof CheckoutRoute
   '/collections': typeof CollectionsRouteWithChildren
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/refund-return-policy': typeof RefundReturnPolicyRoute
@@ -108,6 +116,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/blogs': typeof BlogsRouteWithChildren
+  '/checkout': typeof CheckoutRoute
   '/collections': typeof CollectionsRouteWithChildren
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/refund-return-policy': typeof RefundReturnPolicyRoute
@@ -123,6 +132,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/blogs'
+    | '/checkout'
     | '/collections'
     | '/privacy-policy'
     | '/refund-return-policy'
@@ -136,6 +146,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/blogs'
+    | '/checkout'
     | '/collections'
     | '/privacy-policy'
     | '/refund-return-policy'
@@ -149,6 +160,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/blogs'
+    | '/checkout'
     | '/collections'
     | '/privacy-policy'
     | '/refund-return-policy'
@@ -163,6 +175,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   BlogsRoute: typeof BlogsRouteWithChildren
+  CheckoutRoute: typeof CheckoutRoute
   CollectionsRoute: typeof CollectionsRouteWithChildren
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   RefundReturnPolicyRoute: typeof RefundReturnPolicyRoute
@@ -192,6 +205,13 @@ declare module '@tanstack/react-router' {
       path: '/blogs'
       fullPath: '/blogs'
       preLoaderRoute: typeof BlogsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout': {
+      id: '/checkout'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof CheckoutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/collections': {
@@ -279,6 +299,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   BlogsRoute: BlogsRouteWithChildren,
+  CheckoutRoute: CheckoutRoute,
   CollectionsRoute: CollectionsRouteWithChildren,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   RefundReturnPolicyRoute: RefundReturnPolicyRoute,

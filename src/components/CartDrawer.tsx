@@ -337,10 +337,9 @@ export function CartDrawer() {
               </div>
 
               {/* SELECT ADDRESS / CHECKOUT BUTTON WITH PAYMENT LOGOS */}
-              <a
-                href={whatsappOrderUrl(lines, productFor)}
-                target="_blank"
-                rel="noreferrer"
+              <Link
+                to="/checkout"
+                onClick={() => setCartOpen(false)}
                 className="flex w-full items-center justify-between rounded-xl bg-black py-3.5 px-4 text-xs font-bold tracking-wider text-white shadow-xl hover:bg-zinc-900 transition-all active:scale-98"
               >
                 <span className="uppercase tracking-widest text-[0.8rem]">SELECT ADDRESS</span>
@@ -361,7 +360,7 @@ export function CartDrawer() {
                     <span>Pay</span>
                   </span>
                 </div>
-              </a>
+              </Link>
 
               <p className="mt-2 text-center text-[0.68rem] text-muted-foreground">
                 Flat ₹500 Cashback on all Prepaid Orders • Cash on Delivery Available

@@ -18,6 +18,7 @@ describe("App routing", () => {
     const coreRoutes = [
       "/",
       "/collections",
+      "/checkout",
       "/about",
       "/blogs",
       "/refund-return-policy",
