@@ -197,10 +197,6 @@ export function Header() {
             Vastu Blogs
           </Link>
 
-          <Link to="/refund-return-policy" className="text-[0.92rem] font-medium tracking-wide text-foreground/90 transition-colors hover:text-gold-deep">
-            Refund Policy
-          </Link>
-
           <a
             href={STORE.whatsapp}
             target="_blank"
