@@ -417,6 +417,43 @@ function Index() {
         </div>
       </section>
 
+      {/* Complete Collection (All 21 Products with Filter Tabs) */}
+      <section id="collection" className="bg-secondary/40 py-20 border-y border-border">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <SectionHeading
+            eyebrow="The Full Sacred Shelf"
+            title="Our Complete Collection (21 Remedies)"
+            subtitle="Every genuine crystal tree, pyramid, bracelet, mala and tortoise available from Vastu Adda."
+          />
+
+          {/* Category Filter Pills on Home */}
+          <div className="mt-8 flex flex-wrap justify-center gap-2">
+            {["All", "Crystal Trees", "Crystal Pyramids", "Crystal Bracelets", "Malas", "Vastu Products"].map(
+              (cat) => (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => setSelectedHomeCat(cat)}
+                  className={`rounded-full px-5 py-2 text-xs font-semibold tracking-wide transition-all ${
+                    selectedHomeCat === cat
+                      ? "bg-forest text-primary-foreground shadow"
+                      : "bg-secondary text-foreground/80 hover:bg-card hover:border hover:border-gold/50"
+                  }`}
+                >
+                  {cat}
+                </button>
+              ),
+            )}
+          </div>
+
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {homeFilteredProducts.map((p) => (
+              <ProductCard key={p.slug} product={p} />
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* SECTION 3: Sacred Power Combos (Synergy Duos) */}
       <section className="bg-secondary/60 py-20 border-y border-border">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -705,43 +742,6 @@ function Index() {
             >
               Read All Vastu Insights <span aria-hidden="true">→</span>
             </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Complete Collection (All 21 Products with Filter Tabs) */}
-      <section id="collection" className="bg-secondary/40 py-20 border-y border-border">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <SectionHeading
-            eyebrow="The Full Sacred Shelf"
-            title="Our Complete Collection (21 Remedies)"
-            subtitle="Every genuine crystal tree, pyramid, bracelet, mala and tortoise available from Vastu Adda."
-          />
-
-          {/* Category Filter Pills on Home */}
-          <div className="mt-8 flex flex-wrap justify-center gap-2">
-            {["All", "Crystal Trees", "Crystal Pyramids", "Crystal Bracelets", "Malas", "Vastu Products"].map(
-              (cat) => (
-                <button
-                  key={cat}
-                  type="button"
-                  onClick={() => setSelectedHomeCat(cat)}
-                  className={`rounded-full px-5 py-2 text-xs font-semibold tracking-wide transition-all ${
-                    selectedHomeCat === cat
-                      ? "bg-forest text-primary-foreground shadow"
-                      : "bg-secondary text-foreground/80 hover:bg-card hover:border hover:border-gold/50"
-                  }`}
-                >
-                  {cat}
-                </button>
-              ),
-            )}
-          </div>
-
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {homeFilteredProducts.map((p) => (
-              <ProductCard key={p.slug} product={p} />
-            ))}
           </div>
         </div>
       </section>
