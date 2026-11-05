@@ -372,6 +372,33 @@ function Index() {
     <div>
       <HeroSlider />
 
+      {/* Customer favourites (Bestsellers) */}
+      <section className="py-20 bg-background">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <SectionHeading
+            eyebrow="Top Rated Essentials"
+            title="Customer Favourites &amp; Bestsellers"
+            subtitle="Our most-loved Vastu and crystal remedies, chosen again and again by thousands of households across India."
+          />
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {favouriteSlugs.map((slug) => {
+              const p = products.find((x) => x.slug === slug);
+              return p ? <ProductCard key={p.slug} product={p} /> : null;
+            })}
+          </div>
+          <div className="mt-12 text-center">
+            <Link
+              to="/collections"
+              className="inline-flex items-center gap-2 rounded-full border border-forest/40 bg-card px-8 py-3.5 text-xs font-semibold tracking-wider text-forest uppercase shadow-sm transition-all hover:bg-forest hover:text-primary-foreground"
+            >
+              <span>View All 21 Products in Catalog</span>
+              <span aria-hidden="true">→</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+
       {/* Categories Showcase */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
         <SectionHeading
@@ -528,32 +555,6 @@ function Index() {
                 </div>
               );
             })}
-          </div>
-        </div>
-      </section>
-
-      {/* Customer favourites (Bestsellers) */}
-      <section className="py-20 bg-background">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <SectionHeading
-            eyebrow="Top Rated Essentials"
-            title="Customer Favourites &amp; Bestsellers"
-            subtitle="Our most-loved Vastu and crystal remedies, chosen again and again by thousands of households across India."
-          />
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {favouriteSlugs.map((slug) => {
-              const p = products.find((x) => x.slug === slug);
-              return p ? <ProductCard key={p.slug} product={p} /> : null;
-            })}
-          </div>
-          <div className="mt-12 text-center">
-            <Link
-              to="/collections"
-              className="inline-flex items-center gap-2 rounded-full border border-forest/40 bg-card px-8 py-3.5 text-xs font-semibold tracking-wider text-forest uppercase shadow-sm transition-all hover:bg-forest hover:text-primary-foreground"
-            >
-              <span>View All 21 Products in Catalog</span>
-              <span aria-hidden="true">→</span>
-            </Link>
           </div>
         </div>
       </section>
