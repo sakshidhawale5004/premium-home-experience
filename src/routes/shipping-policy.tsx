@@ -36,9 +36,8 @@ function ShippingPolicyPage() {
       <section className="mx-auto max-w-4xl px-4 py-12 sm:px-6 text-sm leading-relaxed text-foreground/85">
         <div className="rounded-2xl border border-gold/40 bg-card p-6 md:p-8 shadow-sm space-y-8">
           <div>
-            <h2 className="font-display text-2xl font-bold text-forest flex items-center gap-2">
-              <span>🚚</span>
-              <span>100% Free Express Shipping Across India</span>
+            <h2 className="font-display text-2xl font-bold text-forest">
+              100% Free Express Shipping Across India
             </h2>
             <p className="mt-3 text-muted-foreground">
               We provide <strong>FREE express delivery on all orders</strong> across all serviceable

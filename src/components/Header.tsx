@@ -3,14 +3,6 @@ import { Link } from "@tanstack/react-router";
 import { categoryLinks, STORE } from "@/data/products";
 import { useShop } from "@/lib/shop";
 
-const categoryIcons: Record<string, string> = {
-  "Crystal Trees": "🌳",
-  "Crystal Pyramids": "🔺",
-  "Crystal Bracelets": "📿",
-  Malas: "🕉️",
-  "Vastu Products": "🐢",
-};
-
 export function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -34,12 +26,11 @@ export function Header() {
       <div className="bg-forest px-4 py-2 text-primary-foreground border-b border-gold/20 shadow-sm overflow-hidden">
         <div className="mx-auto flex max-w-7xl items-center justify-between text-[0.7rem] sm:text-[0.72rem] tracking-[0.14em] uppercase gap-4">
           <p className="hidden xl:flex items-center gap-1.5 opacity-90 whitespace-nowrap">
-            <span>🕉️</span>
             <span>100% Certified Gemstones · Vedic Energized</span>
           </p>
 
           <p className="mx-auto xl:mx-0 text-center font-medium text-gold-soft whitespace-nowrap truncate max-w-full">
-            ✨ Special Offer: Free Raw Selenite Plate with Every Order &nbsp;|&nbsp; Free Pan-India Delivery
+            Special Offer: Free Raw Selenite Plate with Every Order &nbsp;|&nbsp; Free Pan-India Delivery
           </p>
 
           <a
@@ -48,7 +39,7 @@ export function Header() {
             rel="noreferrer"
             className="hidden md:flex items-center gap-1.5 text-gold hover:text-primary-foreground transition-colors whitespace-nowrap shrink-0"
           >
-            <span>💬 Free Astrologer Help: {STORE.phone}</span>
+            <span>Free Astrologer Help: {STORE.phone}</span>
           </a>
         </div>
       </div>
@@ -182,9 +173,8 @@ export function Header() {
                     key={c.category}
                     to="/collections/$slug"
                     params={{ slug: c.slug }}
-                    className="flex items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-sm font-medium text-foreground/85 transition-colors hover:bg-secondary hover:text-forest"
+                    className="flex items-center rounded-xl px-3.5 py-2.5 text-sm font-medium text-foreground/85 transition-colors hover:bg-secondary hover:text-forest"
                   >
-                    <span>{categoryIcons[c.category] ?? "✨"}</span>
                     <span>{c.category}</span>
                   </Link>
                 ))}
@@ -214,7 +204,6 @@ export function Header() {
             className="text-[0.92rem] font-medium tracking-wide text-gold-deep transition-colors hover:text-forest flex items-center gap-1"
           >
             <span>Free Consultation</span>
-            <span className="inline-block animate-bounce">💬</span>
           </a>
         </nav>
       </div>
@@ -263,9 +252,8 @@ export function Header() {
                   to="/collections/$slug"
                   params={{ slug: c.slug }}
                   onClick={() => setOpen(false)}
-                  className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-foreground/80 hover:bg-secondary hover:text-forest"
+                  className="flex items-center rounded-xl px-3 py-2 text-sm text-foreground/80 hover:bg-secondary hover:text-forest"
                 >
-                  <span>{categoryIcons[c.category] ?? "✨"}</span>
                   <span>{c.category}</span>
                 </Link>
               ))}

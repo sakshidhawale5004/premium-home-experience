@@ -169,8 +169,7 @@ function CollectionsPage() {
           <p>
             Showing <strong>{filteredProducts.length}</strong> of <strong>{products.length}</strong> products
           </p>
-          <p className="flex items-center gap-1.5 text-forest font-medium">
-            <span>✨</span>
+          <p className="text-forest font-medium">
             <span>Free Express Delivery &amp; Free Selenite Plate on All Orders</span>
           </p>
         </div>

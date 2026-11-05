@@ -104,9 +104,8 @@ export function CartDrawer() {
               height={48}
             />
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1.5">
-                <span>🎉</span>
-                <span>Added to cart!</span>
+              <p className="text-xs font-bold text-amber-600 dark:text-amber-400">
+                Added to cart!
               </p>
               <p className="text-xs font-semibold text-foreground truncate mt-0.5">
                 {lastAddedProduct.name}
@@ -125,8 +124,7 @@ export function CartDrawer() {
 
         {/* Free Shipping & Gift Progress Bar */}
         <div className="bg-secondary/70 px-5 py-2.5 border-b border-border text-xs relative z-10">
-          <p className="font-medium text-forest flex items-center gap-1.5">
-            <span>✨</span>
+          <p className="font-medium text-forest">
             <span>You've unlocked <strong>FREE Pan-India Delivery</strong> + <strong>Free Selenite Plate</strong>!</span>
           </p>
           <div className="mt-1.5 h-1.5 w-full rounded-full bg-border overflow-hidden">
@@ -200,8 +198,7 @@ export function CartDrawer() {
                           </div>
                           
                           {lineDiscount && (
-                            <span className="inline-flex items-center gap-1 mt-1 rounded-md bg-emerald-50 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300 text-[0.65rem] font-bold px-2 py-0.5 border border-emerald-200">
-                              <span>🏷️</span>
+                            <span className="inline-block mt-1 rounded-md bg-emerald-50 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300 text-[0.65rem] font-bold px-2 py-0.5 border border-emerald-200">
                               <span>{lineDiscount}% OFF</span>
                             </span>
                           )}
@@ -319,8 +316,7 @@ export function CartDrawer() {
           <div className="border-t border-border bg-card shadow-2xl relative z-20">
             {/* Green Saved So Far Banner */}
             {totalSavings > 0 && (
-              <div className="bg-emerald-700 text-white text-center py-2 px-4 text-xs font-bold tracking-wide flex items-center justify-center gap-1.5 shadow-inner">
-                <span>🎉</span>
+              <div className="bg-emerald-700 text-white text-center py-2 px-4 text-xs font-bold tracking-wide shadow-inner">
                 <span>{inr(totalSavings)} Saved so far!</span>
               </div>
             )}

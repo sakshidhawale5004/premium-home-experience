@@ -41,7 +41,7 @@ export function ProductCard({ product }: { product: Product }) {
 
         {/* Free gift indicator */}
         <span className="absolute bottom-2.5 left-2.5 right-2.5 rounded-lg bg-card/90 backdrop-blur-md px-2.5 py-1 text-[0.65rem] font-medium text-forest text-center border border-gold/30 shadow-sm truncate">
-          🎁 Incl. Free Selenite Plate
+          Incl. Free Selenite Plate
         </span>
       </Link>
 

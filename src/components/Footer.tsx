@@ -1,14 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { categoryLinks, STORE } from "@/data/products";
 
-const categoryIcons: Record<string, string> = {
-  "Crystal Trees": "🌳",
-  "Crystal Pyramids": "🔺",
-  "Crystal Bracelets": "📿",
-  Malas: "🕉️",
-  "Vastu Products": "🐢",
-};
-
 export function Footer() {
   return (
     <footer className="bg-forest text-primary-foreground border-t border-gold/30">
@@ -31,18 +23,15 @@ export function Footer() {
               boundless prosperity to modern homes.
             </p>
             <div className="mt-6 flex flex-col gap-2.5 text-xs text-gold-soft">
-              <p className="flex items-center gap-2">
-                <span>📍</span>
+              <p>
                 <span>{STORE.address}</span>
               </p>
-              <p className="flex items-center gap-2">
-                <span>📞</span>
+              <p>
                 <a href={`tel:${STORE.phone.replace(/\s/g, "")}`} className="hover:text-gold transition-colors">
                   {STORE.phone}
                 </a>
               </p>
-              <p className="flex items-center gap-2">
-                <span>✉️</span>
+              <p>
                 <a href={`mailto:${STORE.email}`} className="hover:text-gold transition-colors">
                   {STORE.email}
                 </a>
@@ -99,10 +88,9 @@ export function Footer() {
                   <Link
                     to="/collections/$slug"
                     params={{ slug: c.slug }}
-                    className="flex items-center gap-2 transition-colors hover:text-gold"
+                    className="transition-colors hover:text-gold"
                   >
-                    <span className="text-xs">{categoryIcons[c.category] ?? "•"}</span>
-                    <span>{c.category}</span>
+                    {c.category}
                   </Link>
                 </li>
               ))}
@@ -114,27 +102,23 @@ export function Footer() {
             <p className="eyebrow text-gold">Customer Protection</p>
             <ul className="mt-5 space-y-3 text-sm text-primary-foreground/85">
               <li>
-                <Link to="/refund-return-policy" className="inline-flex items-center gap-1.5 transition-colors hover:text-gold">
-                  <span>🔄</span>
-                  <span>7 Days Return &amp; Refund Policy</span>
+                <Link to="/refund-return-policy" className="transition-colors hover:text-gold">
+                  7 Days Return &amp; Refund Policy
                 </Link>
               </li>
               <li>
-                <Link to="/shipping-policy" className="inline-flex items-center gap-1.5 transition-colors hover:text-gold">
-                  <span>🚚</span>
-                  <span>Shipping &amp; Delivery Policy</span>
+                <Link to="/shipping-policy" className="transition-colors hover:text-gold">
+                  Shipping &amp; Delivery Policy
                 </Link>
               </li>
               <li>
-                <Link to="/privacy-policy" className="inline-flex items-center gap-1.5 transition-colors hover:text-gold">
-                  <span>🔒</span>
-                  <span>Privacy &amp; Data Policy</span>
+                <Link to="/privacy-policy" className="transition-colors hover:text-gold">
+                  Privacy &amp; Data Policy
                 </Link>
               </li>
               <li>
-                <Link to="/terms-and-conditions" className="inline-flex items-center gap-1.5 transition-colors hover:text-gold">
-                  <span>📜</span>
-                  <span>Terms &amp; Conditions</span>
+                <Link to="/terms-and-conditions" className="transition-colors hover:text-gold">
+                  Terms &amp; Conditions
                 </Link>
               </li>
             </ul>
@@ -152,7 +136,11 @@ export function Footer() {
 
         {/* Bottom copyright & payment methods */}
         <div className="mt-14 border-t border-gold/20 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-primary-foreground/70">
-          <p>© {new Date().getFullYear()} Vastu Adda. All Rights Reserved. Crafted for Spiritual Homes.</p>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3 text-center sm:text-left">
+            <p>© {new Date().getFullYear()} Vastu Adda. All Rights Reserved.</p>
+            <span className="hidden sm:inline text-gold/40">|</span>
+            <p className="text-gold-soft font-medium">Design by Digital Coyotes</p>
+          </div>
           <div className="flex flex-wrap items-center gap-2.5">
             <span className="rounded-lg bg-background/20 px-2.5 py-1 text-[0.7rem] font-medium border border-gold/20">
               UPI Accepted

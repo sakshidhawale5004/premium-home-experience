@@ -227,26 +227,18 @@ const trustItems = [
   {
     title: "100% Certified Crystals",
     text: "Genuine lab-tested earth crystals and Himalayan rudraksha",
-    icon: (
-      <path d="M12 3 4 6v6c0 5 3.4 8 8 9 4.6-1 8-4 8-9V6l-8-3Zm-2.5 9 2 2 4-4" />
-    ),
   },
   {
     title: "Vedic Astrologer Energized",
     text: "Pre-consecrated with sacred mantras before dispatch",
-    icon: <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm0 4v6l4 2" />,
   },
   {
     title: "Free Selenite Plate with Every Order",
     text: "Self-cleansing raw plate included with your purchase",
-    icon: <path d="M20 7h-4V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v3H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2ZM10 4h4v3h-4V4Z" />,
   },
   {
     title: "Pan India Free Shipping & COD",
     text: "Fast doorstep delivery with Cash on Delivery across all pincodes",
-    icon: (
-      <path d="M3 6h11v10H3Zm11 3h4l3 3v4h-7ZM7.5 19a1.5 1.5 0 1 0 0-.01M17.5 19a1.5 1.5 0 1 0 0-.01" />
-    ),
   },
 ];
 
@@ -382,18 +374,11 @@ function Index() {
 
       {/* Trust strip */}
       <section className="border-b border-border bg-card">
-        <div className="mx-auto grid max-w-7xl gap-6 px-4 py-10 sm:grid-cols-2 lg:grid-cols-4 sm:px-6">
+        <div className="mx-auto grid max-w-7xl gap-6 px-4 py-8 sm:grid-cols-2 lg:grid-cols-4 sm:px-6">
           {trustItems.map((t) => (
-            <div key={t.title} className="flex items-start gap-4">
-              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-secondary text-forest shadow-sm">
-                <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
-                  {t.icon}
-                </svg>
-              </span>
-              <div>
-                <p className="font-display text-lg font-semibold text-forest">{t.title}</p>
-                <p className="mt-0.5 text-xs text-muted-foreground leading-relaxed">{t.text}</p>
-              </div>
+            <div key={t.title} className="sm:border-l sm:border-border sm:pl-6 first:border-0 first:pl-0">
+              <p className="font-display text-base sm:text-lg font-semibold text-forest tracking-tight">{t.title}</p>
+              <p className="mt-1 text-xs text-muted-foreground leading-relaxed">{t.text}</p>
             </div>
           ))}
         </div>
@@ -1077,7 +1062,7 @@ function Index() {
             ) : (
               <div className="mt-8 rounded-2xl border border-emerald-500/40 bg-emerald-50/60 dark:bg-emerald-950/30 p-6 max-w-md mx-auto">
                 <p className="font-display text-lg font-bold text-emerald-800 dark:text-emerald-200">
-                  Welcome to the Sanctum! ✨
+                  Welcome to the Sanctum!
                 </p>
                 <p className="text-xs text-emerald-700 dark:text-emerald-300 mt-1">
                   Here is your ₹100 welcome privilege code for your first consecrated remedy:

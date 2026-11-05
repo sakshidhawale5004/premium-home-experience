@@ -141,8 +141,7 @@ function ProductDetailPage() {
 
                 {/* Free Gift Badge Overlay */}
                 <div className="absolute bottom-4 left-4 right-4 rounded-xl border border-gold/40 bg-card/95 backdrop-blur-md p-2.5 text-center shadow-md">
-                  <p className="text-xs font-semibold text-forest flex items-center justify-center gap-1.5">
-                    <span>✨</span>
+                  <p className="text-xs font-semibold text-forest text-center">
                     <span>Includes <strong>Free Raw Selenite Cleansing Plate</strong> &amp; Certificate</span>
                   </p>
                 </div>
@@ -178,20 +177,20 @@ function ProductDetailPage() {
               {/* Guarantees Box */}
               <div className="mt-6 rounded-2xl border border-border bg-secondary/40 p-4">
                 <div className="grid grid-cols-2 gap-3 text-xs">
-                  <div className="flex items-center gap-2 text-foreground/85">
-                    <span className="text-forest text-base">🛡️</span>
+                  <div className="flex items-center gap-1.5 text-foreground/85">
+                    <span className="text-forest font-bold">✓</span>
                     <span>100% Authentic Certified</span>
                   </div>
-                  <div className="flex items-center gap-2 text-foreground/85">
-                    <span className="text-forest text-base">🕉️</span>
+                  <div className="flex items-center gap-1.5 text-foreground/85">
+                    <span className="text-forest font-bold">✓</span>
                     <span>Vedic Astrologer Energized</span>
                   </div>
-                  <div className="flex items-center gap-2 text-foreground/85">
-                    <span className="text-forest text-base">🚚</span>
+                  <div className="flex items-center gap-1.5 text-foreground/85">
+                    <span className="text-forest font-bold">✓</span>
                     <span>Free Pan-India Delivery</span>
                   </div>
-                  <div className="flex items-center gap-2 text-foreground/85">
-                    <span className="text-forest text-base">🔄</span>
+                  <div className="flex items-center gap-1.5 text-foreground/85">
+                    <span className="text-forest font-bold">✓</span>
                     <span>7 Days Easy Replacement</span>
                   </div>
                 </div>
@@ -231,7 +230,6 @@ function ProductDetailPage() {
 
             {/* Urgency Alert Bar */}
             <div className="mt-4 flex items-center gap-2 rounded-xl border border-amber-200 bg-amber-50/80 px-3.5 py-2 text-xs text-amber-900">
-              <span className="animate-pulse">🔥</span>
               <span>
                 <strong>High Demand:</strong> Only <strong>{product.stockLeft} units left</strong> in stock at this festive promotional rate!
               </span>
@@ -260,8 +258,7 @@ function ProductDetailPage() {
 
               {/* Special Gift Highlight */}
               <div className="mt-4 rounded-xl border border-gold/40 bg-gold/10 p-3 text-xs leading-relaxed text-forest">
-                <p className="font-semibold text-gold-deep flex items-center gap-1.5">
-                  <span>🎁</span>
+                <p className="font-semibold text-gold-deep">
                   <span>Special Combo Gift with Every Order:</span>
                 </p>
                 <p className="mt-1 font-medium">
@@ -345,7 +342,7 @@ function ProductDetailPage() {
                   onClick={handleBuyNow}
                   className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 py-3.5 text-xs font-bold tracking-widest text-white uppercase shadow-md transition-all hover:brightness-110 active:scale-98"
                 >
-                  <span>⚡ BUY NOW - CASH ON DELIVERY (COD) AVAILABLE</span>
+                  <span>BUY NOW - CASH ON DELIVERY (COD) AVAILABLE</span>
                 </button>
 
                 {/* 1-Click WhatsApp Order */}

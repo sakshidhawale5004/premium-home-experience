@@ -35,28 +35,24 @@ const directions = [
     element: "Water & Mercury",
     remedy: "Golden Pyrite & Wealth Trees",
     desc: "Governed by Lord Kuber, the divine treasurer. Placing authentic Pyrite or Citrine here unblocks stagnant business cash flow and magnetizes fresh professional opportunities.",
-    icon: "🌊",
   },
   {
     direction: "North-East (Ishanya)",
     element: "Ether & Jupiter",
     remedy: "5-Mukhi Rudraksha & Sphatik Quartz",
     desc: "The sacred corner of pure spiritual consciousness and Lord Shiva. Ideal for Himalayan Rudraksha malas and clear quartz to dissipate chronic stress and anxiety.",
-    icon: "🕊️",
   },
   {
     direction: "South-East (Agneya)",
     element: "Fire & Venus",
     remedy: "Dhanlabh & Money Magnet Pyramids",
     desc: "The realm of Goddess Lakshmi and creative fire. Orgonite pyramids placed here amplify abundance intentions and safeguard against sudden household financial leakages.",
-    icon: "🔥",
   },
   {
     direction: "South-West (Nairutya)",
     element: "Earth & Rahu",
     remedy: "Karungali Ebony & Pyrite Tortoise",
     desc: "The heavy grounding anchor of the home. Solid Pyrite Tortoises and Karungali ebony beads stationed here prevent career demotion, legal friction, and domestic instability.",
-    icon: "⛰️",
   },
 ];
 
@@ -141,7 +137,6 @@ function AboutPage() {
         </div>
         <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6">
           <div className="inline-flex items-center gap-2 rounded-full border border-gold/50 bg-card/10 backdrop-blur-md px-4 py-1.5 text-xs font-semibold tracking-widest text-gold uppercase mb-6">
-            <span>🕉️</span>
             <span>Ancient Vedic Sourcing Heritage</span>
           </div>
 
@@ -272,8 +267,7 @@ function AboutPage() {
                 key={d.direction}
                 className="card-lift flex flex-col rounded-3xl border border-border bg-card p-6 shadow-sm hover:border-gold/50 transition-all"
               >
-                <span className="text-3xl">{d.icon}</span>
-                <p className="mt-4 font-display text-xl font-bold text-forest">{d.direction}</p>
+                <p className="font-display text-xl font-bold text-forest">{d.direction}</p>
                 <p className="text-xs font-semibold text-gold-deep uppercase tracking-wider mt-0.5">
                   {d.element}
                 </p>
