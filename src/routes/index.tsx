@@ -339,6 +339,13 @@ function Index() {
   const [newsletterSubscribed, setNewsletterSubscribed] = useState<boolean>(false);
   const [couponCopied, setCouponCopied] = useState<boolean>(false);
 
+  // FAQ accordion state
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+
+  const toggleFaq = (index: number) => {
+    setOpenFaqIndex((prev) => (prev === index ? null : index));
+  };
+
   const homeFilteredProducts =
     selectedHomeCat === "All"
       ? products
@@ -955,13 +962,53 @@ function Index() {
             title="Frequently Asked Questions"
             subtitle="Everything you need to know about our remedies, consecration, and delivery."
           />
-          <div className="mt-10 space-y-4">
-            {faqs.map((f, i) => (
-              <div key={i} className="rounded-2xl border border-border bg-card p-5 shadow-sm">
-                <p className="font-display text-lg font-semibold text-forest">{f.q}</p>
-                <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{f.a}</p>
-              </div>
-            ))}
+          <div className="mt-10 space-y-3">
+            {faqs.map((f, i) => {
+              const isOpen = openFaqIndex === i;
+              return (
+                <div
+                  key={i}
+                  className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all hover:border-gold/50"
+                >
+                  <button
+                    type="button"
+                    onClick={() => toggleFaq(i)}
+                    className="flex w-full items-center justify-between p-5 text-left transition-colors hover:bg-secondary/30"
+                    aria-expanded={isOpen}
+                  >
+                    <span className="font-display text-base sm:text-lg font-semibold text-forest pr-4">
+                      {f.q}
+                    </span>
+                    <span
+                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-all duration-300 ${
+                        isOpen
+                          ? "rotate-180 bg-forest text-primary-foreground"
+                          : "bg-secondary text-forest"
+                      }`}
+                    >
+                      <svg
+                        viewBox="0 0 24 24"
+                        className="h-4 w-4"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden="true"
+                      >
+                        <path d="m6 9 6 6 6-6" />
+                      </svg>
+                    </span>
+                  </button>
+
+                  {isOpen && (
+                    <div className="border-t border-border/60 bg-secondary/15 px-5 py-4 text-xs sm:text-sm leading-relaxed text-muted-foreground animate-in fade-in duration-200">
+                      <p>{f.a}</p>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
