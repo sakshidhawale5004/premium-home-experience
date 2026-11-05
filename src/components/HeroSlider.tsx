@@ -69,10 +69,10 @@ export function HeroSlider() {
 
   return (
     <section
-      className="relative min-h-[580px] w-full overflow-hidden bg-forest sm:min-h-[640px] md:min-h-[680px]"
+      className="relative min-h-[580px] w-full overflow-hidden bg-black sm:min-h-[640px] md:min-h-[680px]"
       aria-label="Featured collections slider"
     >
-      {/* Background Images */}
+      {/* Background Images with Black Gradient Lighting */}
       {slides.map((s, i) => (
         <div
           key={s.title}
@@ -89,41 +89,55 @@ export function HeroSlider() {
             height={1080}
             className="h-full w-full object-cover object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-forest/95 via-forest/80 to-transparent sm:via-forest/70" />
-          <div className="absolute inset-0 bg-gradient-to-t from-forest/80 via-transparent to-transparent" />
+          {/* Obsidian Black Gradients for Maximum Text Contrast */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/85 to-black/30 sm:via-black/80" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-transparent to-black/50" />
         </div>
       ))}
 
-      {/* Slide Content */}
+      {/* Slide Content with High-Visibility Typography */}
       <div className="relative z-10 mx-auto flex min-h-[580px] max-w-7xl items-center px-4 py-16 sm:min-h-[640px] sm:px-6 md:min-h-[680px]">
         <div className="max-w-2xl">
-          <p className="eyebrow text-gold transition-all duration-500">
-            {slide.eyebrow}
-          </p>
-          <h1 className="mt-3 font-display text-4xl font-semibold leading-tight text-primary-foreground sm:text-5xl md:text-6xl whitespace-pre-line drop-shadow-sm">
+          {/* Eyebrow in glowing gold */}
+          <div className="inline-flex items-center gap-2 rounded-full border border-gold/40 bg-black/60 px-4 py-1 backdrop-blur-md">
+            <span className="text-gold text-xs">✦</span>
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-gold">
+              {slide.eyebrow}
+            </p>
+          </div>
+
+          {/* Crisp, ultra-visible white headline with subtle drop-shadow */}
+          <h1 className="mt-4 font-display text-4xl font-bold leading-[1.12] text-white sm:text-5xl md:text-6xl whitespace-pre-line drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
             {slide.title}
           </h1>
-          <p className="mt-4 max-w-lg text-base leading-relaxed text-muted-foreground sm:text-lg">
+
+          {/* Subtitle in bright, clear off-white for effortless legibility */}
+          <p className="mt-4 max-w-xl text-base leading-relaxed text-zinc-100 sm:text-lg font-normal drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
             {slide.subtitle}
           </p>
 
+          {/* High-Contrast Action Buttons */}
           <div className="mt-8 flex flex-wrap items-center gap-4">
             <Link
               to="/collections/$slug"
               params={{ slug: slide.slug }}
-              className="inline-flex items-center gap-2 rounded-full bg-forest px-8 py-3.5 text-xs font-semibold tracking-wider text-primary-foreground transition-all hover:bg-forest/90 hover:scale-[1.02] shadow-lg"
+              className="inline-flex items-center gap-2 rounded-full bg-gold px-8 py-3.5 text-xs font-bold tracking-wider text-black uppercase transition-all hover:bg-gold-deep hover:text-white hover:scale-[1.02] shadow-[0_4px_20px_rgba(212,175,55,0.4)] active:scale-98"
             >
               <span>{slide.cta}</span>
-              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <path d="M5 12h14M12 5l7 7-7 7" />
               </svg>
             </Link>
+
             <a
               href={STORE.whatsapp}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border border-forest/30 bg-card/60 backdrop-blur-sm px-6 py-3.5 text-xs font-semibold tracking-wider text-forest transition-colors hover:border-gold hover:text-gold-deep"
+              className="inline-flex items-center gap-2 rounded-full border border-white/50 bg-black/40 backdrop-blur-md px-7 py-3.5 text-xs font-semibold tracking-wider text-white uppercase transition-all hover:bg-white hover:text-black hover:border-white shadow-lg"
             >
+              <svg viewBox="0 0 24 24" className="h-4 w-4 fill-emerald-400" aria-hidden="true">
+                <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.5 14.1c-.2.7-1.3 1.3-1.9 1.3-.5 0-1.1.1-3.4-.9-2.9-1.2-4.7-4.1-4.9-4.3-.1-.2-1.1-1.6-1.1-3s.7-2.1 1-2.4c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .7.5s.9 2.1 1 2.2c0 .1.1.3 0 .5-.4.8-.9.9-.6 1.4.5.9 1.2 1.7 2 2.3.9.7 1.3.8 1.6.6.2-.1.7-.9 1-1.2.2-.3.4-.2.7-.1l2 1c.3.1.5.2.6.4 0 .1 0 .8-.1 1.1Z" />
+              </svg>
               <span>Vedic Consultation</span>
             </a>
           </div>
@@ -140,8 +154,10 @@ export function HeroSlider() {
                 type="button"
                 onClick={() => setIndex(i)}
                 aria-label={`Go to slide ${i + 1}: ${s.title}`}
-                className={`h-2 rounded-full transition-all ${
-                  i === index ? "w-8 bg-gold" : "w-2 bg-primary-foreground/40 hover:bg-primary-foreground/70"
+                className={`h-2.5 rounded-full transition-all ${
+                  i === index
+                    ? "w-8 bg-gold shadow-md"
+                    : "w-2.5 bg-white/40 hover:bg-white/80"
                 }`}
               />
             ))}
@@ -152,9 +168,9 @@ export function HeroSlider() {
               type="button"
               onClick={() => setIndex((i) => (i - 1 + slides.length) % slides.length)}
               aria-label="Previous slide"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-primary-foreground/20 bg-forest/40 text-primary-foreground backdrop-blur-sm transition-colors hover:bg-forest hover:text-gold"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-black/60 text-white backdrop-blur-md transition-all hover:bg-gold hover:text-black hover:border-gold shadow-md"
             >
-              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <path d="M15 19l-7-7 7-7" />
               </svg>
             </button>
@@ -162,9 +178,9 @@ export function HeroSlider() {
               type="button"
               onClick={() => setIndex((i) => (i + 1) % slides.length)}
               aria-label="Next slide"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-primary-foreground/20 bg-forest/40 text-primary-foreground backdrop-blur-sm transition-colors hover:bg-forest hover:text-gold"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-black/60 text-white backdrop-blur-md transition-all hover:bg-gold hover:text-black hover:border-gold shadow-md"
             >
-              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <path d="M9 5l7 7-7 7" />
               </svg>
             </button>

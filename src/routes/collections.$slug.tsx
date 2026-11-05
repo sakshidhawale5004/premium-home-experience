@@ -76,27 +76,28 @@ function CollectionCategoryPage() {
       </div>
 
       {/* Category Hero */}
-      <section className="relative overflow-hidden bg-forest py-16 text-primary-foreground md:py-20">
-        <div className="absolute inset-0 opacity-20">
+      <section className="relative overflow-hidden bg-black py-16 text-white md:py-20">
+        <div className="absolute inset-0 opacity-25">
           <img src={col.image} alt={col.category} className="h-full w-full object-cover blur-sm" />
         </div>
-        <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6">
-          <p className="eyebrow text-gold">Sacred Category</p>
-          <h1 className="mt-3 font-display text-4xl font-bold sm:text-5xl md:text-6xl text-primary-foreground">
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-black/60" />
+        <div className="relative z-10 mx-auto max-w-4xl px-4 text-center sm:px-6">
+          <p className="eyebrow text-gold font-bold">Sacred Category</p>
+          <h1 className="mt-3 font-display text-4xl font-bold sm:text-5xl md:text-6xl text-white drop-shadow-md">
             {col.category}
           </h1>
           <div className="gold-line mx-auto mt-4 w-32" />
-          <p className="mt-4 text-base leading-relaxed text-primary-foreground/90 sm:text-lg max-w-2xl mx-auto">
+          <p className="mt-4 text-base leading-relaxed text-zinc-100 sm:text-lg max-w-2xl mx-auto drop-shadow">
             {col.blurb}
           </p>
-          <div className="mt-6 flex flex-wrap justify-center gap-3 text-xs font-semibold uppercase tracking-wider text-gold-soft">
-            <span className="rounded-full bg-primary-foreground/10 px-3.5 py-1.5 backdrop-blur-sm">
+          <div className="mt-6 flex flex-wrap justify-center gap-3 text-xs font-semibold uppercase tracking-wider text-gold">
+            <span className="rounded-full bg-white/10 px-3.5 py-1.5 backdrop-blur-sm border border-gold/30">
               ✓ 100% Certified Natural
             </span>
-            <span className="rounded-full bg-primary-foreground/10 px-3.5 py-1.5 backdrop-blur-sm">
+            <span className="rounded-full bg-white/10 px-3.5 py-1.5 backdrop-blur-sm border border-gold/30">
               ✓ Pre-Energized by Vedic Astrologer
             </span>
-            <span className="rounded-full bg-primary-foreground/10 px-3.5 py-1.5 backdrop-blur-sm">
+            <span className="rounded-full bg-white/10 px-3.5 py-1.5 backdrop-blur-sm border border-gold/30">
               ✓ Free Selenite Cleansing Plate
             </span>
           </div>
