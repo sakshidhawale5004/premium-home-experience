@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 64" fill="none">
+  <defs>
+    <linearGradient id="gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EED279" />
+      <stop offset="50%" stop-color="#C59B27" />
+      <stop offset="100%" stop-color="#8F6A10" />
+    </linearGradient>
+    <linearGradient id="gold-bright" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#DFB743" />
+      <stop offset="100%" stop-color="#FFF2BE" />
+    </linearGradient>
+  </defs>
+
+  <!-- Sacred Lotus & Crystal Emblem -->
+  <g transform="translate(6, 6)">
+    <!-- Outer Sacred Ring -->
+    <circle cx="26" cy="26" r="24" stroke="url(#gold-grad)" stroke-width="1.2" opacity="0.85" stroke-dasharray="2 2" />
+    <circle cx="26" cy="26" r="21" stroke="url(#gold-grad)" stroke-width="0.8" opacity="0.6" />
+    
+    <!-- Central Crystal / Diamond -->
+    <polygon points="26,8 38,26 26,44 14,26" fill="url(#gold-grad)" opacity="0.25" />
+    
+    <!-- Sacred Lotus Petals -->
+    <path d="M26 12 C28 20 37 22 37 28 C37 34 31 38 26 40 C21 38 15 34 15 28 C15 22 24 20 26 12 Z" fill="url(#gold-grad)" opacity="0.45" />
+    
+    <!-- Inner Radiant Sri Yantra Elements -->
+    <polygon points="26,16 35,32 17,32" stroke="url(#gold-bright)" stroke-width="1.2" fill="none" />
+    <polygon points="26,36 17,20 35,20" stroke="url(#gold-bright)" stroke-width="1.2" fill="none" />
+    
+    <!-- Central Bindu / Jewel -->
+    <circle cx="26" cy="26" r="3" fill="url(#gold-bright)" />
+    <circle cx="26" cy="26" r="1.2" fill="#0F281E" />
+    
+    <!-- 4 Cardinal Star Points -->
+    <line x1="26" y1="2" x2="26" y2="7" stroke="url(#gold-grad)" stroke-width="1.5" stroke-linecap="round" />
+    <line x1="26" y1="45" x2="26" y2="50" stroke="url(#gold-grad)" stroke-width="1.5" stroke-linecap="round" />
+    <line x1="2" y1="26" x2="7" y2="26" stroke="url(#gold-grad)" stroke-width="1.5" stroke-linecap="round" />
+    <line x1="45" y1="26" x2="50" y2="26" stroke="url(#gold-grad)" stroke-width="1.5" stroke-linecap="round" />
+  </g>
+
+  <!-- Typography: Brand Name -->
+  <text x="68" y="32" font-family="'Cormorant Garamond', 'Cinzel', Georgia, serif" font-size="24" font-weight="700" letter-spacing="0.14em" fill="url(#gold-grad)">
+    VASTU ADDA
+  </text>
+  
+  <!-- Sub-tagline -->
+  <text x="69" y="46" font-family="'Jost', system-ui, sans-serif" font-size="7.5" font-weight="500" letter-spacing="0.32em" fill="#C59B27" opacity="0.9">
+    AUTHENTIC CRYSTALS &amp; VASTU REMEDIES
+  </text>
+  
+  <line x1="69" y1="52" x2="275" y2="52" stroke="url(#gold-grad)" stroke-width="0.75" opacity="0.4" />
+</svg>

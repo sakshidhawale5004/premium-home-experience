@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="fav-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F281E" />
+      <stop offset="100%" stop-color="#071711" />
+    </linearGradient>
+    <linearGradient id="fav-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF2BE" />
+      <stop offset="40%" stop-color="#DFB743" />
+      <stop offset="100%" stop-color="#9C7513" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="64" height="64" rx="14" fill="url(#fav-bg)" stroke="#DFB743" stroke-width="1.5" />
+  
+  <g transform="translate(6, 6)">
+    <!-- Outer Sacred Ring -->
+    <circle cx="26" cy="26" r="23" stroke="url(#fav-gold)" stroke-width="1" opacity="0.7" stroke-dasharray="2 2" />
+    <circle cx="26" cy="26" r="20" stroke="url(#fav-gold)" stroke-width="0.8" opacity="0.5" />
+    
+    <!-- Central Crystal / Diamond -->
+    <polygon points="26,6 40,26 26,46 12,26" fill="url(#fav-gold)" opacity="0.3" />
+    
+    <!-- Sacred Lotus Petals -->
+    <path d="M26 10 C29 19 39 21 39 28 C39 35 32 40 26 42 C20 40 13 35 13 28 C13 21 23 19 26 10 Z" fill="url(#fav-gold)" opacity="0.65" />
+    
+    <!-- Yantra Triangles -->
+    <polygon points="26,14 37,33 15,33" stroke="url(#fav-gold)" stroke-width="1.5" fill="none" />
+    <polygon points="26,38 15,19 37,19" stroke="url(#fav-gold)" stroke-width="1.5" fill="none" />
+    
+    <!-- Center Jewel -->
+    <circle cx="26" cy="26" r="3.5" fill="#FFF2BE" />
+    <circle cx="26" cy="26" r="1.5" fill="#0F281E" />
+  </g>
+</svg>

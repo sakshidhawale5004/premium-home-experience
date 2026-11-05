@@ -8,12 +8,14 @@ import {
   Scripts,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { ShopProvider } from "@/lib/shop";
+import { CartDrawer } from "@/components/CartDrawer";
+import { SearchOverlay } from "@/components/SearchOverlay";
 
 function NotFoundComponent() {
   return (
@@ -27,7 +29,7 @@ function NotFoundComponent() {
         <div className="mt-6">
           <Link
             to="/"
-            className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-forest/90"
+            className="inline-flex items-center justify-center rounded-full bg-forest px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-forest/90"
           >
             Go home
           </Link>
@@ -40,9 +42,6 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: ErrorComponentProps) {
   console.error(error);
   const router = useRouter();
-  useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
 
   return (
     <div className="flex min-h-[60vh] items-center justify-center px-4">
@@ -59,7 +58,7 @@ function ErrorComponent({ error, reset }: ErrorComponentProps) {
               router.invalidate();
               reset();
             }}
-            className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-forest/90"
+            className="inline-flex items-center justify-center rounded-full bg-forest px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-forest/90"
           >
             Try again
           </button>
@@ -80,9 +79,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Vastu Adda" },
-      { name: "description", content: "Authentic Vastu products, crystals and remedies." },
+      { title: "Vastu Adda | Premium Vastu Products, Crystals & Spiritual Remedies" },
+      {
+        name: "description",
+        content:
+          "Buy authentic certified crystal trees, pyramids, energized rudraksh malas, and natural gemstone bracelets with free gifts and Pan-India delivery.",
+      },
       { property: "og:type", content: "website" },
+      { property: "og:title", content: "Vastu Adda | Premium Vastu Products & Crystals" },
+      {
+        property: "og:description",
+        content: "Authentic, Vedic astrologer-energized crystal trees, pyramids, malas and bracelets.",
+      },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
@@ -96,7 +104,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
     ],
   }),
   shellComponent: RootShell,
@@ -124,14 +132,17 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="flex min-h-screen flex-col">
-        <Header />
-        <main className="flex-1">
-          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-          <Outlet />
-        </main>
-        <Footer />
-      </div>
+      <ShopProvider>
+        <div className="flex min-h-screen flex-col bg-background text-foreground">
+          <Header />
+          <main className="flex-1">
+            <Outlet />
+          </main>
+          <Footer />
+          <CartDrawer />
+          <SearchOverlay />
+        </div>
+      </ShopProvider>
     </QueryClientProvider>
   );
 }
