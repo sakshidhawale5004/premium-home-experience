@@ -372,18 +372,6 @@ function Index() {
     <div>
       <HeroSlider />
 
-      {/* Trust strip */}
-      <section className="border-b border-border bg-card">
-        <div className="mx-auto grid max-w-7xl gap-6 px-4 py-8 sm:grid-cols-2 lg:grid-cols-4 sm:px-6">
-          {trustItems.map((t) => (
-            <div key={t.title} className="sm:border-l sm:border-border sm:pl-6 first:border-0 first:pl-0">
-              <p className="font-display text-base sm:text-lg font-semibold text-forest tracking-tight">{t.title}</p>
-              <p className="mt-1 text-xs text-muted-foreground leading-relaxed">{t.text}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* Categories Showcase */}
       <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
         <SectionHeading
@@ -678,64 +666,45 @@ function Index() {
         </div>
       </section>
 
-      {/* NEW SECTION C: Sacred Consecration Journey: The 4-Step Vedic Prana Pratishtha */}
-      <section className="bg-forest py-20 text-primary-foreground border-y border-gold/30">
+      {/* Blog Preview */}
+      <section className="bg-background py-20 border-t border-border">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <div className="mx-auto max-w-2xl text-center">
-            <p className="eyebrow text-gold tracking-widest">AUTHENTIC VEDIC TRADITION</p>
-            <h2 className="mt-3 font-display text-4xl sm:text-5xl font-semibold text-primary-foreground">
-              The 4-Step Consecration Journey
-            </h2>
-            <div className="gold-line mx-auto mt-4 w-28" />
-            <p className="mt-4 text-sm text-primary-foreground/80 leading-relaxed">
-              Why our crystals radiate palpable positive frequencies: each remedy undergoes four sacred stages of energetic purification prior to dispatch.
-            </p>
-          </div>
-
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              {
-                step: "01",
-                title: "Mineral Purity & Density Audit",
-                desc: "Every raw crystal chunk, pyrite nugget, and rudraksha bead is verified 100% natural and untreated by gemological standards.",
-              },
-              {
-                step: "02",
-                title: "Sacred Ganga Jal & Vedic Shuddhi",
-                desc: "Immersed in holy Ganga water and sacred herbs to disperse static environmental transit charges and reset vibrational purity.",
-              },
-              {
-                step: "03",
-                title: "Prana Pratishtha & Planetary Mantras",
-                desc: "Chanted during auspicious Brahmamuhurta by resident Vedic pandits using targeted planetary Beej Mantras to awaken living resonance.",
-              },
-              {
-                step: "04",
-                title: "Selenite Bedding & Wax-Sealed Packing",
-                desc: "Enclosed atop a raw Selenite plate with signed Consecration Certificate in a tamper-evident box ready to bless your sanctuary.",
-              },
-            ].map((s) => (
-              <div
-                key={s.step}
-                className="rounded-3xl border border-gold/30 bg-primary-foreground/5 p-6 backdrop-blur-sm relative flex flex-col justify-between"
+          <SectionHeading
+            eyebrow="Vastu Insights"
+            title="From Our Spiritual Journal"
+            subtitle="Practical crystal placement, directional alignments and Vedic wisdom written for everyday homes."
+          />
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            {blogPosts.slice(0, 3).map((post) => (
+              <Link
+                key={post.slug}
+                to="/blogs/$slug"
+                params={{ slug: post.slug }}
+                className="card-lift group flex flex-col rounded-2xl border border-border bg-card p-6 shadow-sm hover:border-gold/50"
               >
-                <div>
-                  <span className="font-display text-4xl font-extrabold text-gold/40">
-                    {s.step}
+                <p className="eyebrow text-gold-deep">{post.category}</p>
+                <h3 className="mt-3 flex-1 font-display text-2xl font-semibold leading-snug text-forest group-hover:text-gold-deep transition-colors">
+                  {post.title}
+                </h3>
+                <p className="mt-3 line-clamp-3 text-xs leading-relaxed text-muted-foreground">
+                  {post.excerpt}
+                </p>
+                <p className="mt-5 flex items-center justify-between text-xs text-muted-foreground border-t border-border/60 pt-3">
+                  <span>{post.date}</span>
+                  <span className="font-semibold text-gold-deep transition-transform group-hover:translate-x-1">
+                    Read Article →
                   </span>
-                  <h3 className="mt-3 font-display text-xl font-bold text-gold">
-                    {s.title}
-                  </h3>
-                  <p className="mt-2 text-xs text-primary-foreground/75 leading-relaxed">
-                    {s.desc}
-                  </p>
-                </div>
-                <div className="mt-6 pt-4 border-t border-gold/20 flex items-center justify-between text-[0.7rem] uppercase tracking-wider text-gold-soft font-semibold">
-                  <span>Stage {s.step}</span>
-                  <span>Vedic Verified ✓</span>
-                </div>
-              </div>
+                </p>
+              </Link>
             ))}
+          </div>
+          <div className="mt-10 text-center">
+            <Link
+              to="/blogs"
+              className="inline-flex items-center gap-2 rounded-full border border-forest/30 bg-card px-8 py-3 text-xs font-semibold tracking-wider text-forest uppercase transition-colors hover:border-gold hover:text-gold-deep shadow-sm"
+            >
+              Read All Vastu Insights <span aria-hidden="true">→</span>
+            </Link>
           </div>
         </div>
       </section>
@@ -897,6 +866,18 @@ function Index() {
         </div>
       </section>
 
+      {/* Trust strip */}
+      <section className="border-b border-border bg-card">
+        <div className="mx-auto grid max-w-7xl gap-6 px-4 py-8 sm:grid-cols-2 lg:grid-cols-4 sm:px-6">
+          {trustItems.map((t) => (
+            <div key={t.title} className="sm:border-l sm:border-border sm:pl-6 first:border-0 first:pl-0">
+              <p className="font-display text-base sm:text-lg font-semibold text-forest tracking-tight">{t.title}</p>
+              <p className="mt-1 text-xs text-muted-foreground leading-relaxed">{t.text}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Voices of Serenity - Testimonials */}
       <section className="bg-background py-20 border-t border-border">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -980,49 +961,6 @@ function Index() {
                 <p className="mt-2 text-xs leading-relaxed text-muted-foreground">{f.a}</p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Blog Preview */}
-      <section className="bg-background py-20 border-t border-border">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <SectionHeading
-            eyebrow="Vastu Insights"
-            title="From Our Spiritual Journal"
-            subtitle="Practical crystal placement, directional alignments and Vedic wisdom written for everyday homes."
-          />
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {blogPosts.slice(0, 3).map((post) => (
-              <Link
-                key={post.slug}
-                to="/blogs/$slug"
-                params={{ slug: post.slug }}
-                className="card-lift group flex flex-col rounded-2xl border border-border bg-card p-6 shadow-sm hover:border-gold/50"
-              >
-                <p className="eyebrow text-gold-deep">{post.category}</p>
-                <h3 className="mt-3 flex-1 font-display text-2xl font-semibold leading-snug text-forest group-hover:text-gold-deep transition-colors">
-                  {post.title}
-                </h3>
-                <p className="mt-3 line-clamp-3 text-xs leading-relaxed text-muted-foreground">
-                  {post.excerpt}
-                </p>
-                <p className="mt-5 flex items-center justify-between text-xs text-muted-foreground border-t border-border/60 pt-3">
-                  <span>{post.date}</span>
-                  <span className="font-semibold text-gold-deep transition-transform group-hover:translate-x-1">
-                    Read Article →
-                  </span>
-                </p>
-              </Link>
-            ))}
-          </div>
-          <div className="mt-10 text-center">
-            <Link
-              to="/blogs"
-              className="inline-flex items-center gap-2 rounded-full border border-forest/30 bg-card px-8 py-3 text-xs font-semibold tracking-wider text-forest uppercase transition-colors hover:border-gold hover:text-gold-deep shadow-sm"
-            >
-              Read All Vastu Insights <span aria-hidden="true">→</span>
-            </Link>
           </div>
         </div>
       </section>

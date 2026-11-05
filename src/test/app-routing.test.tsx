@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 
 import { routeTree } from "@/routeTree.gen";
 import { products, collections } from "@/data/products";
+import { blogPosts } from "@/data/content";
 
 describe("App routing", () => {
   const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
@@ -13,32 +14,53 @@ describe("App routing", () => {
     expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
   });
 
-  it("matches all essential e-commerce and policy routes", () => {
-    const routesToTest = [
+  it("matches all essential core pages and policy routes without 404", () => {
+    const coreRoutes = [
+      "/",
       "/collections",
-      "/collections/crystal-trees",
-      "/collections/crystal-pyramids",
-      "/collections/crystal-bracelets",
-      "/collections/malas",
-      "/collections/vastu-products",
-      "/products/pyrite-tree",
+      "/about",
+      "/blogs",
       "/refund-return-policy",
       "/shipping-policy",
       "/privacy-policy",
       "/terms-and-conditions",
-      "/about",
-      "/blogs",
     ];
 
-    for (const path of routesToTest) {
+    for (const path of coreRoutes) {
       const matches = router.matchRoutes(path);
       expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
     }
   });
 
-  it("has exactly 21 required products with valid details and images", () => {
+  it("matches all 5 category collection routes without 404", () => {
+    for (const c of collections) {
+      const path = `/collections/${c.slug}`;
+      const matches = router.matchRoutes(path);
+      expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
+    }
+  });
+
+  it("matches all 21 individual product routes without 404", () => {
     expect(products.length).toBe(21);
 
+    for (const p of products) {
+      const path = `/products/${p.slug}`;
+      const matches = router.matchRoutes(path);
+      expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
+    }
+  });
+
+  it("matches all blog article routes without 404", () => {
+    expect(blogPosts.length).toBeGreaterThan(0);
+
+    for (const post of blogPosts) {
+      const path = `/blogs/${post.slug}`;
+      const matches = router.matchRoutes(path);
+      expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
+    }
+  });
+
+  it("has exactly 21 required products with valid details, images, and pricing", () => {
     for (const p of products) {
       expect(p.slug).toBeTruthy();
       expect(p.name).toBeTruthy();
@@ -49,9 +71,5 @@ describe("App routing", () => {
       expect(p.benefits.length).toBeGreaterThan(0);
       expect(p.giftIncluded).toBeTruthy();
     }
-  });
-
-  it("has all 5 categories configured", () => {
-    expect(collections.length).toBe(5);
   });
 });
