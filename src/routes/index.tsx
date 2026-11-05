@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { HeroSlider } from "@/components/HeroSlider";
 import { ProductCard } from "@/components/ProductCard";
-import { products, collections, categoryLinks, STORE } from "@/data/products";
+import { products, collections, categoryLinks, STORE, type Product } from "@/data/products";
 import { blogPosts, testimonials } from "@/data/content";
+import { useShop, inr } from "@/lib/shop";
 import pyramidImg from "@/assets/hero-pyramid.jpg";
 import braceletsImg from "@/assets/hero-bracelets.jpg";
 import treeImg from "@/assets/hero-tree.jpg";
@@ -16,12 +17,12 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       {
-        title: "Vastu Adda | Premium Authentic Vastu Products & Crystals",
+        title: "Vastu Adda | Premium Authentic Vastu Products, Crystals & Sacred Remedies",
       },
       {
         name: "description",
         content:
-          "Shop authentic Vastu pyramids, crystal trees, gemstone bracelets, and energized rudraksh malas. Certified natural stones, free Selenite cleansing plate, and Pan-India delivery.",
+          "Explore 21 lab-certified crystal trees, pyramids, energized rudraksh malas, and natural gemstone bracelets. Includes Free Raw Selenite Plate, Vedic Astrologer Consecration, and Pan-India Free Delivery.",
       },
       {
         property: "og:title",
@@ -66,6 +67,342 @@ const favouriteSlugs = [
   "7-chakra-tree",
 ];
 
+const intentions = [
+  {
+    id: "wealth",
+    label: "💰 Wealth & Abundance",
+    title: "Invite Uninterrupted Wealth & Business Growth",
+    desc: "Targeted at the North (Kuber) and South-East (Lakshmi) zones to eliminate financial leakages and magnetize lucrative opportunities.",
+    slugs: ["pyrite-tree", "citrine-tree", "money-magnet-pyramid", "dhan-yog-bracelets", "pyrite-tortoise"],
+  },
+  {
+    id: "protection",
+    label: "🛡️ Nazar & Aura Shield",
+    title: "Deflect Envy, Workplace Toxicity & Negative Energy",
+    desc: "Creates a heavy protective electromagnetic boundary around your home entrance, work desk, and personal aura.",
+    slugs: ["evil-eye-tree", "karungali-bracelet", "richi-rich-bracelets", "rudraksh-with-karungali-mala"],
+  },
+  {
+    id: "peace",
+    label: "🧘 Peace, Clarity & Shiva Grace",
+    title: "Calm Chaotic Thoughts, Hypertension & Stress",
+    desc: "Revered Himalayan 5-Mukhi Rudraksha and cooling Sphatik quartz that align high cardiovascular calm with divine focus.",
+    slugs: ["rudraksh-tree", "rudraksh-with-clear-quartz", "sevan-chakra-mala", "gold-plated-rudraksh-braclets"],
+  },
+  {
+    id: "career",
+    label: "⚡ Willpower, Courage & Success",
+    title: "Ignite Laser Focus, Confidence & Professional Wins",
+    desc: "Stimulates the Solar Plexus (Manipura) chakra to vanquish self-doubt and command authority in high-stakes negotiations.",
+    slugs: ["tiger-eye-bracelets", "rudraksh-with-tiger-eye-mala", "7-chakra-tree", "dhan-yog-tree"],
+  },
+];
+
+const powerCombos = [
+  {
+    title: "The Ultimate Wealth Magnet Duo",
+    badge: "Most Popular Combo",
+    desc: "Golden Pyrite Bonsai Tree paired with Money Magnet Orgonite Pyramid for complete home and office abundance currents.",
+    item1Slug: "pyrite-tree",
+    item2Slug: "money-magnet-pyramid",
+    comboPrice: 1399,
+    mrp: 2998,
+    savings: 1599,
+  },
+  {
+    title: "The Shiva-Murugan Double Shield",
+    badge: "Supreme Protection",
+    desc: "South Indian Karungali Ebony Bracelet combined with Sacred 5-Mukhi Himalayan Rudraksha Tree for impenetrable peace.",
+    item1Slug: "karungali-bracelet",
+    item2Slug: "rudraksh-tree",
+    comboPrice: 1199,
+    mrp: 2498,
+    savings: 1299,
+  },
+  {
+    title: "The Merchant's Daily Prosperity Set",
+    badge: "Business Essential",
+    desc: "Sun-kissed Citrine Abundance Tree for billing counters paired with a Golden Pyrite Key Chain for vehicle and locker keys.",
+    item1Slug: "citrine-tree",
+    item2Slug: "pyrite-key-chain",
+    comboPrice: 1099,
+    mrp: 2398,
+    savings: 1299,
+  },
+];
+
+const roomPlacements = [
+  {
+    room: "Main Entrance (Simha Dvara)",
+    remedy: "Evil Eye Bonsai Tree & Nazar Charm",
+    zone: "Entryway Foyer",
+    action: "Blocks entry of envious gazes (Buri Nazar) and filters incoming erratic environmental vibrations before they cross your threshold.",
+    icon: "🚪",
+  },
+  {
+    room: "Living Room (North / Kuber Corner)",
+    remedy: "Golden Pyrite Tree & Pyrite Tortoise",
+    zone: "North / North-East",
+    action: "Anchors continuous cash flow and domestic prosperity. Place with the tortoise facing inward so wealth is drawn into the residence.",
+    icon: "🧭",
+  },
+  {
+    room: "Home Mandir / Pooja Sanctuary",
+    remedy: "5-Mukhi Rudraksha Tree & Sphatik Mala",
+    zone: "North-East (Ishanya)",
+    action: "Channels sacred Shiva-Shakti balance, heightens prayer focus, and bathes the entire residence in sacred tranquil frequencies.",
+    icon: "🕉️",
+  },
+  {
+    room: "Work Desk & Cash Counter",
+    remedy: "Money Magnet Pyramid & Citrine Tree",
+    zone: "South-East / Billing Counter",
+    action: "Neutralizes electromagnetic stress (EMF) from laptops and Wi-Fi while inspiring lucrative negotiations and decisive clarity.",
+    icon: "💼",
+  },
+  {
+    room: "Bedroom & Rest Area",
+    remedy: "7 Chakra Gemstone Alignment Tree",
+    zone: "South-West / Bedside Table",
+    action: "Harmonizes bodily chakras, dispels night restlessness and anxiety, and fosters deeply rejuvenating REM sleep.",
+    icon: "🛏️",
+  },
+];
+
+const zodiacSigns = [
+  {
+    sign: "Aries (Mesha)",
+    sanskrit: "मेष",
+    symbol: "♈",
+    planet: "Mars (Mangal)",
+    element: "Fire",
+    recommendation: "Karungali Ebony Bracelet",
+    slug: "karungali-bracelet",
+    reason: "Mars governs fiery leadership and physical vitality. Karungali wood cools excess aggression while anchoring mental fortitude and spiritual protection.",
+  },
+  {
+    sign: "Taurus (Vrishabha)",
+    sanskrit: "वृषभ",
+    symbol: "♉",
+    planet: "Venus (Shukra)",
+    element: "Earth",
+    recommendation: "Natural Citrine Abundance Tree",
+    slug: "citrine-tree",
+    reason: "Governed by Shukra, Taureans thrive in sensory luxury and financial stability. Citrine radiates the radiant solar energy that amplifies lasting wealth.",
+  },
+  {
+    sign: "Gemini (Mithuna)",
+    sanskrit: "मिथुन",
+    symbol: "♊",
+    planet: "Mercury (Budh)",
+    element: "Air",
+    recommendation: "Dhan Yog Tree & Rudraksha",
+    slug: "dhan-yog-tree",
+    reason: "Budh rules quick intellect and commerce. The Dhan Yog Tree channels erratic mental energy into concentrated wealth-building deals and business breakthroughs.",
+  },
+  {
+    sign: "Cancer (Karka)",
+    sanskrit: "कर्क",
+    symbol: "♋",
+    planet: "Moon (Chandra)",
+    element: "Water",
+    recommendation: "Rudraksh with Clear Quartz Mala",
+    slug: "rudraksh-with-clear-quartz",
+    reason: "Sensitive lunar currents require emotional stability and psychic shields. Pure Sphatik (Clear Quartz) cools anxiety and harmonizes domestic relationships.",
+  },
+  {
+    sign: "Leo (Simha)",
+    sanskrit: "सिंह",
+    symbol: "♌",
+    planet: "Sun (Surya)",
+    element: "Fire",
+    recommendation: "Golden Pyrite Wealth Tree",
+    slug: "pyrite-tree",
+    reason: "Leo is the royal solar sign. Golden Pyrite acts as a direct conduit for Surya-Tej, projecting unmistakable charisma, commanding presence, and prosperity.",
+  },
+  {
+    sign: "Virgo (Kanya)",
+    sanskrit: "कन्या",
+    symbol: "♍",
+    planet: "Mercury (Budh)",
+    element: "Earth",
+    recommendation: "Dhanlabh Orgonite Pyramid",
+    slug: "dhanlabh-pyramid",
+    reason: "Virgos are analytical and meticulous. The sacred geometry of Dhanlabh Pyramid filters out environmental noise and anchors productive enterprise.",
+  },
+  {
+    sign: "Libra (Tula)",
+    sanskrit: "तुला",
+    symbol: "♎",
+    planet: "Venus (Shukra)",
+    element: "Air",
+    recommendation: "7 Chakra Alignment Tree",
+    slug: "7-chakra-tree",
+    reason: "The seeker of cosmic equilibrium. The 7 Chakra Tree balances all energy vortexes to ensure harmonious partnerships and aesthetic peace in the home.",
+  },
+  {
+    sign: "Scorpio (Vrishchika)",
+    sanskrit: "वृश्चिक",
+    symbol: "♏",
+    planet: "Mars (Mangal / Ketu)",
+    element: "Water",
+    recommendation: "Karungali Rudraksh Combo Bracelet",
+    slug: "karungali-rudraksh-combo-bracelets",
+    reason: "Scorpios possess intense transformative power. Karungali wood neutralizes negative projections (Nazar) while 5-Mukhi Rudraksha anchors spiritual peace.",
+  },
+  {
+    sign: "Sagittarius (Dhanu)",
+    sanskrit: "धनु",
+    symbol: "♐",
+    planet: "Jupiter (Brihaspati)",
+    element: "Fire",
+    recommendation: "Natural Citrine Abundance Tree",
+    slug: "citrine-tree",
+    reason: "Ruled by the guru of wisdom and boundless expansion. Golden Citrine reflects Jupiterian prosperity, higher learning, and benevolent fortune.",
+  },
+  {
+    sign: "Capricorn (Makara)",
+    sanskrit: "मकर",
+    symbol: "♑",
+    planet: "Saturn (Shani)",
+    element: "Earth",
+    recommendation: "Rudraksh with Karungali Mala",
+    slug: "rudraksh-with-karungali-mala",
+    reason: "Saturn demands discipline, patience, and karmic integrity. Karungali and Himalayan Rudraksha offer Shani-Shanti, removing career delays and hurdles.",
+  },
+  {
+    sign: "Aquarius (Kumbha)",
+    sanskrit: "कुम्भ",
+    symbol: "♒",
+    planet: "Saturn (Shani / Rahu)",
+    element: "Air",
+    recommendation: "Money Magnet Orgonite Pyramid",
+    slug: "money-magnet-pyramid",
+    reason: "Visionary and unconventional, Aquarians excel when electromagnetic disturbances are grounded. The Money Magnet Pyramid anchors visionary concepts into wealth.",
+  },
+  {
+    sign: "Pisces (Meena)",
+    sanskrit: "मीन",
+    symbol: "♓",
+    planet: "Jupiter (Brihaspati)",
+    element: "Water",
+    recommendation: "Pyrite Tortoise for North Corner",
+    slug: "pyrite-tortoise",
+    reason: "Pisces is intuitive and receptive. The sacred Kurma (Tortoise) carved in golden pyrite anchors water-element blessings, steady longevity, and peaceful prosperity.",
+  },
+];
+
+const quizCombinations: Record<string, { slug: string; explanation: string }> = {
+  "wealth-desk": {
+    slug: "pyrite-tree",
+    explanation:
+      "Golden Pyrite on your work desk stimulates the solar plexus chakra and attracts continuous financial deals, career promotions, and wealth opportunities.",
+  },
+  "wealth-home": {
+    slug: "money-magnet-pyramid",
+    explanation:
+      "The sacred orgonite matrix of the Money Magnet Pyramid placed in your living room or North zone filters stagnant energy and anchors unbroken domestic abundance.",
+  },
+  "wealth-temple": {
+    slug: "citrine-tree",
+    explanation:
+      "Natural Citrine in your prayer sanctuary invokes the merchant's golden blessings (Brihaspati energy), radiating joy and positive prosperity throughout the home.",
+  },
+  "wealth-wrist": {
+    slug: "dhan-yog-bracelets",
+    explanation:
+      "Wearing the Dhan Yog multi-stone bracelet keeps wealth-amplifying crystal frequencies in continuous physical contact with your radial pulse points.",
+  },
+  "protection-desk": {
+    slug: "evil-eye-tree",
+    explanation:
+      "Placing the Evil Eye tree on your office desk deflects jealous coworker glances (Buri Nazar) and neutralizes workplace rivalry.",
+  },
+  "protection-home": {
+    slug: "evil-eye-tree",
+    explanation:
+      "Positioned facing the main entrance, this tree acts as an energetic sentry, dissolving negative atmospheric vibrations before they enter your home.",
+  },
+  "protection-temple": {
+    slug: "rudraksh-tree",
+    explanation:
+      "The 5-Mukhi Himalayan Rudraksha Tree in your sacred space establishes a field of divine Shiva protection and unwavering peace.",
+  },
+  "protection-wrist": {
+    slug: "karungali-bracelet",
+    explanation:
+      "Authentic South Indian Karungali (Black Ebony Wood) absorbs negative planetary waves (Mars/Saturn) and provides an impenetrable personal aura shield.",
+  },
+  "peace-desk": {
+    slug: "7-chakra-tree",
+    explanation:
+      "Balances bodily energy centres, prevents mental fatigue during high-stress hours, and promotes crystal-clear analytical decision making.",
+  },
+  "peace-home": {
+    slug: "7-chakra-tree",
+    explanation:
+      "Harmonizes family dynamics and cleanses geopathic electromagnetic stress generated by Wi-Fi and smart appliances.",
+  },
+  "peace-temple": {
+    slug: "rudraksh-with-clear-quartz",
+    explanation:
+      "The union of cooling Sphatik (Clear Quartz) and sacred Himalayan Rudraksha brings meditative stillness and deep focus during daily prayers.",
+  },
+  "peace-wrist": {
+    slug: "gold-plated-rudraksh-braclets",
+    explanation:
+      "Lightweight, skin-friendly consecrated Rudraksha beads against your wrist naturally regulate cardiovascular rhythm and soothe nervous tension.",
+  },
+  "career-desk": {
+    slug: "tiger-eye-bracelets",
+    explanation:
+      "Tiger Eye ignites supreme willpower, courage, and discernment during difficult negotiations and career pivots.",
+  },
+  "career-home": {
+    slug: "dhan-yog-tree",
+    explanation:
+      "Placed in the North or East quadrant, this tree stimulates upward career momentum, government recognition, and timely promotions.",
+  },
+  "career-temple": {
+    slug: "rudraksh-with-tiger-eye-mala",
+    explanation:
+      "Combines divine protection with fierce Solar warrior focus, shielding your professional reputation and driving victory in competitive ventures.",
+  },
+  "career-wrist": {
+    slug: "richi-rich-bracelets",
+    explanation:
+      "A high-frequency stack of abundance gemstones that charges your everyday charisma and attracts influential mentors.",
+  },
+};
+
+const comparisonData = [
+  {
+    feature: "Mineral & Gemstone Authenticity",
+    vastuAdda: "100% Genuine, untreated, earth-mined crystals verified for mineral density and natural veining.",
+    massMarket: "Tinted synthetic glass, colored plastic resin, and heat-treated dyed stones.",
+  },
+  {
+    feature: "Vedic Consecration (Prana Pratishtha)",
+    vastuAdda: "Individually purified with sacred Ganga Jal & chanted with planetary mantras before packing.",
+    massMarket: "Stored in generic commercial warehouses with zero energetic preparation.",
+  },
+  {
+    feature: "Complimentary Selenite Cleansing Plate",
+    vastuAdda: "Included FREE with every order to ensure continuous overnight vibrational reset.",
+    massMarket: "Not included; customers must purchase cleansing equipment separately at high cost.",
+  },
+  {
+    feature: "Personal Astrologer Guidance",
+    vastuAdda: "Direct WhatsApp support to verify home floor plans and Rashi (zodiac) compatibility.",
+    massMarket: "Impersonal automated chatbots with zero knowledge of classical Vastu Shastra.",
+  },
+  {
+    feature: "Delivery & Return Guarantee",
+    vastuAdda: "100% Free Pan-India Delivery, Cash on Delivery, and 7-Day Hassle-Free Replacement.",
+    massMarket: "Hidden shipping fees, prepaid requirements, and complicated return hurdles.",
+  },
+];
+
 const trustItems = [
   {
     title: "100% Certified Crystals",
@@ -93,6 +430,45 @@ const trustItems = [
   },
 ];
 
+const customerSpaces = [
+  {
+    title: "Executive Corner at DLF CyberCity",
+    city: "Gurugram, Haryana",
+    remedyName: "Golden Pyrite Bonsai Tree",
+    slug: "pyrite-tree",
+    quote:
+      "Our closing rate on major enterprise deals visibly accelerated after placing this in the North corner of our conference room. Colleagues constantly compliment its rich golden sparkle.",
+    owner: "Siddharth M., Managing Director",
+  },
+  {
+    title: "Penthouse Living Room at Prestige Golfshire",
+    city: "Bengaluru, Karnataka",
+    remedyName: "Money Magnet Orgonite Pyramid",
+    slug: "money-magnet-pyramid",
+    quote:
+      "The atmosphere feels tangibly lighter and calmer. It effortlessly anchors our modern interior while keeping high vibrations alive. Zero doubts on authenticity.",
+    owner: "Dr. Rohini & Sameer V.",
+  },
+  {
+    title: "Pooja Sanctuary & Japa Nook",
+    city: "Vile Parle, Mumbai",
+    remedyName: "Rudraksh with Clear Quartz Mala",
+    slug: "rudraksh-with-clear-quartz",
+    quote:
+      "The combination of natural Sphatik quartz and 5-Mukhi Himalayan Rudraksha has transformed my morning meditation. The beads feel heavy, authentic, and cooling.",
+    owner: "Kavita R., Architect & Yoga Teacher",
+  },
+  {
+    title: "Daily Wristwear at Financial District",
+    city: "Hyderabad, Telangana",
+    remedyName: "Karungali Ebony Bracelet",
+    slug: "karungali-bracelet",
+    quote:
+      "Worn every day with my watch. The black ebony wood has a natural dense weight that grounds my energy during high-stress board meetings. The Selenite plate cleanses it overnight.",
+    owner: "Abhishek N., Venture Capitalist",
+  },
+];
+
 const faqs = [
   {
     q: "Why do you include a Free Raw Selenite Plate with crystal orders?",
@@ -109,6 +485,10 @@ const faqs = [
   {
     q: "What is your return and exchange policy?",
     a: "We provide a 100% hassle-free 7-Day Replacement & Return Guarantee. If any item arrives damaged in transit or you have any concerns, message our WhatsApp helpline (+91 90212 65071) for an immediate replacement or refund.",
+  },
+  {
+    q: "How do I know which direction to place my crystal tree or pyramid?",
+    a: "As a general guideline: Golden Pyrite and wealth trees go in the North (Kuber) or South-East (Lakshmi) zones; Evil Eye trees belong near your main entrance; and Rudraksha showpieces belong in your Pooja room or North-East (Ishanya). You can also WhatsApp us a simple photo of your room for tailored placement advice.",
   },
 ];
 
@@ -136,12 +516,67 @@ function SectionHeading({
 }
 
 function Index() {
+  const { add, setCartOpen } = useShop();
   const [selectedHomeCat, setSelectedHomeCat] = useState<string>("All");
+  const [activeIntentionId, setActiveIntentionId] = useState<string>("wealth");
+
+  // Quiz state
+  const [quizGoal, setQuizGoal] = useState<string>("wealth");
+  const [quizSpace, setQuizSpace] = useState<string>("desk");
+
+  // Rashi state
+  const [activeRashiIndex, setActiveRashiIndex] = useState<number>(0);
+
+  // VIP Newsletter state
+  const [emailInput, setEmailInput] = useState<string>("");
+  const [newsletterSubscribed, setNewsletterSubscribed] = useState<boolean>(false);
+  const [couponCopied, setCouponCopied] = useState<boolean>(false);
 
   const homeFilteredProducts =
     selectedHomeCat === "All"
       ? products
       : products.filter((p) => p.category === selectedHomeCat);
+
+  const activeIntention = intentions.find((i) => i.id === activeIntentionId) ?? intentions[0];
+  const intentionProducts = useMemo(() => {
+    return activeIntention.slugs
+      .map((slug) => products.find((p) => p.slug === slug))
+      .filter((p): p is Product => !!p);
+  }, [activeIntention]);
+
+  const handleAddCombo = (slug1: string, slug2: string) => {
+    add(slug1, 1);
+    add(slug2, 1);
+    setCartOpen(true);
+  };
+
+  // Quiz lookup
+  const quizKey = `${quizGoal}-${quizSpace}`;
+  const quizResultData = quizCombinations[quizKey] ?? {
+    slug: "pyrite-tree",
+    explanation:
+      "Golden Pyrite is the universal abundance catalyst, aligning space frequencies with uninterrupted financial inflow.",
+  };
+  const quizRecommendedProduct =
+    products.find((p) => p.slug === quizResultData.slug) ?? products[0];
+
+  // Active Rashi lookup
+  const activeRashi = zodiacSigns[activeRashiIndex];
+  const rashiRecommendedProduct =
+    products.find((p) => p.slug === activeRashi.slug) ?? products[0];
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (emailInput.trim()) {
+      setNewsletterSubscribed(true);
+    }
+  };
+
+  const handleCopyCoupon = () => {
+    navigator.clipboard.writeText("VASTU100");
+    setCouponCopied(true);
+    setTimeout(() => setCouponCopied(false), 2500);
+  };
 
   return (
     <div>
@@ -163,6 +598,275 @@ function Index() {
               </div>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* SECTION 1: Shop by Sacred Intention (Curated Purpose Explorer) */}
+      <section className="bg-background py-20 border-b border-border">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <SectionHeading
+            eyebrow="Targeted Spiritual Alignment"
+            title="Shop by Sacred Intention"
+            subtitle="Select the life energy you wish to awaken in your home or workplace — our remedies are tuned to specific Vedic outcomes."
+          />
+
+          {/* Intention Pills */}
+          <div className="mt-10 flex flex-wrap justify-center gap-3">
+            {intentions.map((intent) => (
+              <button
+                key={intent.id}
+                type="button"
+                onClick={() => setActiveIntentionId(intent.id)}
+                className={`rounded-full px-5 py-2.5 text-xs font-bold tracking-wide transition-all shadow-sm ${
+                  activeIntentionId === intent.id
+                    ? "bg-forest text-primary-foreground shadow-md scale-105"
+                    : "bg-secondary text-foreground/80 hover:bg-card hover:border hover:border-gold/50"
+                }`}
+              >
+                {intent.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Active Intention Spotlight Banner */}
+          <div className="mt-8 rounded-3xl border border-gold/40 bg-secondary/40 p-6 md:p-8 text-center max-w-3xl mx-auto shadow-sm">
+            <h3 className="font-display text-2xl sm:text-3xl font-bold text-forest">
+              {activeIntention.title}
+            </h3>
+            <p className="mt-2 text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-xl mx-auto">
+              {activeIntention.desc}
+            </p>
+          </div>
+
+          {/* Intention Products Grid */}
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {intentionProducts.slice(0, 4).map((p) => (
+              <ProductCard key={p.slug} product={p} />
+            ))}
+          </div>
+
+          <div className="mt-10 text-center">
+            <Link
+              to="/collections"
+              className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gold-deep hover:text-forest transition-colors"
+            >
+              <span>Explore Full {activeIntention.label.split(" ")[1]} Collection</span>
+              <span>→</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* NEW SECTION A: Interactive 30-Second Vastu Remedy Finder (Quiz Widget) */}
+      <section className="bg-secondary/40 py-20 border-b border-border">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6">
+          <SectionHeading
+            eyebrow="Interactive Recommendation"
+            title="30-Second Remedy Finder"
+            subtitle="Tell us your primary aspiration and where you want to place the remedy — our Vedic algorithm will calculate the ideal crystal match."
+          />
+
+          <div className="mt-12 rounded-3xl border border-gold/40 bg-card p-6 md:p-10 shadow-xl">
+            <div className="grid gap-8 lg:grid-cols-12 items-center">
+              {/* Selector Controls */}
+              <div className="lg:col-span-7 space-y-6">
+                {/* Step 1: Intention */}
+                <div>
+                  <label className="text-xs font-bold uppercase tracking-widest text-gold-deep block mb-3">
+                    Step 1: What is your primary focus?
+                  </label>
+                  <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                    {[
+                      { id: "wealth", label: "💰 Wealth & Cashflow" },
+                      { id: "protection", label: "🛡️ Nazar & Protection" },
+                      { id: "peace", label: "🧘 Mind Calm & Health" },
+                      { id: "career", label: "⚡ Career & Leadership" },
+                    ].map((g) => (
+                      <button
+                        key={g.id}
+                        type="button"
+                        onClick={() => setQuizGoal(g.id)}
+                        className={`rounded-2xl border p-3.5 text-left text-xs font-semibold transition-all ${
+                          quizGoal === g.id
+                            ? "border-forest bg-forest text-primary-foreground shadow-sm"
+                            : "border-border bg-secondary/50 text-foreground/80 hover:bg-secondary"
+                        }`}
+                      >
+                        {g.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Step 2: Placement Space */}
+                <div>
+                  <label className="text-xs font-bold uppercase tracking-widest text-gold-deep block mb-3">
+                    Step 2: Where will this remedy be placed?
+                  </label>
+                  <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                    {[
+                      { id: "desk", label: "💼 Work / Executive Desk" },
+                      { id: "home", label: "🏡 Living Room / Entrance" },
+                      { id: "temple", label: "🕉️ Pooja Mandir / Bedside" },
+                      { id: "wrist", label: "📿 Personal Wristwear" },
+                    ].map((s) => (
+                      <button
+                        key={s.id}
+                        type="button"
+                        onClick={() => setQuizSpace(s.id)}
+                        className={`rounded-2xl border p-3.5 text-left text-xs font-semibold transition-all ${
+                          quizSpace === s.id
+                            ? "border-forest bg-forest text-primary-foreground shadow-sm"
+                            : "border-border bg-secondary/50 text-foreground/80 hover:bg-secondary"
+                        }`}
+                      >
+                        {s.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Dynamic Recommendation Card */}
+              <div className="lg:col-span-5 rounded-2xl border border-gold/40 bg-secondary/70 p-6 flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between">
+                    <span className="rounded-full bg-gold/20 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wider text-gold-deep">
+                      Recommended Match
+                    </span>
+                    <span className="text-xs font-semibold text-forest">100% Consecrated</span>
+                  </div>
+
+                  <div className="mt-4 flex gap-4 items-center">
+                    <img
+                      src={quizRecommendedProduct.image}
+                      alt={quizRecommendedProduct.name}
+                      className="h-20 w-20 rounded-xl object-cover border border-border shrink-0 shadow-sm"
+                    />
+                    <div>
+                      <h4 className="font-display text-lg font-bold text-forest leading-snug">
+                        {quizRecommendedProduct.name}
+                      </h4>
+                      <div className="mt-1 flex items-baseline gap-2">
+                        <span className="font-display text-xl font-bold text-forest">
+                          {inr(quizRecommendedProduct.price)}
+                        </span>
+                        <span className="text-xs text-muted-foreground line-through">
+                          {inr(quizRecommendedProduct.mrp)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 rounded-xl bg-card p-3.5 border border-border/80">
+                    <p className="text-[0.7rem] font-bold uppercase tracking-wider text-gold-deep">
+                      Vedic Reasoning:
+                    </p>
+                    <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
+                      {quizResultData.explanation}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-5 space-y-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      add(quizRecommendedProduct.slug, 1);
+                      setCartOpen(true);
+                    }}
+                    className="w-full flex items-center justify-center gap-2 rounded-xl bg-forest py-3 text-xs font-bold uppercase tracking-wider text-primary-foreground shadow hover:bg-forest/90 transition-all active:scale-98"
+                  >
+                    <span>Add Recommendation to Cart</span>
+                    <span>→</span>
+                  </button>
+                  <Link
+                    to="/products/$slug"
+                    params={{ slug: quizRecommendedProduct.slug }}
+                    className="block text-center text-xs font-semibold text-muted-foreground hover:text-forest transition-colors py-1"
+                  >
+                    View Product Details
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 2: The Free Selenite Promise Showcase */}
+      <section className="bg-forest py-20 text-primary-foreground border-y border-gold/30 relative overflow-hidden">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 relative z-10">
+          <div className="grid gap-12 lg:grid-cols-12 items-center">
+            <div className="lg:col-span-7">
+              <div className="inline-flex items-center gap-2 rounded-full border border-gold/50 bg-primary-foreground/10 px-4 py-1.5 text-xs font-semibold tracking-widest text-gold uppercase mb-4">
+                <span>🎁</span>
+                <span>Exclusive Vastu Adda Standard</span>
+              </div>
+              <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-primary-foreground leading-tight">
+                Every Sacred Remedy Comes with its Own Purifier
+              </h2>
+              <div className="gold-line mt-4 w-28" />
+
+              <p className="mt-5 text-sm sm:text-base leading-relaxed text-primary-foreground/85">
+                Natural crystals and Himalayan Rudraksha absorb ambient electromagnetic fields,
+                stress, and emotional currents from your environment. Without periodic energetic
+                cleansing, their vibrational clarity becomes dampened.
+              </p>
+
+              <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="rounded-2xl border border-gold/30 bg-primary-foreground/5 p-4 backdrop-blur-sm">
+                  <p className="font-display text-lg font-bold text-gold">The Selenite Secret</p>
+                  <p className="mt-1 text-xs text-primary-foreground/75 leading-relaxed">
+                    Selenite is a high-vibrational mineral that never stores negative charge. Resting
+                    your Pyrite or Rudraksha upon it overnight automatically recalibrates the stones.
+                  </p>
+                </div>
+                <div className="rounded-2xl border border-gold/30 bg-primary-foreground/5 p-4 backdrop-blur-sm">
+                  <p className="font-display text-lg font-bold text-gold">Vedic Consecration Card</p>
+                  <p className="mt-1 text-xs text-primary-foreground/75 leading-relaxed">
+                    Every package contains a physical Certificate of Consecration verifying that
+                    sacred Ganga Jal and planetary mantras were recited prior to shipment.
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-8 flex flex-wrap gap-4">
+                <Link
+                  to="/collections"
+                  className="rounded-full bg-gold px-8 py-3.5 text-xs font-bold tracking-wider text-forest uppercase shadow-lg hover:bg-gold-deep hover:text-primary-foreground transition-all"
+                >
+                  Shop Now with Free Selenite
+                </Link>
+                <Link
+                  to="/about"
+                  className="rounded-full border border-primary-foreground/40 bg-card/10 px-7 py-3.5 text-xs font-semibold tracking-wider text-primary-foreground uppercase hover:border-gold hover:text-gold transition-colors"
+                >
+                  Learn About Our Consecration
+                </Link>
+              </div>
+            </div>
+
+            <div className="lg:col-span-5 text-center">
+              <div className="rounded-3xl border border-gold/40 bg-card/10 p-8 backdrop-blur-md shadow-2xl">
+                <div className="aspect-square rounded-2xl overflow-hidden bg-secondary/80 border border-gold/50 mb-4">
+                  <img
+                    src="/products/pyrite-tree.jpg"
+                    alt="Free Selenite Plate with Remedy"
+                    className="h-full w-full object-cover"
+                    width={450}
+                    height={450}
+                  />
+                </div>
+                <p className="font-display text-2xl font-bold text-gold">
+                  Free Raw Selenite Cleansing Plate
+                </p>
+                <p className="text-xs text-primary-foreground/80 mt-1">
+                  Valued at ₹450 — Included completely complimentary with every order.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -211,8 +915,86 @@ function Index() {
         </div>
       </section>
 
+      {/* SECTION 3: Sacred Power Combos (Synergy Duos) */}
+      <section className="bg-secondary/60 py-20 border-y border-border">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <SectionHeading
+            eyebrow="Harmonious Synergies"
+            title="Featured Sacred Power Pairs"
+            subtitle="Ancient Vastu recommends pairing grounding protection with active wealth attractors to prevent energetic drain."
+          />
+
+          <div className="mt-12 grid gap-8 md:grid-cols-3">
+            {powerCombos.map((combo) => {
+              const p1 = products.find((p) => p.slug === combo.item1Slug);
+              const p2 = products.find((p) => p.slug === combo.item2Slug);
+
+              return (
+                <div
+                  key={combo.title}
+                  className="card-lift flex flex-col justify-between rounded-3xl border border-gold/40 bg-card p-6 shadow-md hover:border-gold transition-all"
+                >
+                  <div>
+                    <span className="rounded-full bg-gold/20 px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wider text-gold-deep">
+                      {combo.badge}
+                    </span>
+                    <h3 className="mt-3 font-display text-2xl font-bold text-forest leading-snug">
+                      {combo.title}
+                    </h3>
+                    <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
+                      {combo.desc}
+                    </p>
+
+                    {/* Duo Image Thumbnails */}
+                    <div className="mt-5 grid grid-cols-2 gap-3">
+                      {p1 && (
+                        <div className="rounded-2xl border border-border overflow-hidden bg-secondary p-1">
+                          <img src={p1.image} alt={p1.name} className="aspect-square w-full object-cover rounded-xl" />
+                          <p className="mt-1.5 text-[0.72rem] font-semibold text-forest truncate px-1">{p1.name}</p>
+                        </div>
+                      )}
+                      {p2 && (
+                        <div className="rounded-2xl border border-border overflow-hidden bg-secondary p-1">
+                          <img src={p2.image} alt={p2.name} className="aspect-square w-full object-cover rounded-xl" />
+                          <p className="mt-1.5 text-[0.72rem] font-semibold text-forest truncate px-1">{p2.name}</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="mt-6 border-t border-border pt-4">
+                    <div className="flex items-baseline justify-between">
+                      <div>
+                        <span className="font-display text-2xl font-bold text-forest">{inr(combo.comboPrice)}</span>
+                        <span className="ml-2 text-xs text-muted-foreground line-through">{inr(combo.mrp)}</span>
+                      </div>
+                      <span className="rounded-full bg-forest px-2.5 py-0.5 text-[0.65rem] font-bold text-primary-foreground">
+                        Save {inr(combo.savings)}
+                      </span>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => handleAddCombo(combo.item1Slug, combo.item2Slug)}
+                      className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl bg-forest py-3 text-xs font-bold tracking-wider text-primary-foreground uppercase shadow transition-all hover:bg-forest/90 active:scale-98"
+                    >
+                      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
+                        <circle cx="9" cy="20" r="1.4" />
+                        <circle cx="17" cy="20" r="1.4" />
+                        <path d="M3 4h2l2.4 11.2a1.5 1.5 0 0 0 1.5 1.3h7.9a1.5 1.5 0 0 0 1.5-1.2L20 8H6" />
+                      </svg>
+                      <span>Add Pair to Cart</span>
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
       {/* Customer favourites (Bestsellers) */}
-      <section className="bg-secondary/60 py-20">
+      <section className="py-20 bg-background">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <SectionHeading
             eyebrow="Top Rated Essentials"
@@ -233,6 +1015,151 @@ function Index() {
               <span>View All 21 Products in Catalog</span>
               <span aria-hidden="true">→</span>
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 4: Interactive Vastu Room Placement Guide */}
+      <section className="bg-secondary/50 py-20 border-y border-border">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <SectionHeading
+            eyebrow="Directional Harmony"
+            title="Where Should You Place Each Remedy?"
+            subtitle="Vastu Shastra teaches that proper cardinal alignment activates the natural bio-energetic field of a structure."
+          />
+
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {roomPlacements.map((r) => (
+              <div
+                key={r.room}
+                className="card-lift flex flex-col rounded-3xl border border-border bg-card p-6 shadow-sm hover:border-gold/50 transition-all"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-3xl">{r.icon}</span>
+                  <span className="rounded-full bg-secondary px-3 py-1 text-[0.65rem] font-bold text-forest border border-border">
+                    {r.zone}
+                  </span>
+                </div>
+                <h3 className="mt-4 font-display text-xl font-bold text-forest">{r.room}</h3>
+                <div className="mt-2 text-xs font-bold text-gold-deep">
+                  Recommended: {r.remedy}
+                </div>
+                <p className="mt-3 text-xs text-muted-foreground leading-relaxed flex-1">
+                  {r.action}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-10 rounded-2xl border border-gold/40 bg-card p-6 text-center max-w-2xl mx-auto shadow-sm">
+            <p className="font-display text-xl font-bold text-forest">Need Help with Your Exact Floor Plan?</p>
+            <p className="text-xs text-muted-foreground mt-1">
+              Share a photo or layout of your space with our resident Vastu consultant for customized placement.
+            </p>
+            <a
+              href={STORE.whatsapp}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-4 inline-flex items-center gap-2 rounded-full bg-forest px-6 py-2.5 text-xs font-bold text-primary-foreground uppercase shadow hover:bg-forest/90"
+            >
+              <span>Get Free WhatsApp Placement Advice</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* NEW SECTION B: Interactive Rashi (Zodiac) Gemstone & Crystal Finder */}
+      <section className="bg-background py-20 border-b border-border">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <SectionHeading
+            eyebrow="Kundali & Planetary Harmony"
+            title="Shop by Your Rashi (Moon Sign)"
+            subtitle="Every zodiac sign is governed by a planetary ruler that resonates with specific minerals, sacred woods, and organic geometry."
+          />
+
+          {/* 12 Rashi Buttons Grid */}
+          <div className="mt-10 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 sm:gap-3">
+            {zodiacSigns.map((z, idx) => (
+              <button
+                key={z.sign}
+                type="button"
+                onClick={() => setActiveRashiIndex(idx)}
+                className={`rounded-2xl border p-3 text-center transition-all ${
+                  activeRashiIndex === idx
+                    ? "border-forest bg-forest text-primary-foreground shadow-md scale-102"
+                    : "border-border bg-card text-foreground/85 hover:border-gold/60 hover:bg-secondary/50"
+                }`}
+              >
+                <span className="text-2xl block">{z.symbol}</span>
+                <span className="font-display text-xs font-bold mt-1 block truncate">
+                  {z.sign.split(" ")[0]}
+                </span>
+                <span className="text-[0.65rem] opacity-75 block">{z.sanskrit}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* Active Rashi Spotlight Card */}
+          <div className="mt-8 rounded-3xl border border-gold/40 bg-secondary/30 p-6 md:p-10 shadow-lg">
+            <div className="grid gap-8 lg:grid-cols-12 items-center">
+              <div className="lg:col-span-7">
+                <div className="flex flex-wrap items-center gap-2 mb-3">
+                  <span className="rounded-full bg-gold/20 px-3 py-1 text-[0.68rem] font-bold uppercase tracking-wider text-gold-deep">
+                    {activeRashi.sanskrit} • {activeRashi.sign}
+                  </span>
+                  <span className="rounded-full bg-secondary px-3 py-1 text-[0.68rem] font-semibold text-muted-foreground border border-border">
+                    Ruler: {activeRashi.planet}
+                  </span>
+                  <span className="rounded-full bg-secondary px-3 py-1 text-[0.68rem] font-semibold text-muted-foreground border border-border">
+                    Element: {activeRashi.element}
+                  </span>
+                </div>
+
+                <h3 className="font-display text-2xl sm:text-3xl font-bold text-forest">
+                  Ideal Remedy: {activeRashi.recommendation}
+                </h3>
+
+                <p className="mt-3 text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                  {activeRashi.reason}
+                </p>
+
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      add(rashiRecommendedProduct.slug, 1);
+                      setCartOpen(true);
+                    }}
+                    className="rounded-full bg-forest px-6 py-3 text-xs font-bold uppercase tracking-wider text-primary-foreground shadow hover:bg-forest/90 transition-all active:scale-98"
+                  >
+                    Add {rashiRecommendedProduct.name} to Cart ({inr(rashiRecommendedProduct.price)})
+                  </button>
+                  <Link
+                    to="/products/$slug"
+                    params={{ slug: rashiRecommendedProduct.slug }}
+                    className="rounded-full border border-forest/30 bg-card px-5 py-3 text-xs font-semibold text-forest uppercase hover:bg-secondary transition-colors"
+                  >
+                    View Specifications
+                  </Link>
+                </div>
+              </div>
+
+              <div className="lg:col-span-5 flex justify-center">
+                <div className="rounded-2xl border border-gold/40 bg-card p-4 shadow-md max-w-xs text-center">
+                  <img
+                    src={rashiRecommendedProduct.image}
+                    alt={rashiRecommendedProduct.name}
+                    className="aspect-square w-full rounded-xl object-cover border border-border"
+                  />
+                  <p className="mt-3 font-display text-sm font-bold text-forest truncate">
+                    {rashiRecommendedProduct.name}
+                  </p>
+                  <p className="text-xs text-gold-deep font-bold mt-0.5">
+                    Includes Free Selenite Plate
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -286,43 +1213,198 @@ function Index() {
         </div>
       </section>
 
-      {/* Complete Collection (All 21 Products with Filter Tabs) */}
-      <section id="collection" className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
-        <SectionHeading
-          eyebrow="The Full Sacred Shelf"
-          title="Our Complete Collection (21 Remedies)"
-          subtitle="Every genuine crystal tree, pyramid, bracelet, mala and tortoise available from Vastu Adda."
-        />
+      {/* NEW SECTION C: Sacred Consecration Journey: The 4-Step Vedic Prana Pratishtha */}
+      <section className="bg-forest py-20 text-primary-foreground border-y border-gold/30">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="eyebrow text-gold tracking-widest">AUTHENTIC VEDIC TRADITION</p>
+            <h2 className="mt-3 font-display text-4xl sm:text-5xl font-semibold text-primary-foreground">
+              The 4-Step Consecration Journey
+            </h2>
+            <div className="gold-line mx-auto mt-4 w-28" />
+            <p className="mt-4 text-sm text-primary-foreground/80 leading-relaxed">
+              Why our crystals radiate palpable positive frequencies: each remedy undergoes four sacred stages of energetic purification prior to dispatch.
+            </p>
+          </div>
 
-        {/* Category Filter Pills on Home */}
-        <div className="mt-8 flex flex-wrap justify-center gap-2">
-          {["All", "Crystal Trees", "Crystal Pyramids", "Crystal Bracelets", "Malas", "Vastu Products"].map(
-            (cat) => (
-              <button
-                key={cat}
-                type="button"
-                onClick={() => setSelectedHomeCat(cat)}
-                className={`rounded-full px-5 py-2 text-xs font-semibold tracking-wide transition-all ${
-                  selectedHomeCat === cat
-                    ? "bg-forest text-primary-foreground shadow"
-                    : "bg-secondary text-foreground/80 hover:bg-card hover:border hover:border-gold/50"
-                }`}
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              {
+                step: "01",
+                title: "Mineral Purity & Density Audit",
+                desc: "Every raw crystal chunk, pyrite nugget, and rudraksha bead is verified 100% natural and untreated by gemological standards.",
+              },
+              {
+                step: "02",
+                title: "Sacred Ganga Jal & Vedic Shuddhi",
+                desc: "Immersed in holy Ganga water and sacred herbs to disperse static environmental transit charges and reset vibrational purity.",
+              },
+              {
+                step: "03",
+                title: "Prana Pratishtha & Planetary Mantras",
+                desc: "Chanted during auspicious Brahmamuhurta by resident Vedic pandits using targeted planetary Beej Mantras to awaken living resonance.",
+              },
+              {
+                step: "04",
+                title: "Selenite Bedding & Wax-Sealed Packing",
+                desc: "Enclosed atop a raw Selenite plate with signed Consecration Certificate in a tamper-evident box ready to bless your sanctuary.",
+              },
+            ].map((s) => (
+              <div
+                key={s.step}
+                className="rounded-3xl border border-gold/30 bg-primary-foreground/5 p-6 backdrop-blur-sm relative flex flex-col justify-between"
               >
-                {cat}
-              </button>
-            ),
-          )}
+                <div>
+                  <span className="font-display text-4xl font-extrabold text-gold/40">
+                    {s.step}
+                  </span>
+                  <h3 className="mt-3 font-display text-xl font-bold text-gold">
+                    {s.title}
+                  </h3>
+                  <p className="mt-2 text-xs text-primary-foreground/75 leading-relaxed">
+                    {s.desc}
+                  </p>
+                </div>
+                <div className="mt-6 pt-4 border-t border-gold/20 flex items-center justify-between text-[0.7rem] uppercase tracking-wider text-gold-soft font-semibold">
+                  <span>Stage {s.step}</span>
+                  <span>Vedic Verified ✓</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
+      </section>
 
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {homeFilteredProducts.map((p) => (
-            <ProductCard key={p.slug} product={p} />
-          ))}
+      {/* SECTION 5: The Comparison Matrix (Vastu Adda vs Common Market) */}
+      <section className="bg-background py-20">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6">
+          <SectionHeading
+            eyebrow="Uncompromising Standards"
+            title="The Vastu Adda Distinction"
+            subtitle="Why thousands of families trust our consecrated remedies over generic e-commerce marketplaces."
+          />
+
+          <div className="mt-12 overflow-hidden rounded-3xl border border-border bg-card shadow-lg">
+            <div className="grid grid-cols-12 bg-forest text-primary-foreground p-4 text-xs font-bold uppercase tracking-wider">
+              <div className="col-span-4 sm:col-span-3">Feature</div>
+              <div className="col-span-8 sm:col-span-5 text-gold">Vastu Adda Sacred Standard</div>
+              <div className="hidden sm:block sm:col-span-4 opacity-75">Common Market Sellers</div>
+            </div>
+
+            <div className="divide-y divide-border text-xs sm:text-sm">
+              {comparisonData.map((row) => (
+                <div key={row.feature} className="grid grid-cols-12 p-4 items-center gap-2 hover:bg-secondary/40 transition-colors">
+                  <div className="col-span-4 sm:col-span-3 font-semibold text-forest">
+                    {row.feature}
+                  </div>
+                  <div className="col-span-8 sm:col-span-5 text-foreground/90 font-medium flex items-start gap-1.5">
+                    <span className="text-forest font-bold">✓</span>
+                    <span>{row.vastuAdda}</span>
+                  </div>
+                  <div className="hidden sm:block sm:col-span-4 text-muted-foreground flex items-start gap-1.5">
+                    <span className="text-red-500 font-bold">✕</span>
+                    <span>{row.massMarket}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Complete Collection (All 21 Products with Filter Tabs) */}
+      <section id="collection" className="bg-secondary/40 py-20 border-y border-border">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <SectionHeading
+            eyebrow="The Full Sacred Shelf"
+            title="Our Complete Collection (21 Remedies)"
+            subtitle="Every genuine crystal tree, pyramid, bracelet, mala and tortoise available from Vastu Adda."
+          />
+
+          {/* Category Filter Pills on Home */}
+          <div className="mt-8 flex flex-wrap justify-center gap-2">
+            {["All", "Crystal Trees", "Crystal Pyramids", "Crystal Bracelets", "Malas", "Vastu Products"].map(
+              (cat) => (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => setSelectedHomeCat(cat)}
+                  className={`rounded-full px-5 py-2 text-xs font-semibold tracking-wide transition-all ${
+                    selectedHomeCat === cat
+                      ? "bg-forest text-primary-foreground shadow"
+                      : "bg-secondary text-foreground/80 hover:bg-card hover:border hover:border-gold/50"
+                  }`}
+                >
+                  {cat}
+                </button>
+              ),
+            )}
+          </div>
+
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {homeFilteredProducts.map((p) => (
+              <ProductCard key={p.slug} product={p} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* NEW SECTION D: The Sacred Corner - Real Customer Spaces & Styling */}
+      <section className="bg-background py-20 border-b border-border">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <SectionHeading
+            eyebrow="Sacred Corners in Real Homes"
+            title="Where High Energy Resides"
+            subtitle="See how discerning homeowners, founders, and seekers style and position Vastu Adda remedies across India."
+          />
+
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {customerSpaces.map((cs) => {
+              const product = products.find((p) => p.slug === cs.slug);
+              return (
+                <div
+                  key={cs.title}
+                  className="card-lift flex flex-col justify-between rounded-3xl border border-border bg-card p-6 shadow-sm hover:border-gold/50 transition-all"
+                >
+                  <div>
+                    <div className="aspect-[4/3] rounded-2xl overflow-hidden bg-secondary border border-border">
+                      {product && (
+                        <img
+                          src={product.image}
+                          alt={cs.title}
+                          className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+                        />
+                      )}
+                    </div>
+                    <div className="mt-4">
+                      <span className="rounded-full bg-secondary px-2.5 py-0.5 text-[0.65rem] font-bold text-forest border border-border">
+                        {cs.city}
+                      </span>
+                      <h4 className="mt-2 font-display text-lg font-bold text-forest leading-snug">
+                        {cs.title}
+                      </h4>
+                      <p className="mt-1 text-xs font-semibold text-gold-deep">
+                        Remedy: {cs.remedyName}
+                      </p>
+                      <p className="mt-3 text-xs text-muted-foreground italic leading-relaxed">
+                        "{cs.quote}"
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-5 border-t border-border/80 pt-3">
+                    <p className="text-[0.72rem] font-bold text-forest">{cs.owner}</p>
+                    <p className="text-[0.65rem] text-muted-foreground">Verified Vastu Placement</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </section>
 
       {/* Why Vastu Adda Section */}
-      <section className="bg-secondary/60 py-20">
+      <section className="bg-secondary/40 py-20">
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 sm:px-6 lg:grid-cols-2">
           <div className="relative">
             <img
@@ -388,68 +1470,70 @@ function Index() {
       </section>
 
       {/* Voices of Serenity - Testimonials */}
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="eyebrow text-gold-deep tracking-[0.25em]">TESTIMONIALS</p>
-          <h2 className="mt-3 font-display text-4xl sm:text-5xl font-semibold text-forest">
-            Voices of Serenity
-          </h2>
-          <div className="gold-line mx-auto mt-4 w-28" />
-          <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
-            Real stories from homes and workspaces transformed by mindful Vastu placement.
-          </p>
-        </div>
+      <section className="bg-background py-20 border-t border-border">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="eyebrow text-gold-deep tracking-[0.25em]">TESTIMONIALS</p>
+            <h2 className="mt-3 font-display text-4xl sm:text-5xl font-semibold text-forest">
+              Voices of Serenity
+            </h2>
+            <div className="gold-line mx-auto mt-4 w-28" />
+            <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
+              Real stories from homes and workspaces transformed by mindful Vastu placement.
+            </p>
+          </div>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {[
-            {
-              quote:
-                "The Money Magnet pyramid brought an unmistakable shift in our home's atmosphere within two weeks. Their team even reviewed photos of our living room on WhatsApp to recommend the exact spot. That personal care is rare.",
-              author: "Meera & Raghav S.",
-              city: "Bengaluru",
-            },
-            {
-              quote:
-                "I was sceptical about crystals until our Vastu consultant suggested a pyrite tree for the north corner of our clinic. Patients regularly comment on the calm vibe of the waiting room now. Exceptional authenticity.",
-              author: "Dr. Ananya P.",
-              city: "Pune",
-            },
-            {
-              quote:
-                "Finding authentic karungali and seven mukhi rudraksha online is hard. Vastu Adda's quality was certified, the beads felt heavy and energised, and delivery to Jaipur was prompt and beautifully packed.",
-              author: "Vikramaditya K.",
-              city: "Jaipur",
-            },
-          ].map((t, idx) => (
-            <figure
-              key={idx}
-              className="card-lift flex flex-col justify-between rounded-3xl border border-border bg-card p-8 shadow-sm hover:border-gold/40 transition-all"
-            >
-              <div>
-                <div className="flex gap-1 text-gold text-sm" aria-hidden="true">
-                  <span>★</span>
-                  <span>★</span>
-                  <span>★</span>
-                  <span>★</span>
-                  <span>★</span>
-                </div>
-
-                <blockquote className="mt-5 text-sm sm:text-[0.92rem] leading-relaxed italic text-foreground/85 font-body">
-                  "{t.quote}"
-                </blockquote>
-              </div>
-
-              <figcaption className="mt-8 border-t border-border/70 pt-5 flex items-center justify-between">
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            {[
+              {
+                quote:
+                  "The Money Magnet pyramid brought an unmistakable shift in our home's atmosphere within two weeks. Their team even reviewed photos of our living room on WhatsApp to recommend the exact spot. That personal care is rare.",
+                author: "Meera & Raghav S.",
+                city: "Bengaluru",
+              },
+              {
+                quote:
+                  "I was sceptical about crystals until our Vastu consultant suggested a pyrite tree for the north corner of our clinic. Patients regularly comment on the calm vibe of the waiting room now. Exceptional authenticity.",
+                author: "Dr. Ananya P.",
+                city: "Pune",
+              },
+              {
+                quote:
+                  "Finding authentic karungali and seven mukhi rudraksha online is hard. Vastu Adda's quality was certified, the beads felt heavy and energised, and delivery to Jaipur was prompt and beautifully packed.",
+                author: "Vikramaditya K.",
+                city: "Jaipur",
+              },
+            ].map((t, idx) => (
+              <figure
+                key={idx}
+                className="card-lift flex flex-col justify-between rounded-3xl border border-border bg-card p-8 shadow-sm hover:border-gold/40 transition-all"
+              >
                 <div>
-                  <p className="font-display text-base font-bold text-forest">{t.author}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">{t.city}</p>
+                  <div className="flex gap-1 text-gold text-sm" aria-hidden="true">
+                    <span>★</span>
+                    <span>★</span>
+                    <span>★</span>
+                    <span>★</span>
+                    <span>★</span>
+                  </div>
+
+                  <blockquote className="mt-5 text-sm sm:text-[0.92rem] leading-relaxed italic text-foreground/85 font-body">
+                    "{t.quote}"
+                  </blockquote>
                 </div>
-                <span className="rounded-full bg-emerald-100 text-emerald-800 text-[0.65rem] font-bold uppercase tracking-wider px-2.5 py-1">
-                  VERIFIED BUYER
-                </span>
-              </figcaption>
-            </figure>
-          ))}
+
+                <figcaption className="mt-8 border-t border-border/70 pt-5 flex items-center justify-between">
+                  <div>
+                    <p className="font-display text-base font-bold text-forest">{t.author}</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">{t.city}</p>
+                  </div>
+                  <span className="rounded-full bg-emerald-100 text-emerald-800 text-[0.65rem] font-bold uppercase tracking-wider px-2.5 py-1">
+                    VERIFIED BUYER
+                  </span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -473,43 +1557,107 @@ function Index() {
       </section>
 
       {/* Blog Preview */}
-      <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6">
-        <SectionHeading
-          eyebrow="Vastu Insights"
-          title="From Our Spiritual Journal"
-          subtitle="Practical crystal placement, directional alignments and Vedic wisdom written for everyday homes."
-        />
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {blogPosts.slice(0, 3).map((post) => (
+      <section className="bg-background py-20 border-t border-border">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <SectionHeading
+            eyebrow="Vastu Insights"
+            title="From Our Spiritual Journal"
+            subtitle="Practical crystal placement, directional alignments and Vedic wisdom written for everyday homes."
+          />
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            {blogPosts.slice(0, 3).map((post) => (
+              <Link
+                key={post.slug}
+                to="/blogs/$slug"
+                params={{ slug: post.slug }}
+                className="card-lift group flex flex-col rounded-2xl border border-border bg-card p-6 shadow-sm hover:border-gold/50"
+              >
+                <p className="eyebrow text-gold-deep">{post.category}</p>
+                <h3 className="mt-3 flex-1 font-display text-2xl font-semibold leading-snug text-forest group-hover:text-gold-deep transition-colors">
+                  {post.title}
+                </h3>
+                <p className="mt-3 line-clamp-3 text-xs leading-relaxed text-muted-foreground">
+                  {post.excerpt}
+                </p>
+                <p className="mt-5 flex items-center justify-between text-xs text-muted-foreground border-t border-border/60 pt-3">
+                  <span>{post.date}</span>
+                  <span className="font-semibold text-gold-deep transition-transform group-hover:translate-x-1">
+                    Read Article →
+                  </span>
+                </p>
+              </Link>
+            ))}
+          </div>
+          <div className="mt-10 text-center">
             <Link
-              key={post.slug}
-              to="/blogs/$slug"
-              params={{ slug: post.slug }}
-              className="card-lift group flex flex-col rounded-2xl border border-border bg-card p-6 shadow-sm hover:border-gold/50"
+              to="/blogs"
+              className="inline-flex items-center gap-2 rounded-full border border-forest/30 bg-card px-8 py-3 text-xs font-semibold tracking-wider text-forest uppercase transition-colors hover:border-gold hover:text-gold-deep shadow-sm"
             >
-              <p className="eyebrow text-gold-deep">{post.category}</p>
-              <h3 className="mt-3 flex-1 font-display text-2xl font-semibold leading-snug text-forest group-hover:text-gold-deep transition-colors">
-                {post.title}
-              </h3>
-              <p className="mt-3 line-clamp-3 text-xs leading-relaxed text-muted-foreground">
-                {post.excerpt}
-              </p>
-              <p className="mt-5 flex items-center justify-between text-xs text-muted-foreground border-t border-border/60 pt-3">
-                <span>{post.date}</span>
-                <span className="font-semibold text-gold-deep transition-transform group-hover:translate-x-1">
-                  Read Article →
-                </span>
-              </p>
+              Read All Vastu Insights <span aria-hidden="true">→</span>
             </Link>
-          ))}
+          </div>
         </div>
-        <div className="mt-10 text-center">
-          <Link
-            to="/blogs"
-            className="inline-flex items-center gap-2 rounded-full border border-forest/30 bg-card px-8 py-3 text-xs font-semibold tracking-wider text-forest uppercase transition-colors hover:border-gold hover:text-gold-deep shadow-sm"
-          >
-            Read All Vastu Insights <span aria-hidden="true">→</span>
-          </Link>
+      </section>
+
+      {/* NEW SECTION E: VIP Sanctum & Astrological Transit Club (Newsletter & Moon Calendar Alerts) */}
+      <section className="bg-secondary/60 py-20 border-t border-border">
+        <div className="mx-auto max-w-4xl px-4 sm:px-6">
+          <div className="rounded-3xl border border-gold/40 bg-card p-8 sm:p-12 text-center shadow-xl relative overflow-hidden">
+            <div className="inline-flex items-center gap-2 rounded-full bg-gold/20 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-gold-deep mb-3">
+              <span>✦</span>
+              <span>The Vastu Adda Sanctum</span>
+            </div>
+            <h3 className="font-display text-3xl sm:text-4xl font-bold text-forest">
+              Receive Vedic Moon &amp; Muhurat Alerts
+            </h3>
+            <p className="mt-3 text-xs sm:text-sm text-muted-foreground max-w-xl mx-auto leading-relaxed">
+              Join 25,000+ conscious homeowners. Get notified on upcoming Purnima and Amavasya crystal cleansing dates, auspicious Griha Pravesh muhurats, and receive an instant ₹100 welcome gift.
+            </p>
+
+            {!newsletterSubscribed ? (
+              <form onSubmit={handleSubscribe} className="mt-8 flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+                <input
+                  type="email"
+                  value={emailInput}
+                  onChange={(e) => setEmailInput(e.target.value)}
+                  placeholder="Enter your email address..."
+                  required
+                  className="flex-1 rounded-full border border-border bg-background px-5 py-3 text-xs text-foreground placeholder:text-muted-foreground focus:border-gold focus:outline-none shadow-inner"
+                />
+                <button
+                  type="submit"
+                  className="rounded-full bg-forest px-7 py-3 text-xs font-bold uppercase tracking-wider text-primary-foreground shadow hover:bg-forest/90 transition-all shrink-0"
+                >
+                  Join Sanctum
+                </button>
+              </form>
+            ) : (
+              <div className="mt-8 rounded-2xl border border-emerald-500/40 bg-emerald-50/60 dark:bg-emerald-950/30 p-6 max-w-md mx-auto">
+                <p className="font-display text-lg font-bold text-emerald-800 dark:text-emerald-200">
+                  Welcome to the Sanctum! ✨
+                </p>
+                <p className="text-xs text-emerald-700 dark:text-emerald-300 mt-1">
+                  Here is your ₹100 welcome privilege code for your first consecrated remedy:
+                </p>
+                <div className="mt-3 flex items-center justify-center gap-2">
+                  <span className="font-mono text-base font-bold bg-card border border-emerald-500/50 px-4 py-1.5 rounded-lg text-forest tracking-wider">
+                    VASTU100
+                  </span>
+                  <button
+                    type="button"
+                    onClick={handleCopyCoupon}
+                    className="rounded-lg bg-forest px-3 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-forest/90"
+                  >
+                    {couponCopied ? "Copied! ✓" : "Copy"}
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <p className="mt-4 text-[0.7rem] text-muted-foreground">
+              No spam, ever. Unsubscribe with a single click anytime.
+            </p>
+          </div>
         </div>
       </section>
 
