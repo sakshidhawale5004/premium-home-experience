@@ -60,7 +60,7 @@ function PrivacyPolicyPage() {
             <ul className="mt-2 space-y-1 list-disc list-inside text-muted-foreground">
               <li>Processing and delivering your order via our verified courier partners</li>
               <li>Sending automated WhatsApp shipping notifications and tracking links</li>
-              <li>Providing astrologer consultation when requested by you</li>
+              <li>Providing order support and consecration details for your remedies</li>
             </ul>
             <p className="mt-3 text-muted-foreground font-semibold">
               We never sell, rent, or trade your personal information to third-party telemarketers or advertisers.

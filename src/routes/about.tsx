@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { STORE, collections } from "@/data/products";
 import aboutStoreImg from "@/assets/about-store.jpg";
-import consultationImg from "@/assets/consultation.jpg";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -77,9 +76,9 @@ const pillars = [
   },
   {
     number: "04",
-    title: "Guidance Beyond Transaction",
-    subtitle: "Personal Astrological Alignment",
-    text: "We believe true Vastu remedies require intention and cardinal precision. Our consultants remain reachable daily on WhatsApp to analyze your floor plan and Rashi (zodiac), ensuring every sacred item is placed in its optimal directional quadrant.",
+    title: "Sacred Integrity & Sourcing",
+    subtitle: "Ethical Vedic Craftsmanship",
+    text: "We believe true Vastu remedies require spiritual authenticity and material purity. Every sacred crystal, pyramid, and mala is ethically sourced from traditional mining belts and energized with Vedic mantras prior to dispatch.",
   },
 ];
 
@@ -115,7 +114,7 @@ const testimonials = [
   },
   {
     quote:
-      "I was sceptical about crystals until our Vastu consultant suggested a pyrite tree for the north corner of our clinic. Patients regularly comment on the calm vibe of the waiting room now. Exceptional authenticity.",
+      "I was sceptical about crystals until I placed a Golden Pyrite tree in the north corner of our clinic. Patients regularly comment on the calm vibe of the waiting room now. Exceptional authenticity.",
     author: "Dr. Ananya P.",
     city: "Pune",
   },
@@ -404,40 +403,33 @@ function AboutPage() {
         </div>
       </section>
 
-      {/* Personal Astrologer Consultation CTA */}
-      <section className="relative overflow-hidden bg-forest py-20 text-primary-foreground">
-        <img
-          src={consultationImg}
-          alt="Personal Vastu Guidance"
-          className="absolute inset-0 h-full w-full object-cover opacity-20"
-        />
-        <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6">
-          <p className="eyebrow text-gold">Compassionate Guidance</p>
+      {/* Sacred Sanctuary CTA */}
+      <section className="bg-forest py-20 text-primary-foreground border-t border-gold/30">
+        <div className="mx-auto max-w-4xl px-4 text-center sm:px-6">
+          <p className="eyebrow text-gold">Sacred Living</p>
           <h2 className="mt-2 font-display text-4xl sm:text-5xl font-bold text-primary-foreground">
-            Have a Question About Your Home's Energy?
+            Transform Your Living Space
           </h2>
           <div className="gold-line mx-auto mt-4 w-28" />
           <p className="mt-4 text-base sm:text-lg leading-relaxed text-primary-foreground/85 max-w-2xl mx-auto">
-            Whether you are moving into a new residence, renovating an office, or seeking to overcome
-            persistent domestic friction, our team is available to review your layout and guide you
-            toward authentic harmony.
+            Explore our curated catalog of 21 authentic earth crystals, Himalayan malas, and orgonite pyramids, each consecrated to awaken positive frequencies in your home.
           </p>
 
           <div className="mt-8 flex flex-wrap justify-center gap-4">
+            <Link
+              to="/collections"
+              className="rounded-full bg-gold px-8 py-3.5 text-xs font-bold tracking-widest text-forest uppercase shadow-xl hover:bg-gold-deep hover:text-primary-foreground transition-all"
+            >
+              Shop All 21 Products
+            </Link>
             <a
               href={STORE.whatsapp}
               target="_blank"
               rel="noreferrer"
-              className="rounded-full bg-gold px-8 py-3.5 text-xs font-bold tracking-widest text-forest uppercase shadow-xl hover:bg-gold-deep hover:text-primary-foreground transition-all"
-            >
-              Consult with Astrologer on WhatsApp
-            </a>
-            <Link
-              to="/collections"
               className="rounded-full border border-primary-foreground/40 bg-primary-foreground/10 px-8 py-3.5 text-xs font-semibold tracking-wider text-primary-foreground uppercase hover:border-gold hover:text-gold transition-colors"
             >
-              Browse 21 Remedies
-            </Link>
+              Order Support on WhatsApp
+            </a>
           </div>
         </div>
       </section>

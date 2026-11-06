@@ -10,7 +10,6 @@ import braceletsImg from "@/assets/hero-bracelets.jpg";
 import treeImg from "@/assets/hero-tree.jpg";
 import malaImg from "@/assets/hero-mala.jpg";
 import vastuImg from "@/assets/hero-vastu.jpg";
-import consultationImg from "@/assets/consultation.jpg";
 import aboutStoreImg from "@/assets/about-store.jpg";
 
 export const Route = createFileRoute("/")({
@@ -662,55 +661,6 @@ function Index() {
         </div>
       </section>
 
-      {/* Astrologer Consultation Banner */}
-      <section className="relative overflow-hidden bg-black">
-        <img
-          src={consultationImg}
-          alt="Vastu consultation"
-          loading="lazy"
-          width={1920}
-          height={1080}
-          className="h-[460px] w-full object-cover md:h-[520px]"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/80 to-transparent" />
-        <div className="absolute inset-0 flex items-center">
-          <div className="mx-auto w-full max-w-7xl px-4 sm:px-6">
-            <div className="max-w-xl">
-              <p className="eyebrow text-gold font-bold">Free Astrological Guidance</p>
-              <h2 className="mt-3 font-display text-4xl font-bold leading-tight text-white md:text-5xl drop-shadow-md">
-                Get Personalised Vastu Guidance
-              </h2>
-              <p className="mt-4 leading-relaxed text-zinc-100 text-sm sm:text-base drop-shadow">
-                Unsure which gemstone or remedy aligns with your zodiac sign (Rashi) and home
-                direction? Speak with our resident Vedic Vastu experts for personalized, practical
-                recommendations — zero renovation required.
-              </p>
-              <div className="mt-7 flex flex-wrap gap-4">
-                <a
-                  href={STORE.whatsapp}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-full bg-gold px-8 py-3.5 text-xs font-bold tracking-wider text-black uppercase transition-all hover:bg-gold-deep hover:text-white shadow-xl"
-                >
-                  Book Free Consultation
-                </a>
-                <a
-                  href={STORE.whatsapp}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-white/50 bg-black/40 backdrop-blur-sm px-7 py-3.5 text-xs font-semibold tracking-wider text-white transition-colors hover:bg-white hover:text-black shadow-md"
-                >
-                  <svg viewBox="0 0 24 24" className="h-4 w-4 fill-emerald-400" aria-hidden="true">
-                    <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.5 14.1c-.2.7-1.3 1.3-1.9 1.3-.5 0-1.1.1-3.4-.9-2.9-1.2-4.7-4.1-4.9-4.3-.1-.2-1.1-1.6-1.1-3s.7-2.1 1-2.4c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .7.5s.9 2.1 1 2.2c0 .1.1.3 0 .5-.4.8-.9.9-.6 1.4.5.9 1.2 1.7 2 2.3.9.7 1.3.8 1.6.6.2-.1.7-.9 1-1.2.2-.3.4-.2.7-.1l2 1c.3.1.5.2.6.4 0 .1 0 .8-.1 1.1Z" />
-                  </svg>
-                  <span>Chat on WhatsApp</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Blog Preview */}
       <section className="bg-background py-20 border-t border-border">
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -910,7 +860,7 @@ function Index() {
               },
               {
                 quote:
-                  "I was sceptical about crystals until our Vastu consultant suggested a pyrite tree for the north corner of our clinic. Patients regularly comment on the calm vibe of the waiting room now. Exceptional authenticity.",
+                  "I was sceptical about crystals until I placed a Golden Pyrite tree in the north corner of our clinic. Patients regularly comment on the calm vibe of the waiting room now. Exceptional authenticity.",
                 author: "Dr. Ananya P.",
                 city: "Pune",
               },
@@ -1083,8 +1033,8 @@ function Index() {
             Bring Divine Balance, Harmony &amp; Positive Energy to Your Space
           </h2>
           <p className="max-w-xl text-primary-foreground/80 text-sm sm:text-base leading-relaxed">
-            Browse our full catalog of 21 certified products or chat directly with our Vastu
-            consultant for personalized placement advice.
+            Browse our full catalog of 21 certified products or connect with our customer support
+            team on WhatsApp for order inquiries.
           </p>
           <div className="flex flex-wrap justify-center gap-4 mt-2">
             <Link
@@ -1099,7 +1049,7 @@ function Index() {
               rel="noreferrer"
               className="rounded-full border border-primary-foreground/40 bg-primary-foreground/10 px-8 py-3.5 text-xs font-semibold tracking-wider text-primary-foreground uppercase transition-colors hover:border-gold hover:text-gold"
             >
-              Talk to Astrologer
+              Order Support on WhatsApp
             </a>
           </div>
         </div>

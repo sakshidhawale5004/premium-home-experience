@@ -43,7 +43,7 @@ export function Footer() {
               rel="noreferrer"
               className="mt-6 inline-flex items-center gap-2 rounded-full border border-gold/70 px-5 py-2.5 text-xs font-semibold tracking-wider text-gold uppercase transition-all hover:bg-gold hover:text-forest"
             >
-              <span>Chat with Astrologer</span>
+              <span>Order Support on WhatsApp</span>
             </a>
           </div>
 

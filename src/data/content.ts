@@ -135,7 +135,7 @@ export const testimonials: Testimonial[] = [
     name: "Ananya Sharma",
     city: "Delhi NCR",
     quote:
-      "Their consultant helped me choose the right remedies for my new flat. Three months in, the home genuinely feels calmer and more welcoming. Highly recommended.",
+      "The placement guide helped me choose the right remedies for my new flat. Three months in, the home genuinely feels calmer and more welcoming. Highly recommended.",
   },
   {
     name: "Vikram Malhotra",

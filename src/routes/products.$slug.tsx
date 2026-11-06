@@ -536,7 +536,7 @@ function ProductDetailPage() {
                   city: "Pune",
                   rating: 5,
                   review:
-                    "I was sceptical about crystals until our Vastu consultant suggested a pyrite tree for the north corner of our clinic. Patients regularly comment on the calm vibe of the waiting room now. Exceptional authenticity.",
+                    "I was sceptical about crystals until I placed a Golden Pyrite tree in the north corner of our clinic. Patients regularly comment on the calm vibe of the waiting room now. Exceptional authenticity.",
                 },
                 {
                   author: "Vikramaditya K.",

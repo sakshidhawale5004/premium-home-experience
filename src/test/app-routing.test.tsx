@@ -19,6 +19,7 @@ describe("App routing", () => {
       "/",
       "/collections",
       "/checkout",
+      "/admin",
       "/about",
       "/blogs",
       "/refund-return-policy",

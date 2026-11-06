@@ -62,17 +62,17 @@ function BlogPostPage() {
 
         <div className="mt-12 rounded-2xl border border-gold/40 bg-secondary/70 p-7 text-center">
           <p className="font-display text-2xl font-semibold text-forest">
-            Want guidance for your own space?
+            Explore authentic sacred remedies
           </p>
           <p className="mt-2 text-sm text-muted-foreground">
-            Our Vastu consultants recommend remedies tailored to your home or office.
+            Browse lab-tested crystals, pyramids, and malas tuned to specific Vedic intentions.
           </p>
-          <a
-            href={STORE.whatsapp}
-            className="mt-5 inline-block rounded-full bg-primary px-7 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-forest/90"
+          <Link
+            to="/collections"
+            className="mt-5 inline-block rounded-full bg-forest px-7 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-forest/90"
           >
-            Chat on WhatsApp
-          </a>
+            Explore All Collections
+          </Link>
         </div>
       </div>
 

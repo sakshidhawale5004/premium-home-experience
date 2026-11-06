@@ -129,17 +129,12 @@ export function HeroSlider() {
               </svg>
             </Link>
 
-            <a
-              href={STORE.whatsapp}
-              target="_blank"
-              rel="noreferrer"
+            <Link
+              to="/collections"
               className="inline-flex items-center gap-2 rounded-full border border-white/50 bg-black/40 backdrop-blur-md px-7 py-3.5 text-xs font-semibold tracking-wider text-white uppercase transition-all hover:bg-white hover:text-black hover:border-white shadow-lg"
             >
-              <svg viewBox="0 0 24 24" className="h-4 w-4 fill-emerald-400" aria-hidden="true">
-                <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm5.5 14.1c-.2.7-1.3 1.3-1.9 1.3-.5 0-1.1.1-3.4-.9-2.9-1.2-4.7-4.1-4.9-4.3-.1-.2-1.1-1.6-1.1-3s.7-2.1 1-2.4c.3-.3.6-.4.8-.4h.6c.2 0 .4 0 .7.5s.9 2.1 1 2.2c0 .1.1.3 0 .5-.4.8-.9.9-.6 1.4.5.9 1.2 1.7 2 2.3.9.7 1.3.8 1.6.6.2-.1.7-.9 1-1.2.2-.3.4-.2.7-.1l2 1c.3.1.5.2.6.4 0 .1 0 .8-.1 1.1Z" />
-              </svg>
-              <span>Vedic Consultation</span>
-            </a>
+              <span>Explore All Products</span>
+            </Link>
           </div>
         </div>
       </div>

@@ -28,7 +28,7 @@ function TermsAndConditionsPage() {
           </h1>
           <div className="gold-line mx-auto mt-4 w-28" />
           <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
-            Please review the terms of service governing purchases and consultations on Vastu Adda.
+            Please review the terms of service governing purchases on Vastu Adda.
           </p>
         </div>
       </section>

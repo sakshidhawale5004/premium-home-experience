@@ -210,6 +210,47 @@ function CheckoutPage() {
       }),
     };
 
+    // Live Sync with CRM
+    try {
+      const storedOrders = JSON.parse(localStorage.getItem("vastu_orders") || "[]");
+      storedOrders.unshift({
+        ...orderDetails,
+        status: "Pending",
+        timestamp: new Date().toISOString(),
+      });
+      localStorage.setItem("vastu_orders", JSON.stringify(storedOrders));
+
+      // Update customers CRM directory
+      const storedCustomers = JSON.parse(localStorage.getItem("vastu_customers") || "[]");
+      const existingCustIdx = storedCustomers.findIndex(
+        (c: { phone?: string; email?: string }) =>
+          c.phone === orderDetails.phone ||
+          (c.email && c.email !== "Not provided" && c.email === orderDetails.email),
+      );
+      if (existingCustIdx >= 0) {
+        storedCustomers[existingCustIdx].ordersCount += 1;
+        storedCustomers[existingCustIdx].totalSpend += orderDetails.total;
+        storedCustomers[existingCustIdx].lastOrderDate = orderDetails.date;
+      } else {
+        storedCustomers.unshift({
+          id: `CUST-${Math.floor(1000 + Math.random() * 9000)}`,
+          name: orderDetails.fullName,
+          phone: orderDetails.phone,
+          email: orderDetails.email,
+          city: orderDetails.city,
+          state: orderDetails.state,
+          ordersCount: 1,
+          totalSpend: orderDetails.total,
+          segment: orderDetails.total >= 3000 ? "VIP Patron" : "New Patron",
+          lastOrderDate: orderDetails.date,
+        });
+      }
+      localStorage.setItem("vastu_customers", JSON.stringify(storedCustomers));
+      window.dispatchEvent(new Event("vastu:orders-updated"));
+    } catch {
+      // safe fallback
+    }
+
     setTimeout(() => {
       setPlacedOrder(orderDetails);
       clear();
