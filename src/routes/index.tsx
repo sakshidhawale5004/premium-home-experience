@@ -384,7 +384,7 @@ function Index() {
           <SectionHeading
             eyebrow="Top Rated Essentials"
             title="Customer Favourites &amp; Bestsellers"
-            subtitle="Our most-loved Vastu and crystal remedies, chosen again and again by thousands of households across India."
+            subtitle="Our most-loved Vastu and crystal remedies, consecrated with sacred Vedic mantras for lasting harmony and prosperity."
           />
           <div className="mt-8 sm:mt-12 grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-4">
             {favouriteSlugs.map((slug) => {
@@ -975,7 +975,7 @@ function Index() {
               Receive Vedic Moon &amp; Muhurat Alerts
             </h3>
             <p className="mt-3 text-xs sm:text-sm text-muted-foreground max-w-xl mx-auto leading-relaxed">
-              Join 25,000+ conscious homeowners. Get notified on upcoming Purnima and Amavasya crystal cleansing dates, auspicious Griha Pravesh muhurats, and receive an instant ₹100 welcome gift.
+              Join conscious homeowners and crystal collectors. Get notified on upcoming Purnima and Amavasya crystal cleansing dates, auspicious Griha Pravesh muhurats, and receive an instant ₹100 welcome gift.
             </p>
 
             {!newsletterSubscribed ? (

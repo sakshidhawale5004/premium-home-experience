@@ -154,8 +154,8 @@ function AboutPage() {
           {/* Quick Credibility Strip */}
           <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs font-semibold uppercase tracking-wider text-gold-soft">
             <div className="rounded-2xl border border-gold/20 bg-primary-foreground/5 p-3.5 backdrop-blur-sm">
-              <p className="text-xl font-bold text-gold">25,000+</p>
-              <p className="mt-1 text-[0.68rem] text-primary-foreground/75">Homes Blessed</p>
+              <p className="text-xl font-bold text-gold">21+</p>
+              <p className="mt-1 text-[0.68rem] text-primary-foreground/75">Sacred Remedies</p>
             </div>
             <div className="rounded-2xl border border-gold/20 bg-primary-foreground/5 p-3.5 backdrop-blur-sm">
               <p className="text-xl font-bold text-gold">100%</p>

@@ -22,25 +22,66 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full transition-shadow">
-      {/* Top Announcement Bar - Seamless single-line layout */}
-      <div className="bg-forest px-4 py-2 text-primary-foreground border-b border-gold/20 shadow-sm overflow-hidden">
-        <div className="mx-auto flex max-w-7xl items-center justify-between text-[0.7rem] sm:text-[0.72rem] tracking-[0.14em] uppercase gap-4">
-          <p className="hidden xl:flex items-center gap-1.5 opacity-90 whitespace-nowrap">
-            <span>100% Certified Gemstones · Vedic Energized</span>
-          </p>
+      {/* Top Announcement Bar - Continuously Moving Smooth Marquee */}
+      <div className="bg-forest py-2 text-primary-foreground border-b border-gold/25 shadow-sm overflow-hidden select-none">
+        <div className="animate-marquee flex items-center gap-8 text-[0.68rem] sm:text-[0.72rem] tracking-[0.14em] uppercase font-medium">
+          {/* Loop Segment 1 */}
+          <div className="flex items-center gap-8 shrink-0">
+            <span className="flex items-center gap-2">
+              <span className="text-gold">✦</span>
+              <span>100% Certified Gemstones · Vedic Energized</span>
+            </span>
+            <span className="flex items-center gap-2 text-gold-soft">
+              <span className="text-gold">✦</span>
+              <span>Special Offer: Free Raw Selenite Plate with Every Order</span>
+            </span>
+            <span className="flex items-center gap-2">
+              <span className="text-gold">✦</span>
+              <span>Free Pan-India Delivery &amp; Cash on Delivery Available</span>
+            </span>
+            <a
+              href={STORE.whatsapp}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-2 text-gold hover:text-white transition-colors"
+            >
+              <span className="text-gold">✦</span>
+              <span>WhatsApp Atelier Support: {STORE.phone}</span>
+            </a>
+            <span className="flex items-center gap-2 text-gold-soft">
+              <span className="text-gold">✦</span>
+              <span>Flat ₹500 Cashback on All Prepaid Orders</span>
+            </span>
+          </div>
 
-          <p className="mx-auto xl:mx-0 text-center font-medium text-gold-soft whitespace-nowrap truncate max-w-full">
-            Special Offer: Free Raw Selenite Plate with Every Order &nbsp;|&nbsp; Free Pan-India Delivery
-          </p>
-
-          <a
-            href={STORE.whatsapp}
-            target="_blank"
-            rel="noreferrer"
-            className="hidden md:flex items-center gap-1.5 text-gold hover:text-primary-foreground transition-colors whitespace-nowrap shrink-0"
-          >
-            <span>Free Astrologer Help: {STORE.phone}</span>
-          </a>
+          {/* Loop Segment 2 (Duplicate for infinite seamless loop) */}
+          <div className="flex items-center gap-8 shrink-0" aria-hidden="true">
+            <span className="flex items-center gap-2">
+              <span className="text-gold">✦</span>
+              <span>100% Certified Gemstones · Vedic Energized</span>
+            </span>
+            <span className="flex items-center gap-2 text-gold-soft">
+              <span className="text-gold">✦</span>
+              <span>Special Offer: Free Raw Selenite Plate with Every Order</span>
+            </span>
+            <span className="flex items-center gap-2">
+              <span className="text-gold">✦</span>
+              <span>Free Pan-India Delivery &amp; Cash on Delivery Available</span>
+            </span>
+            <a
+              href={STORE.whatsapp}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-2 text-gold hover:text-white transition-colors"
+            >
+              <span className="text-gold">✦</span>
+              <span>WhatsApp Atelier Support: {STORE.phone}</span>
+            </a>
+            <span className="flex items-center gap-2 text-gold-soft">
+              <span className="text-gold">✦</span>
+              <span>Flat ₹500 Cashback on All Prepaid Orders</span>
+            </span>
+          </div>
         </div>
       </div>
 

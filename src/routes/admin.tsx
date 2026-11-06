@@ -65,171 +65,15 @@ export interface AdminInquiry {
   status: "New Lead" | "Contacted" | "Closed";
 }
 
-// Initial Seed Orders
-const SEED_ORDERS: AdminOrder[] = [
-  {
-    orderId: "VA-2026-94812",
-    fullName: "Rajeshwar Iyer",
-    phone: "9820145290",
-    email: "rajesh.iyer@gmail.com",
-    addressLine1: "A-502, Green Ridge Towers",
-    addressLine2: "Kandivali East",
-    city: "Mumbai",
-    state: "Maharashtra",
-    pincode: "400101",
-    sankalpName: "Iyer Family Prosperity",
-    paymentMethod: "upi",
-    items: [
-      { name: "Golden Pyrite Wealth Tree", qty: 1, price: 799 },
-      { name: "Natural Citrine Wealth & Joy Tree", qty: 1, price: 899 },
-    ],
-    subtotal: 1698,
-    discount: 170,
-    total: 1528,
-    status: "Processing",
-    date: "05 Nov 2026",
-    timestamp: "2026-11-05T14:20:00.000Z",
-  },
-  {
-    orderId: "VA-2026-88341",
-    fullName: "Pooja Malhotra",
-    phone: "9811223344",
-    email: "pooja.malhotra@outlook.com",
-    addressLine1: "Villa 14, Lotus Enclave",
-    addressLine2: "Golf Course Road",
-    city: "Gurugram",
-    state: "Haryana",
-    pincode: "122002",
-    sankalpName: "Malhotra Residence",
-    paymentMethod: "cod",
-    items: [
-      { name: "Money Magnet Orgonite Pyramid", qty: 1, price: 699 },
-      { name: "Dhan Yog 5-Crystal Wealth Bracelet", qty: 2, price: 499 },
-    ],
-    subtotal: 1697,
-    discount: 0,
-    total: 1697,
-    status: "Shipped",
-    date: "04 Nov 2026",
-    timestamp: "2026-11-04T11:15:00.000Z",
-  },
-  {
-    orderId: "VA-2026-72109",
-    fullName: "Venkatesh Rao",
-    phone: "9448012345",
-    email: "v.rao@techcorp.in",
-    addressLine1: "Flat 12B, Palm Meadows",
-    addressLine2: "Whitefield",
-    city: "Bengaluru",
-    state: "Karnataka",
-    pincode: "560066",
-    sankalpName: "Venkatesh & Supriya Rao",
-    paymentMethod: "upi",
-    items: [{ name: "5-Mukhi Himalayan Rudraksha Mala", qty: 1, price: 699 }],
-    subtotal: 699,
-    discount: 70,
-    total: 629,
-    status: "Delivered",
-    date: "02 Nov 2026",
-    timestamp: "2026-11-02T09:40:00.000Z",
-  },
-  {
-    orderId: "VA-2026-61902",
-    fullName: "Sunita Deshmukh",
-    phone: "9822098765",
-    email: "sunita.d@yahoo.com",
-    addressLine1: "Bungalow 4, Aundh Heights",
-    addressLine2: "Aundh",
-    city: "Pune",
-    state: "Maharashtra",
-    pincode: "411007",
-    sankalpName: "Deshmukh Parivar",
-    paymentMethod: "cod",
-    items: [{ name: "Brass Vastu Tortoise with Plate", qty: 1, price: 799 }],
-    subtotal: 799,
-    discount: 0,
-    total: 799,
-    status: "Pending",
-    date: "06 Nov 2026",
-    timestamp: "2026-11-06T08:10:00.000Z",
-  },
-];
+// Clean initial data sets (Kept empty so only real patron orders & customers appear)
+const SEED_ORDERS: AdminOrder[] = [];
+const SEED_CUSTOMERS: AdminCustomer[] = [];
+const SEED_INQUIRIES: AdminInquiry[] = [];
 
-// Initial Seed Customers
-const SEED_CUSTOMERS: AdminCustomer[] = [
-  {
-    id: "CUST-1001",
-    name: "Rajeshwar Iyer",
-    phone: "9820145290",
-    email: "rajesh.iyer@gmail.com",
-    city: "Mumbai",
-    state: "Maharashtra",
-    ordersCount: 3,
-    totalSpend: 4890,
-    segment: "VIP Patron",
-    lastOrderDate: "05 Nov 2026",
-  },
-  {
-    id: "CUST-1002",
-    name: "Pooja Malhotra",
-    phone: "9811223344",
-    email: "pooja.malhotra@outlook.com",
-    city: "Gurugram",
-    state: "Haryana",
-    ordersCount: 2,
-    totalSpend: 3196,
-    segment: "VIP Patron",
-    lastOrderDate: "04 Nov 2026",
-  },
-  {
-    id: "CUST-1003",
-    name: "Venkatesh Rao",
-    phone: "9448012345",
-    email: "v.rao@techcorp.in",
-    city: "Bengaluru",
-    state: "Karnataka",
-    ordersCount: 1,
-    totalSpend: 629,
-    segment: "Regular Patron",
-    lastOrderDate: "02 Nov 2026",
-  },
-  {
-    id: "CUST-1004",
-    name: "Sunita Deshmukh",
-    phone: "9822098765",
-    email: "sunita.d@yahoo.com",
-    city: "Pune",
-    state: "Maharashtra",
-    ordersCount: 1,
-    totalSpend: 799,
-    segment: "New Patron",
-    lastOrderDate: "06 Nov 2026",
-  },
-];
-
-// Initial Seed Inquiries
-const SEED_INQUIRIES: AdminInquiry[] = [
-  {
-    id: "INQ-201",
-    name: "Vikram Singhania",
-    phone: "9819001122",
-    email: "vikram@singhaniagroup.com",
-    interest: "Corporate Gifting: 50x Golden Pyrite Wealth Trees",
-    message: "Looking for custom branded gift boxes for our executive clients this Diwali. Please share bulk pricing and lead times.",
-    date: "05 Nov 2026",
-    status: "New Lead",
-  },
-  {
-    id: "INQ-202",
-    name: "Dr. Meenakshi Sundaram",
-    phone: "9840123890",
-    email: "dr.meenakshi@ayurclinic.in",
-    interest: "Wellness Centre: 10x Orgonite Pyramids & Selenite Plates",
-    message: "Setting up 4 meditation suites in Chennai. Need authentic crystal remedies to dissipate electromagnetic interference.",
-    date: "03 Nov 2026",
-    status: "Contacted",
-  },
-];
+// Legacy mock record identifiers to purge from browser storage
+const MOCK_ORDER_IDS = new Set(["VA-2026-94812", "VA-2026-88341", "VA-2026-72109", "VA-2026-61902"]);
+const MOCK_CUSTOMER_IDS = new Set(["CUST-1001", "CUST-1002", "CUST-1003", "CUST-1004"]);
+const MOCK_INQUIRY_IDS = new Set(["INQ-201", "INQ-202"]);
 
 function AdminPage() {
   // Auth state with default credentials included
@@ -289,45 +133,76 @@ function AdminPage() {
       setProductsList(defaultProducts);
     }
 
-    // Load Orders
+    // Load Orders (Filter out any previous mock seed orders)
     const savedOrders = localStorage.getItem("vastu_orders");
     if (savedOrders) {
       try {
-        const parsed = JSON.parse(savedOrders);
-        setOrdersList(parsed.length > 0 ? parsed : SEED_ORDERS);
+        const parsed: AdminOrder[] = JSON.parse(savedOrders);
+        const realOrders = Array.isArray(parsed)
+          ? parsed.filter(
+              (o) =>
+                !MOCK_ORDER_IDS.has(o.orderId) &&
+                !o.fullName?.toLowerCase().includes("rajeshwar") &&
+                !o.fullName?.toLowerCase().includes("malhotra"),
+            )
+          : [];
+        setOrdersList(realOrders);
+        localStorage.setItem("vastu_orders", JSON.stringify(realOrders));
       } catch {
-        setOrdersList(SEED_ORDERS);
+        setOrdersList([]);
+        localStorage.setItem("vastu_orders", JSON.stringify([]));
       }
     } else {
-      localStorage.setItem("vastu_orders", JSON.stringify(SEED_ORDERS));
-      setOrdersList(SEED_ORDERS);
+      localStorage.setItem("vastu_orders", JSON.stringify([]));
+      setOrdersList([]);
     }
 
-    // Load Customers
+    // Load Customers (Filter out any previous mock customers)
     const savedCustomers = localStorage.getItem("vastu_customers");
     if (savedCustomers) {
       try {
-        const parsed = JSON.parse(savedCustomers);
-        setCustomersList(parsed.length > 0 ? parsed : SEED_CUSTOMERS);
+        const parsed: AdminCustomer[] = JSON.parse(savedCustomers);
+        const realCustomers = Array.isArray(parsed)
+          ? parsed.filter(
+              (c) =>
+                !MOCK_CUSTOMER_IDS.has(c.id) &&
+                !c.name?.toLowerCase().includes("rajeshwar") &&
+                !c.name?.toLowerCase().includes("malhotra"),
+            )
+          : [];
+        setCustomersList(realCustomers);
+        localStorage.setItem("vastu_customers", JSON.stringify(realCustomers));
       } catch {
-        setCustomersList(SEED_CUSTOMERS);
+        setCustomersList([]);
+        localStorage.setItem("vastu_customers", JSON.stringify([]));
       }
     } else {
-      localStorage.setItem("vastu_customers", JSON.stringify(SEED_CUSTOMERS));
-      setCustomersList(SEED_CUSTOMERS);
+      localStorage.setItem("vastu_customers", JSON.stringify([]));
+      setCustomersList([]);
     }
 
-    // Load Inquiries
+    // Load Inquiries (Filter out any previous mock inquiries)
     const savedInquiries = localStorage.getItem("vastu_inquiries");
     if (savedInquiries) {
       try {
-        setInquiriesList(JSON.parse(savedInquiries));
+        const parsed: AdminInquiry[] = JSON.parse(savedInquiries);
+        const realInquiries = Array.isArray(parsed)
+          ? parsed.filter(
+              (i) =>
+                !MOCK_INQUIRY_IDS.has(i.id) &&
+                !i.name?.toLowerCase().includes("singhania") &&
+                !i.name?.toLowerCase().includes("meenakshi"),
+            )
+          : [];
+        setInquiriesList(realInquiries);
+        localStorage.setItem("vastu_inquiries", JSON.stringify(realInquiries));
       } catch {
-        setInquiriesList(SEED_INQUIRIES);
+        setInquiriesList([]);
+        localStorage.setItem("vastu_inquiries", JSON.stringify([]));
       }
     } else {
-      localStorage.setItem("vastu_inquiries", JSON.stringify(SEED_INQUIRIES));
-      setInquiriesList(SEED_INQUIRIES);
+      localStorage.setItem("vastu_inquiries", JSON.stringify([]));
+      setInquiriesList([]);
     }
 
     // Storage listener for real-time checkout updates
@@ -335,7 +210,15 @@ function AdminPage() {
       const liveOrders = localStorage.getItem("vastu_orders");
       if (liveOrders) {
         try {
-          setOrdersList(JSON.parse(liveOrders));
+          const parsed = JSON.parse(liveOrders);
+          setOrdersList(
+            Array.isArray(parsed)
+              ? parsed.filter(
+                  (o: AdminOrder) =>
+                    !MOCK_ORDER_IDS.has(o.orderId) && !o.fullName?.toLowerCase().includes("rajeshwar"),
+                )
+              : [],
+          );
         } catch {
           // ignore
         }
@@ -343,7 +226,15 @@ function AdminPage() {
       const liveCust = localStorage.getItem("vastu_customers");
       if (liveCust) {
         try {
-          setCustomersList(JSON.parse(liveCust));
+          const parsed = JSON.parse(liveCust);
+          setCustomersList(
+            Array.isArray(parsed)
+              ? parsed.filter(
+                  (c: AdminCustomer) =>
+                    !MOCK_CUSTOMER_IDS.has(c.id) && !c.name?.toLowerCase().includes("rajeshwar"),
+                )
+              : [],
+          );
         } catch {
           // ignore
         }
@@ -351,7 +242,15 @@ function AdminPage() {
       const liveInq = localStorage.getItem("vastu_inquiries");
       if (liveInq) {
         try {
-          setInquiriesList(JSON.parse(liveInq));
+          const parsed = JSON.parse(liveInq);
+          setInquiriesList(
+            Array.isArray(parsed)
+              ? parsed.filter(
+                  (i: AdminInquiry) =>
+                    !MOCK_INQUIRY_IDS.has(i.id) && !i.name?.toLowerCase().includes("singhania"),
+                )
+              : [],
+          );
         } catch {
           // ignore
         }
@@ -975,48 +874,64 @@ function AdminPage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#eee8db]">
-                    {ordersList.slice(0, 6).map((ord) => (
-                      <tr key={ord.orderId} className="hover:bg-[#fcfbf7] transition-colors">
-                        <td className="py-3 px-3 font-bold text-gold-deep">{ord.orderId}</td>
-                        <td className="py-3 px-3">
-                          <p className="font-bold text-[#153426]">{ord.fullName}</p>
-                          <p className="text-[0.68rem] text-[#63726a]">+91 {ord.phone}</p>
-                        </td>
-                        <td className="py-3 px-3 max-w-[200px] truncate text-[#3d4a42]">
-                          {ord.items.map((it) => `${it.qty}x ${it.name}`).join(", ")}
-                        </td>
-                        <td className="py-3 px-3 font-bold text-[#153426]">{inr(ord.total)}</td>
-                        <td className="py-3 px-3">
-                          <span
-                            className={`rounded-full px-2.5 py-1 text-[0.65rem] font-bold uppercase tracking-wider ${
-                              ord.status === "Delivered"
-                                ? "bg-emerald-100 text-emerald-800 border border-emerald-300"
-                                : ord.status === "Shipped"
-                                ? "bg-cyan-100 text-cyan-800 border border-cyan-300"
-                                : ord.status === "Processing"
-                                ? "bg-amber-100 text-amber-800 border border-amber-300"
-                                : "bg-rose-100 text-rose-800 border border-rose-300"
-                            }`}
-                          >
-                            {ord.status}
-                          </span>
-                        </td>
-                        <td className="py-3 px-3 text-[#63726a]">{ord.date}</td>
-                        <td className="py-3 px-3 text-right">
-                          <a
-                            href={`${STORE.whatsapp}?text=${encodeURIComponent(
-                              `Hello ${ord.fullName}! Update on your Vastu Adda order #${ord.orderId}: Current status is ${ord.status}.`,
-                            )}`}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-flex items-center gap-1 text-[0.7rem] text-emerald-800 hover:text-emerald-950 font-bold"
-                          >
-                            <span>WhatsApp</span>
-                            <span aria-hidden="true">↗</span>
-                          </a>
+                    {ordersList.length === 0 ? (
+                      <tr>
+                        <td colSpan={7} className="py-12 text-center text-[#63726a]">
+                          <div className="mx-auto flex max-w-xs flex-col items-center justify-center">
+                            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#f2ecdd] text-gold-deep mb-3 text-lg">
+                              📦
+                            </div>
+                            <p className="font-display text-sm font-bold text-[#153426]">No Orders Yet</p>
+                            <p className="text-[0.72rem] text-[#63726a] mt-1 leading-relaxed">
+                              Orders placed through the website will automatically appear here in real time.
+                            </p>
+                          </div>
                         </td>
                       </tr>
-                    ))}
+                    ) : (
+                      ordersList.slice(0, 6).map((ord) => (
+                        <tr key={ord.orderId} className="hover:bg-[#fcfbf7] transition-colors">
+                          <td className="py-3 px-3 font-bold text-gold-deep">{ord.orderId}</td>
+                          <td className="py-3 px-3">
+                            <p className="font-bold text-[#153426]">{ord.fullName}</p>
+                            <p className="text-[0.68rem] text-[#63726a]">+91 {ord.phone}</p>
+                          </td>
+                          <td className="py-3 px-3 max-w-[200px] truncate text-[#3d4a42]">
+                            {ord.items.map((it) => `${it.qty}x ${it.name}`).join(", ")}
+                          </td>
+                          <td className="py-3 px-3 font-bold text-[#153426]">{inr(ord.total)}</td>
+                          <td className="py-3 px-3">
+                            <span
+                              className={`rounded-full px-2.5 py-1 text-[0.65rem] font-bold uppercase tracking-wider ${
+                                ord.status === "Delivered"
+                                  ? "bg-emerald-100 text-emerald-800 border border-emerald-300"
+                                  : ord.status === "Shipped"
+                                  ? "bg-cyan-100 text-cyan-800 border border-cyan-300"
+                                  : ord.status === "Processing"
+                                  ? "bg-amber-100 text-amber-800 border border-amber-300"
+                                  : "bg-rose-100 text-rose-800 border border-rose-300"
+                              }`}
+                            >
+                              {ord.status}
+                            </span>
+                          </td>
+                          <td className="py-3 px-3 text-[#63726a]">{ord.date}</td>
+                          <td className="py-3 px-3 text-right">
+                            <a
+                              href={`${STORE.whatsapp}?text=${encodeURIComponent(
+                                `Hello ${ord.fullName}! Update on your Vastu Adda order #${ord.orderId}: Current status is ${ord.status}.`,
+                              )}`}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="inline-flex items-center gap-1 text-[0.7rem] text-emerald-800 hover:text-emerald-950 font-bold"
+                            >
+                              <span>WhatsApp</span>
+                              <span aria-hidden="true">↗</span>
+                            </a>
+                          </td>
+                        </tr>
+                      ))
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -1218,8 +1133,8 @@ function AdminPage() {
 
             {/* Orders Cards / List */}
             <div className="space-y-4">
-              {ordersList
-                .filter((ord) => {
+              {(() => {
+                const filtered = ordersList.filter((ord) => {
                   const matchesStatus = orderStatusFilter === "All" || ord.status === orderStatusFilter;
                   const query = orderSearch.toLowerCase();
                   const matchesSearch =
@@ -1227,8 +1142,27 @@ function AdminPage() {
                     ord.phone.includes(query) ||
                     ord.orderId.toLowerCase().includes(query);
                   return matchesStatus && matchesSearch;
-                })
-                .map((ord) => (
+                });
+
+                if (filtered.length === 0) {
+                  return (
+                    <div className="rounded-3xl border border-[#e6dfcf] bg-white p-12 text-center text-[#63726a] shadow-sm">
+                      <div className="mx-auto flex max-w-sm flex-col items-center justify-center">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#f2ecdd] text-gold-deep mb-3 text-xl">
+                          📦
+                        </div>
+                        <p className="font-display text-base font-bold text-[#153426]">No Orders Found</p>
+                        <p className="text-xs text-[#63726a] mt-1.5 leading-relaxed">
+                          {ordersList.length === 0
+                            ? "No patron orders have been placed yet. When a customer completes checkout on the storefront, their order will be captured here in real time."
+                            : "No orders match your search or status filter."}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                }
+
+                return filtered.map((ord) => (
                   <div
                     key={ord.orderId}
                     className="rounded-3xl border border-[#e6dfcf] bg-white p-5 sm:p-6 shadow-sm hover:border-gold transition-all"
@@ -1320,7 +1254,8 @@ function AdminPage() {
                       </div>
                     </div>
                   </div>
-                ))}
+                ));
+              })()}
             </div>
           </div>
         )}
@@ -1368,16 +1303,37 @@ function AdminPage() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#eee8db]">
-                    {customersList
-                      .filter((c) => {
+                    {(() => {
+                      const filtered = customersList.filter((c) => {
                         const q = customerSearch.toLowerCase();
                         return (
                           c.name.toLowerCase().includes(q) ||
                           c.city.toLowerCase().includes(q) ||
                           c.phone.includes(q)
                         );
-                      })
-                      .map((cust) => (
+                      });
+
+                      if (filtered.length === 0) {
+                        return (
+                          <tr>
+                            <td colSpan={8} className="py-12 text-center text-[#63726a]">
+                              <div className="mx-auto flex max-w-sm flex-col items-center justify-center">
+                                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#f2ecdd] text-gold-deep mb-3 text-lg">
+                                  👥
+                                </div>
+                                <p className="font-display text-sm font-bold text-[#153426]">No Patrons Found</p>
+                                <p className="text-[0.72rem] text-[#63726a] mt-1 leading-relaxed">
+                                  {customersList.length === 0
+                                    ? "Patron profiles and order histories are automatically compiled when customers place orders on the storefront."
+                                    : "No patrons match your search query."}
+                                </p>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      }
+
+                      return filtered.map((cust) => (
                         <tr key={cust.id} className="hover:bg-[#fcfbf7] transition-colors">
                           <td className="py-3 px-4 font-bold text-[#153426]">{cust.name}</td>
                           <td className="py-3 px-4">
@@ -1414,7 +1370,8 @@ function AdminPage() {
                             </a>
                           </td>
                         </tr>
-                      ))}
+                      ));
+                    })()}
                   </tbody>
                 </table>
               </div>
@@ -1435,33 +1392,47 @@ function AdminPage() {
             </div>
 
             <div className="space-y-4">
-              {inquiriesList.map((inq) => (
-                <div key={inq.id} className="rounded-3xl border border-[#e6dfcf] bg-white p-5 shadow-sm">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-[#eee8db] gap-2">
-                    <div>
-                      <span className="font-bold text-[#153426] text-base">{inq.name}</span>
-                      <span className="ml-3 text-xs text-gold-deep font-bold">{inq.interest}</span>
+              {inquiriesList.length === 0 ? (
+                <div className="rounded-3xl border border-[#e6dfcf] bg-white p-12 text-center text-[#63726a] shadow-sm">
+                  <div className="mx-auto flex max-w-sm flex-col items-center justify-center">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#f2ecdd] text-gold-deep mb-3 text-xl">
+                      ✉️
                     </div>
-                    <span className="text-xs text-[#63726a]">{inq.date}</span>
-                  </div>
-                  <p className="mt-3 text-xs text-[#3d4a42] leading-relaxed bg-[#fbf9f4] p-3 rounded-xl border border-[#eee8db]">
-                    "{inq.message}"
-                  </p>
-                  <div className="mt-3 flex items-center justify-between text-xs">
-                    <span className="text-[#63726a]">Phone: +91 {inq.phone} • {inq.email}</span>
-                    <a
-                      href={`${STORE.whatsapp}?text=${encodeURIComponent(
-                        `Namaste ${inq.name}! We received your inquiry regarding "${inq.interest}". We would love to assist you.`,
-                      )}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="rounded-xl bg-emerald-50 border border-emerald-600/40 px-3.5 py-1 text-xs font-bold text-emerald-900 hover:bg-emerald-100 transition-colors"
-                    >
-                      Connect on WhatsApp
-                    </a>
+                    <p className="font-display text-base font-bold text-[#153426]">No Inquiries Yet</p>
+                    <p className="text-xs text-[#63726a] mt-1.5 leading-relaxed">
+                      Custom gifting requests, bulk temple remedies, and inquiries submitted via the Contact page or WhatsApp will appear here in real time.
+                    </p>
                   </div>
                 </div>
-              ))}
+              ) : (
+                inquiriesList.map((inq) => (
+                  <div key={inq.id} className="rounded-3xl border border-[#e6dfcf] bg-white p-5 shadow-sm">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-[#eee8db] gap-2">
+                      <div>
+                        <span className="font-bold text-[#153426] text-base">{inq.name}</span>
+                        <span className="ml-3 text-xs text-gold-deep font-bold">{inq.interest}</span>
+                      </div>
+                      <span className="text-xs text-[#63726a]">{inq.date}</span>
+                    </div>
+                    <p className="mt-3 text-xs text-[#3d4a42] leading-relaxed bg-[#fbf9f4] p-3 rounded-xl border border-[#eee8db]">
+                      "{inq.message}"
+                    </p>
+                    <div className="mt-3 flex items-center justify-between text-xs">
+                      <span className="text-[#63726a]">Phone: +91 {inq.phone} • {inq.email}</span>
+                      <a
+                        href={`${STORE.whatsapp}?text=${encodeURIComponent(
+                          `Namaste ${inq.name}! We received your inquiry regarding "${inq.interest}". We would love to assist you.`,
+                        )}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="rounded-xl bg-emerald-50 border border-emerald-600/40 px-3.5 py-1 text-xs font-bold text-emerald-900 hover:bg-emerald-100 transition-colors"
+                      >
+                        Connect on WhatsApp
+                      </a>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </div>
         )}
