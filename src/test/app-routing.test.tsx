@@ -5,6 +5,9 @@ import { describe, expect, it } from "vitest";
 import { routeTree } from "@/routeTree.gen";
 import { products, collections } from "@/data/products";
 import { blogPosts } from "@/data/content";
+import { Route as ProductSlugRoute } from "@/routes/products.$slug";
+import { Route as CollectionSlugRoute } from "@/routes/collections.$slug";
+import { Route as BlogSlugRoute } from "@/routes/blogs.$slug";
 
 describe("App routing", () => {
   const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
@@ -61,6 +64,48 @@ describe("App routing", () => {
       const matches = router.matchRoutes(path);
       expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
     }
+  });
+
+  it("loads valid products via loader without throwing 404", async () => {
+    for (const p of products) {
+      const result = await (ProductSlugRoute.options.loader as any)({ params: { slug: p.slug } });
+      expect(result.product).toBeDefined();
+      expect(result.product.slug).toBe(p.slug);
+    }
+  });
+
+  it("throws notFound in product loader for invalid slug", async () => {
+    await expect(async () => {
+      await (ProductSlugRoute.options.loader as any)({ params: { slug: "non-existent-crystal" } });
+    }).rejects.toThrow();
+  });
+
+  it("loads valid collections via loader without throwing 404", async () => {
+    for (const c of collections) {
+      const result = await (CollectionSlugRoute.options.loader as any)({ params: { slug: c.slug } });
+      expect(result.col).toBeDefined();
+      expect(result.col.slug).toBe(c.slug);
+    }
+  });
+
+  it("throws notFound in collection loader for invalid slug", async () => {
+    await expect(async () => {
+      await (CollectionSlugRoute.options.loader as any)({ params: { slug: "invalid-collection" } });
+    }).rejects.toThrow();
+  });
+
+  it("loads valid blog articles via loader without throwing 404", async () => {
+    for (const b of blogPosts) {
+      const result = await (BlogSlugRoute.options.loader as any)({ params: { slug: b.slug } });
+      expect(result.post).toBeDefined();
+      expect(result.post.slug).toBe(b.slug);
+    }
+  });
+
+  it("throws notFound in blog loader for invalid slug", async () => {
+    await expect(async () => {
+      await (BlogSlugRoute.options.loader as any)({ params: { slug: "invalid-blog-post" } });
+    }).rejects.toThrow();
   });
 
   it("has exactly 21 required products with valid details, images, and pricing", () => {

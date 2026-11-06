@@ -4,6 +4,13 @@ import { products, collections, categoryBySlug, STORE } from "@/data/products";
 import { ProductCard } from "@/components/ProductCard";
 
 export const Route = createFileRoute("/collections/$slug")({
+  loader: ({ params }) => {
+    const col = collections.find((c) => c.slug === params.slug);
+    if (!col) {
+      throw notFound();
+    }
+    return { col };
+  },
   head: ({ params }) => {
     const col = collections.find((c) => c.slug === params.slug);
     return {
@@ -35,12 +42,7 @@ export const Route = createFileRoute("/collections/$slug")({
 });
 
 function CollectionCategoryPage() {
-  const { slug } = Route.useParams();
-  const col = collections.find((c) => c.slug === slug);
-
-  if (!col) {
-    throw notFound();
-  }
+  const { col } = Route.useLoaderData();
 
   const [sortBy, setSortBy] = useState<"featured" | "price-asc" | "price-desc" | "rating">("featured");
 

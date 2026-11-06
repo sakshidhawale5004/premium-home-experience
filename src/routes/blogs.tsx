@@ -1,4 +1,4 @@
-import { createFileRoute, Link, Outlet, useLocation } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useLocation, useChildMatches } from "@tanstack/react-router";
 import { blogPosts } from "@/data/content";
 
 export const Route = createFileRoute("/blogs")({
@@ -28,8 +28,9 @@ export const Route = createFileRoute("/blogs")({
 
 function Blogs() {
   const location = useLocation();
+  const childMatches = useChildMatches();
 
-  if (location.pathname !== "/blogs" && location.pathname !== "/blogs/") {
+  if (childMatches.length > 0 || (location.pathname !== "/blogs" && location.pathname !== "/blogs/")) {
     return <Outlet />;
   }
 

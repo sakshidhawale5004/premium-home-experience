@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { createFileRoute, Link, Outlet, useLocation } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useLocation, useChildMatches } from "@tanstack/react-router";
 import { products, collections, type Category, categoryLinks } from "@/data/products";
 import { ProductCard } from "@/components/ProductCard";
 
@@ -30,12 +30,13 @@ export const Route = createFileRoute("/collections")({
 
 function CollectionsPage() {
   const location = useLocation();
+  const childMatches = useChildMatches();
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
   const [sortBy, setSortBy] = useState<"featured" | "price-asc" | "price-desc" | "rating">("featured");
   const [searchQuery, setSearchQuery] = useState("");
 
-  // If we are on a child route like /collections/$slug, render the child route!
-  if (location.pathname !== "/collections" && location.pathname !== "/collections/") {
+  // If a child route like /collections/$slug is matched, render the child route!
+  if (childMatches.length > 0 || (location.pathname !== "/collections" && location.pathname !== "/collections/")) {
     return <Outlet />;
   }
 

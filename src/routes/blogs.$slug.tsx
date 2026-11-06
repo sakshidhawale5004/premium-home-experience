@@ -3,6 +3,13 @@ import { blogPosts } from "@/data/content";
 import { STORE } from "@/data/products";
 
 export const Route = createFileRoute("/blogs/$slug")({
+  loader: ({ params }) => {
+    const post = blogPosts.find((p) => p.slug === params.slug);
+    if (!post) {
+      throw notFound();
+    }
+    return { post };
+  },
   head: ({ params }) => {
     const post = blogPosts.find((p) => p.slug === params.slug);
     return {
@@ -29,11 +36,7 @@ export const Route = createFileRoute("/blogs/$slug")({
 });
 
 function BlogPostPage() {
-  const { slug } = Route.useParams();
-  const post = blogPosts.find((p) => p.slug === slug);
-  if (!post) {
-    throw notFound();
-  }
+  const { post } = Route.useLoaderData();
 
   const others = blogPosts.filter((p) => p.slug !== post.slug).slice(0, 3);
 

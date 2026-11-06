@@ -18,7 +18,7 @@ import { CartDrawer } from "@/components/CartDrawer";
 import { SearchOverlay } from "@/components/SearchOverlay";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 
-function NotFoundComponent() {
+export function NotFoundComponent() {
   return (
     <div className="flex min-h-[60vh] items-center justify-center px-4">
       <div className="max-w-md text-center">
@@ -35,6 +35,19 @@ function NotFoundComponent() {
             Go home
           </Link>
         </div>
+      </div>
+    </div>
+  );
+}
+
+export function PendingComponent() {
+  return (
+    <div className="flex min-h-[50vh] items-center justify-center py-12">
+      <div className="flex flex-col items-center gap-3">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-forest border-t-gold" />
+        <span className="text-xs uppercase tracking-widest text-muted-foreground font-medium">
+          Loading Vastu Adda...
+        </span>
       </div>
     </div>
   );
@@ -112,6 +125,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   }),
   shellComponent: RootShell,
   component: RootComponent,
+  pendingComponent: PendingComponent,
   notFoundComponent: NotFoundComponent,
   errorComponent: ErrorComponent,
 });

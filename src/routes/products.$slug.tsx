@@ -5,6 +5,13 @@ import { useShop, inr } from "@/lib/shop";
 import { ProductCard } from "@/components/ProductCard";
 
 export const Route = createFileRoute("/products/$slug")({
+  loader: ({ params }) => {
+    const product = products.find((p) => p.slug === params.slug);
+    if (!product) {
+      throw notFound();
+    }
+    return { product };
+  },
   head: ({ params }) => {
     const product = products.find((p) => p.slug === params.slug);
     return {
@@ -40,12 +47,7 @@ export const Route = createFileRoute("/products/$slug")({
 });
 
 function ProductDetailPage() {
-  const { slug } = Route.useParams();
-  const product = products.find((p) => p.slug === slug);
-
-  if (!product) {
-    throw notFound();
-  }
+  const { product } = Route.useLoaderData();
 
   const { add, setCartOpen } = useShop();
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
