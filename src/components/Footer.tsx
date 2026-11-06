@@ -72,6 +72,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link to="/contact" className="transition-colors hover:text-gold">
+                  Contact Atelier
+                </Link>
+              </li>
+              <li>
                 <a href={STORE.whatsapp} target="_blank" rel="noreferrer" className="transition-colors hover:text-gold">
                   Order Tracking on WhatsApp
                 </a>

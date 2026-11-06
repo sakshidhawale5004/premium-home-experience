@@ -217,7 +217,7 @@ function AboutPage() {
                 laden with negative handling residues.
               </p>
               <p>
-                We established <strong>Vastu Adda</strong> in Rajkot, Gujarat, as an uncompromising
+                We established <strong>Vastu Adda</strong> in Mumbai as an uncompromising
                 sanctuary of Vedic authenticity. We source untreated Pyrite, natural Citrine, sacred
                 Himalayan 5-Mukhi Rudraksha, and dense Tamil Karungali ebony directly from verified
                 artisans and mineral miners. Each remedy is consecrated individually by practicing Vedic

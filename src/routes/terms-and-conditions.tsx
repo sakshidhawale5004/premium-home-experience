@@ -87,7 +87,7 @@ function TermsAndConditionsPage() {
             <p className="mt-2 text-muted-foreground">
               These terms are governed by and construed in accordance with the laws of India. Any
               disputes shall be subject to the exclusive jurisdiction of the competent courts in
-              Rajkot, Gujarat, India.
+              Mumbai, Maharashtra, India.
             </p>
           </div>
         </div>

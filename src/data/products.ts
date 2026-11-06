@@ -676,8 +676,9 @@ export const categoryBySlug = new Map(collections.map((c) => [c.slug, c.category
 
 export const STORE = {
   name: "Vastu Adda",
+  legalName: "AVM Cloud Pro LLP",
   whatsapp: "https://wa.me/919021265071",
   phone: "+91 90212 65071",
-  email: "support@vastuadda.store",
-  address: "Vedic Spiritual Center, Near Iscon Temple, Rajkot - 360005, Gujarat, India",
+  email: "info.vastuadda@gmail.com",
+  address: "AVM Cloud Pro LLP, 203, 5th Floor, The Platina, Tanvi Complex, S.V. Road, Dahisar East, Mumbai – 400068",
 };

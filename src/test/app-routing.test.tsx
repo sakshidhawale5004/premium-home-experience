@@ -21,6 +21,7 @@ describe("App routing", () => {
       "/checkout",
       "/admin",
       "/about",
+      "/contact",
       "/blogs",
       "/refund-return-policy",
       "/shipping-policy",

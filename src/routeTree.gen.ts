@@ -15,6 +15,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as BlogsRouteImport } from './routes/blogs'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as CollectionsRouteImport } from './routes/collections'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as RefundReturnPolicyRouteImport } from './routes/refund-return-policy'
 import { Route as ShippingPolicyRouteImport } from './routes/shipping-policy'
@@ -51,6 +52,11 @@ const CheckoutRoute = CheckoutRouteImport.update({
 const CollectionsRoute = CollectionsRouteImport.update({
   id: '/collections',
   path: '/collections',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
@@ -96,6 +102,7 @@ export interface FileRoutesByFullPath {
   '/blogs': typeof BlogsRouteWithChildren
   '/checkout': typeof CheckoutRoute
   '/collections': typeof CollectionsRouteWithChildren
+  '/contact': typeof ContactRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/refund-return-policy': typeof RefundReturnPolicyRoute
   '/shipping-policy': typeof ShippingPolicyRoute
@@ -111,6 +118,7 @@ export interface FileRoutesByTo {
   '/blogs': typeof BlogsRouteWithChildren
   '/checkout': typeof CheckoutRoute
   '/collections': typeof CollectionsRouteWithChildren
+  '/contact': typeof ContactRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/refund-return-policy': typeof RefundReturnPolicyRoute
   '/shipping-policy': typeof ShippingPolicyRoute
@@ -127,6 +135,7 @@ export interface FileRoutesById {
   '/blogs': typeof BlogsRouteWithChildren
   '/checkout': typeof CheckoutRoute
   '/collections': typeof CollectionsRouteWithChildren
+  '/contact': typeof ContactRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/refund-return-policy': typeof RefundReturnPolicyRoute
   '/shipping-policy': typeof ShippingPolicyRoute
@@ -144,6 +153,7 @@ export interface FileRouteTypes {
     | '/blogs'
     | '/checkout'
     | '/collections'
+    | '/contact'
     | '/privacy-policy'
     | '/refund-return-policy'
     | '/shipping-policy'
@@ -159,6 +169,7 @@ export interface FileRouteTypes {
     | '/blogs'
     | '/checkout'
     | '/collections'
+    | '/contact'
     | '/privacy-policy'
     | '/refund-return-policy'
     | '/shipping-policy'
@@ -174,6 +185,7 @@ export interface FileRouteTypes {
     | '/blogs'
     | '/checkout'
     | '/collections'
+    | '/contact'
     | '/privacy-policy'
     | '/refund-return-policy'
     | '/shipping-policy'
@@ -190,6 +202,7 @@ export interface RootRouteChildren {
   BlogsRoute: typeof BlogsRouteWithChildren
   CheckoutRoute: typeof CheckoutRoute
   CollectionsRoute: typeof CollectionsRouteWithChildren
+  ContactRoute: typeof ContactRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   RefundReturnPolicyRoute: typeof RefundReturnPolicyRoute
   ShippingPolicyRoute: typeof ShippingPolicyRoute
@@ -239,6 +252,13 @@ declare module '@tanstack/react-router' {
       path: '/collections'
       fullPath: '/collections'
       preLoaderRoute: typeof CollectionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy-policy': {
@@ -322,6 +342,7 @@ const rootRouteChildren: RootRouteChildren = {
   BlogsRoute: BlogsRouteWithChildren,
   CheckoutRoute: CheckoutRoute,
   CollectionsRoute: CollectionsRouteWithChildren,
+  ContactRoute: ContactRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   RefundReturnPolicyRoute: RefundReturnPolicyRoute,
   ShippingPolicyRoute: ShippingPolicyRoute,

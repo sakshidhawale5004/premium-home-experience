@@ -196,6 +196,10 @@ export function Header() {
           <Link to="/blogs" className="text-[0.92rem] font-medium tracking-wide text-foreground/90 transition-colors hover:text-gold-deep">
             Vastu Blogs
           </Link>
+
+          <Link to="/contact" className="text-[0.92rem] font-medium tracking-wide text-foreground/90 transition-colors hover:text-gold-deep">
+            Contact
+          </Link>
         </nav>
       </div>
 
@@ -231,6 +235,9 @@ export function Header() {
             </Link>
             <Link to="/blogs" onClick={() => setOpen(false)} className="rounded-xl px-3 py-2.5 hover:bg-secondary font-medium">
               Vastu Insights &amp; Blogs
+            </Link>
+            <Link to="/contact" onClick={() => setOpen(false)} className="rounded-xl px-3 py-2.5 hover:bg-secondary font-medium">
+              Contact Atelier
             </Link>
 
             <div className="my-2 border-t border-border pt-2">

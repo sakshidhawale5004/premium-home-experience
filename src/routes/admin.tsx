@@ -232,10 +232,10 @@ const SEED_INQUIRIES: AdminInquiry[] = [
 ];
 
 function AdminPage() {
-  // Auth state
+  // Auth state with default credentials included
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("admin");
+  const [password, setPassword] = useState("admin123");
   const [authError, setAuthError] = useState("");
   const [activeTab, setActiveTab] = useState<"overview" | "products" | "orders" | "customers" | "inquiries">("overview");
 
@@ -251,7 +251,6 @@ function AdminPage() {
   const [orderSearch, setOrderSearch] = useState("");
   const [orderStatusFilter, setOrderStatusFilter] = useState("All");
   const [customerSearch, setCustomerSearch] = useState("");
-  const [inquirySearch, setInquirySearch] = useState("");
 
   // Add / Edit Product Modal state
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
@@ -349,6 +348,14 @@ function AdminPage() {
           // ignore
         }
       }
+      const liveInq = localStorage.getItem("vastu_inquiries");
+      if (liveInq) {
+        try {
+          setInquiriesList(JSON.parse(liveInq));
+        } catch {
+          // ignore
+        }
+      }
     };
 
     window.addEventListener("storage", handleStorageUpdate);
@@ -371,7 +378,7 @@ function AdminPage() {
       localStorage.setItem("vastu_admin_logged", "true");
       setAuthError("");
     } else {
-      setAuthError("Invalid credentials. Try: username: admin / password: admin123");
+      setAuthError("Invalid credentials. (Default: username: admin / password: admin123)");
     }
   };
 
@@ -429,7 +436,6 @@ function AdminPage() {
     if (!formName.trim()) return;
 
     if (editingProductSlug) {
-      // Update existing
       setProductsList((prev) => {
         const updated = prev.map((p) =>
           p.slug === editingProductSlug
@@ -451,7 +457,6 @@ function AdminPage() {
         return updated;
       });
     } else {
-      // Add new
       const newSlug = formName
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, "-")
@@ -592,39 +597,41 @@ function AdminPage() {
   const processingOrdersCount = ordersList.filter((o) => o.status === "Processing").length;
   const shippedOrdersCount = ordersList.filter((o) => o.status === "Shipped").length;
   const deliveredOrdersCount = ordersList.filter((o) => o.status === "Delivered").length;
-  const catalogValuation = productsList.reduce((sum, p) => sum + p.price * 25, 0); // sample estimated inventory
+  const catalogValuation = productsList.reduce((sum, p) => sum + p.price * 25, 0);
 
-  // --- LOGIN SCREEN ---
+  // ==========================================================
+  // LOGIN SCREEN (GREEN & BEIGE THEME WITH DEFAULT INCLUDED)
+  // ==========================================================
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-[#0d1f17] text-white flex flex-col justify-center items-center px-4 relative overflow-hidden font-sans">
-        {/* Ambient Glow Orbs */}
-        <div className="absolute top-1/4 left-1/4 w-[450px] h-[450px] bg-emerald-600/10 blur-[130px] rounded-full pointer-events-none" />
-        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-amber-500/10 blur-[130px] rounded-full pointer-events-none" />
+      <div className="min-h-screen bg-[#f7f5ed] text-[#153426] flex flex-col justify-center items-center px-4 relative overflow-hidden font-sans">
+        {/* Ambient Subtle Green & Beige Glow Orbs */}
+        <div className="absolute top-1/4 left-1/4 w-[450px] h-[450px] bg-[#153426]/8 blur-[120px] rounded-full pointer-events-none" />
+        <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-[#c5a059]/15 blur-[120px] rounded-full pointer-events-none" />
 
-        <div className="w-full max-w-md bg-[#132a20] border border-gold/30 rounded-3xl p-8 sm:p-10 shadow-2xl relative z-10">
-          <div className="text-center mb-8">
-            <div className="w-16 h-16 rounded-full bg-black/40 border-2 border-gold/40 flex items-center justify-center mx-auto mb-4 p-2 shadow-inner">
+        <div className="w-full max-w-md bg-white border border-[#e6dfcf] rounded-3xl p-8 sm:p-10 shadow-xl relative z-10">
+          <div className="text-center mb-7">
+            <div className="w-16 h-16 rounded-full bg-[#153426] border-2 border-gold/50 flex items-center justify-center mx-auto mb-4 p-2.5 shadow-md">
               <img
                 src="/cropped-VastuAdda-Golden-House-Logo-300x75.png"
                 alt="Vastu Adda"
                 className="w-full h-full object-contain brightness-110"
               />
             </div>
-            <span className="text-[0.68rem] tracking-widest uppercase font-bold text-gold block">
+            <span className="text-[0.68rem] tracking-widest uppercase font-bold text-gold-deep block">
               VASTU ADDA · COMMERCE SUITE
             </span>
-            <h1 className="font-display text-2xl sm:text-3xl font-bold text-white mt-1.5">
+            <h1 className="font-display text-2xl sm:text-3xl font-bold text-[#153426] mt-1.5">
               Staff CRM &amp; Admin Hub
             </h1>
-            <p className="text-xs text-zinc-300 mt-2 leading-relaxed">
-              Enter your staff credentials to manage the remedy catalog, review orders, and monitor store telemetry.
+            <p className="text-xs text-[#55635b] mt-2 leading-relaxed">
+              Enter staff credentials to manage remedy inventory, process orders, and review patron profiles.
             </p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label htmlFor={usernameId} className="block text-[11px] uppercase tracking-wider text-zinc-300 font-semibold mb-1">
+              <label htmlFor={usernameId} className="block text-[11px] uppercase tracking-wider text-[#153426] font-bold mb-1">
                 Staff Username
               </label>
               <input
@@ -634,36 +641,36 @@ function AdminPage() {
                 placeholder="admin"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full bg-[#0a1811] border border-zinc-700/80 rounded-xl px-4 py-2.5 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-all"
+                className="w-full bg-[#fbf9f4] border border-[#d8cfbe] rounded-xl px-4 py-2.5 text-xs text-[#153426] font-medium placeholder:text-zinc-400 focus:outline-none focus:border-[#153426] focus:ring-1 focus:ring-[#153426] transition-all"
               />
             </div>
 
             <div>
-              <label htmlFor={passwordId} className="block text-[11px] uppercase tracking-wider text-zinc-300 font-semibold mb-1">
+              <label htmlFor={passwordId} className="block text-[11px] uppercase tracking-wider text-[#153426] font-bold mb-1">
                 Password
               </label>
               <input
                 id={passwordId}
                 type="password"
                 required
-                placeholder="••••••••"
+                placeholder="admin123"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-[#0a1811] border border-zinc-700/80 rounded-xl px-4 py-2.5 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-all"
+                className="w-full bg-[#fbf9f4] border border-[#d8cfbe] rounded-xl px-4 py-2.5 text-xs text-[#153426] font-medium placeholder:text-zinc-400 focus:outline-none focus:border-[#153426] focus:ring-1 focus:ring-[#153426] transition-all"
               />
             </div>
 
             {authError && (
-              <p className="text-xs text-red-400 bg-red-950/40 border border-red-800/60 rounded-lg p-2.5">
+              <p className="text-xs text-red-700 bg-red-50 border border-red-200 rounded-lg p-2.5">
                 {authError}
               </p>
             )}
 
             <button
               type="submit"
-              className="w-full mt-2 bg-gold hover:bg-gold-deep text-forest font-bold text-xs py-3.5 rounded-xl shadow-lg transition-all active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full mt-2 bg-[#153426] hover:bg-[#1e4a36] text-[#f7f5ed] font-bold text-xs py-3.5 rounded-xl shadow-md transition-all active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer"
             >
-              <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2.2">
+              <svg viewBox="0 0 24 24" className="h-4 w-4 text-gold" fill="none" stroke="currentColor" strokeWidth="2.2">
                 <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
                 <path d="M7 11V7a5 5 0 0 1 10 0v4" />
               </svg>
@@ -671,16 +678,16 @@ function AdminPage() {
             </button>
           </form>
 
-          <div className="mt-6 pt-5 border-t border-zinc-800 text-center">
+          <div className="mt-6 pt-5 border-t border-[#ede7d9] text-center">
             <button
               type="button"
               onClick={handleFillDemoCreds}
-              className="text-xs text-gold hover:text-white underline cursor-pointer inline-flex items-center gap-1.5 font-medium transition-colors"
+              className="text-xs text-gold-deep hover:text-[#153426] underline cursor-pointer inline-flex items-center gap-1.5 font-semibold transition-colors"
             >
               <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 fill-current">
                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
               </svg>
-              <span>Fill default demo credentials (admin / admin123)</span>
+              <span>Fill default credentials (admin / admin123)</span>
             </button>
           </div>
         </div>
@@ -688,13 +695,15 @@ function AdminPage() {
     );
   }
 
-  // --- LOGGED IN STAFF ADMIN HUB ---
+  // ==========================================================
+  // LOGGED-IN STAFF ADMIN HUB (GREEN & BEIGE THEME)
+  // ==========================================================
   return (
-    <div className="min-h-screen bg-[#0b1712] text-zinc-100 font-sans pb-16">
-      {/* 1. TOP NAVIGATION BAR */}
-      <header className="sticky top-0 z-40 bg-[#0d1e17]/95 backdrop-blur-md border-b border-gold/30 px-4 sm:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
+    <div className="min-h-screen bg-[#f7f5ed] text-[#153426] font-sans pb-16">
+      {/* 1. TOP NAVIGATION BAR (GREEN WITH BEIGE TEXT & GOLD ACCENTS) */}
+      <header className="sticky top-0 z-40 bg-[#153426] text-[#f7f5ed] border-b border-gold/40 px-4 sm:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4 shadow-md">
         <div className="flex items-center gap-3">
-          <div className="h-9 w-9 rounded-full bg-black/40 border border-gold/40 flex items-center justify-center p-1">
+          <div className="h-9 w-9 rounded-full bg-black/30 border border-gold/40 flex items-center justify-center p-1 shadow-inner">
             <img src="/cropped-VastuAdda-Golden-House-Logo-300x75.png" alt="Logo" className="w-full h-full object-contain brightness-110" />
           </div>
           <div>
@@ -708,12 +717,12 @@ function AdminPage() {
         </div>
 
         {/* Tab Switcher */}
-        <nav className="flex items-center gap-1 bg-[#132a20] p-1 rounded-2xl border border-zinc-800 text-xs overflow-x-auto max-w-full">
+        <nav className="flex items-center gap-1 bg-[#0f271d] p-1 rounded-2xl border border-gold/25 text-xs overflow-x-auto max-w-full">
           <button
             type="button"
             onClick={() => setActiveTab("overview")}
-            className={`px-3.5 py-1.5 rounded-xl font-medium transition-all ${
-              activeTab === "overview" ? "bg-forest text-gold border border-gold/30 shadow" : "text-zinc-400 hover:text-white"
+            className={`px-3.5 py-1.5 rounded-xl font-bold transition-all ${
+              activeTab === "overview" ? "bg-[#c5a059] text-[#153426] shadow" : "text-[#d6dec7] hover:text-white"
             }`}
           >
             Dashboard
@@ -721,8 +730,8 @@ function AdminPage() {
           <button
             type="button"
             onClick={() => setActiveTab("products")}
-            className={`px-3.5 py-1.5 rounded-xl font-medium transition-all ${
-              activeTab === "products" ? "bg-forest text-gold border border-gold/30 shadow" : "text-zinc-400 hover:text-white"
+            className={`px-3.5 py-1.5 rounded-xl font-bold transition-all ${
+              activeTab === "products" ? "bg-[#c5a059] text-[#153426] shadow" : "text-[#d6dec7] hover:text-white"
             }`}
           >
             Products ({productsList.length})
@@ -730,8 +739,8 @@ function AdminPage() {
           <button
             type="button"
             onClick={() => setActiveTab("orders")}
-            className={`px-3.5 py-1.5 rounded-xl font-medium transition-all ${
-              activeTab === "orders" ? "bg-forest text-gold border border-gold/30 shadow" : "text-zinc-400 hover:text-white"
+            className={`px-3.5 py-1.5 rounded-xl font-bold transition-all ${
+              activeTab === "orders" ? "bg-[#c5a059] text-[#153426] shadow" : "text-[#d6dec7] hover:text-white"
             }`}
           >
             Orders ({ordersList.length})
@@ -739,8 +748,8 @@ function AdminPage() {
           <button
             type="button"
             onClick={() => setActiveTab("customers")}
-            className={`px-3.5 py-1.5 rounded-xl font-medium transition-all ${
-              activeTab === "customers" ? "bg-forest text-gold border border-gold/30 shadow" : "text-zinc-400 hover:text-white"
+            className={`px-3.5 py-1.5 rounded-xl font-bold transition-all ${
+              activeTab === "customers" ? "bg-[#c5a059] text-[#153426] shadow" : "text-[#d6dec7] hover:text-white"
             }`}
           >
             Patron CRM ({customersList.length})
@@ -748,8 +757,8 @@ function AdminPage() {
           <button
             type="button"
             onClick={() => setActiveTab("inquiries")}
-            className={`px-3.5 py-1.5 rounded-xl font-medium transition-all ${
-              activeTab === "inquiries" ? "bg-forest text-gold border border-gold/30 shadow" : "text-zinc-400 hover:text-white"
+            className={`px-3.5 py-1.5 rounded-xl font-bold transition-all ${
+              activeTab === "inquiries" ? "bg-[#c5a059] text-[#153426] shadow" : "text-[#d6dec7] hover:text-white"
             }`}
           >
             Inquiries ({inquiriesList.length})
@@ -761,7 +770,7 @@ function AdminPage() {
           <Link
             to="/"
             target="_blank"
-            className="rounded-xl border border-zinc-700 bg-[#132a20] px-3 py-1.5 text-xs font-semibold text-zinc-300 hover:text-white hover:border-gold transition-colors flex items-center gap-1.5"
+            className="rounded-xl border border-gold/40 bg-[#0f271d] px-3.5 py-1.5 text-xs font-semibold text-[#f7f5ed] hover:text-gold hover:border-gold transition-colors flex items-center gap-1.5"
           >
             <span>Storefront</span>
             <span aria-hidden="true">→</span>
@@ -769,7 +778,7 @@ function AdminPage() {
           <button
             type="button"
             onClick={handleLogout}
-            className="rounded-xl bg-red-950/60 border border-red-800/80 px-3 py-1.5 text-xs font-semibold text-red-200 hover:bg-red-900 transition-colors"
+            className="rounded-xl bg-red-700/80 hover:bg-red-700 px-3 py-1.5 text-xs font-bold text-white transition-colors"
           >
             Logout
           </button>
@@ -786,28 +795,28 @@ function AdminPage() {
             {/* Top Toolbar */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <span className="text-xs uppercase tracking-widest text-gold font-bold">Executive Telemetry</span>
-                <h2 className="font-display text-2xl sm:text-3xl font-bold text-white mt-0.5">Command Center</h2>
+                <span className="text-xs uppercase tracking-widest text-gold-deep font-bold">Executive Telemetry</span>
+                <h2 className="font-display text-2xl sm:text-3xl font-bold text-[#153426] mt-0.5">Command Center</h2>
               </div>
               <div className="flex flex-wrap items-center gap-2.5">
                 <button
                   type="button"
                   onClick={handleOpenAddProduct}
-                  className="rounded-xl bg-gold px-4 py-2 text-xs font-bold text-forest hover:bg-gold-deep hover:text-white transition-all shadow"
+                  className="rounded-xl bg-[#153426] px-4 py-2 text-xs font-bold text-white hover:bg-[#1e4a36] transition-all shadow"
                 >
                   + Add Product
                 </button>
                 <button
                   type="button"
                   onClick={exportProductsCSV}
-                  className="rounded-xl border border-zinc-700 bg-[#132a20] px-3.5 py-2 text-xs font-semibold text-zinc-300 hover:border-gold hover:text-white transition-colors"
+                  className="rounded-xl border border-[#d8cfbe] bg-white px-3.5 py-2 text-xs font-semibold text-[#153426] hover:border-gold transition-colors shadow-xs"
                 >
                   Export Products CSV
                 </button>
                 <button
                   type="button"
                   onClick={exportOrdersCSV}
-                  className="rounded-xl border border-zinc-700 bg-[#132a20] px-3.5 py-2 text-xs font-semibold text-zinc-300 hover:border-gold hover:text-white transition-colors"
+                  className="rounded-xl border border-[#d8cfbe] bg-white px-3.5 py-2 text-xs font-semibold text-[#153426] hover:border-gold transition-colors shadow-xs"
                 >
                   Export Orders CSV
                 </button>
@@ -816,52 +825,52 @@ function AdminPage() {
 
             {/* 4 Metric Cards */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-              <div className="rounded-3xl border border-gold/30 bg-[#132a20] p-5 shadow-sm">
-                <span className="text-[0.7rem] uppercase tracking-wider text-zinc-400 font-semibold">Gross Revenue</span>
-                <p className="font-display text-2xl sm:text-3xl font-bold text-white mt-1">{inr(grossRevenue)}</p>
-                <span className="text-[0.68rem] text-emerald-400 font-medium mt-1 block">Live synced orders</span>
+              <div className="rounded-3xl border border-[#e6dfcf] bg-white p-5 shadow-sm">
+                <span className="text-[0.7rem] uppercase tracking-wider text-[#63726a] font-bold">Gross Revenue</span>
+                <p className="font-display text-2xl sm:text-3xl font-bold text-[#153426] mt-1">{inr(grossRevenue)}</p>
+                <span className="text-[0.68rem] text-emerald-700 font-semibold mt-1 block">Live synced orders</span>
               </div>
 
-              <div className="rounded-3xl border border-gold/30 bg-[#132a20] p-5 shadow-sm">
-                <span className="text-[0.7rem] uppercase tracking-wider text-zinc-400 font-semibold">Total Orders</span>
-                <p className="font-display text-2xl sm:text-3xl font-bold text-white mt-1">{totalOrdersCount}</p>
-                <span className="text-[0.68rem] text-gold font-medium mt-1 block">{pendingOrdersCount} awaiting packing</span>
+              <div className="rounded-3xl border border-[#e6dfcf] bg-white p-5 shadow-sm">
+                <span className="text-[0.7rem] uppercase tracking-wider text-[#63726a] font-bold">Total Orders</span>
+                <p className="font-display text-2xl sm:text-3xl font-bold text-[#153426] mt-1">{totalOrdersCount}</p>
+                <span className="text-[0.68rem] text-amber-800 font-semibold mt-1 block">{pendingOrdersCount} awaiting packing</span>
               </div>
 
-              <div className="rounded-3xl border border-gold/30 bg-[#132a20] p-5 shadow-sm">
-                <span className="text-[0.7rem] uppercase tracking-wider text-zinc-400 font-semibold">Active CRM Patrons</span>
-                <p className="font-display text-2xl sm:text-3xl font-bold text-white mt-1">{customersList.length}</p>
-                <span className="text-[0.68rem] text-emerald-400 font-medium mt-1 block">All Indian pin codes</span>
+              <div className="rounded-3xl border border-[#e6dfcf] bg-white p-5 shadow-sm">
+                <span className="text-[0.7rem] uppercase tracking-wider text-[#63726a] font-bold">Active CRM Patrons</span>
+                <p className="font-display text-2xl sm:text-3xl font-bold text-[#153426] mt-1">{customersList.length}</p>
+                <span className="text-[0.68rem] text-emerald-700 font-semibold mt-1 block">All Indian pin codes</span>
               </div>
 
-              <div className="rounded-3xl border border-gold/30 bg-[#132a20] p-5 shadow-sm">
-                <span className="text-[0.7rem] uppercase tracking-wider text-zinc-400 font-semibold">Catalog Valuation</span>
-                <p className="font-display text-2xl sm:text-3xl font-bold text-white mt-1">{inr(catalogValuation)}</p>
-                <span className="text-[0.68rem] text-zinc-400 font-medium mt-1 block">Across {productsList.length} remedies</span>
+              <div className="rounded-3xl border border-[#e6dfcf] bg-white p-5 shadow-sm">
+                <span className="text-[0.7rem] uppercase tracking-wider text-[#63726a] font-bold">Catalog Valuation</span>
+                <p className="font-display text-2xl sm:text-3xl font-bold text-[#153426] mt-1">{inr(catalogValuation)}</p>
+                <span className="text-[0.68rem] text-[#63726a] font-medium mt-1 block">Across {productsList.length} remedies</span>
               </div>
             </div>
 
             {/* Funnel & Categories Grid */}
             <div className="grid gap-6 lg:grid-cols-2">
               {/* Order Fulfillment Funnel */}
-              <div className="rounded-3xl border border-zinc-800 bg-[#132a20] p-6 shadow-sm">
-                <div className="flex items-center justify-between pb-3 border-b border-zinc-800">
-                  <h3 className="font-display text-base font-bold text-white">Order Fulfillment Funnel</h3>
-                  <button type="button" onClick={() => setActiveTab("orders")} className="text-xs text-gold hover:underline">
+              <div className="rounded-3xl border border-[#e6dfcf] bg-white p-6 shadow-sm">
+                <div className="flex items-center justify-between pb-3 border-b border-[#eee8db]">
+                  <h3 className="font-display text-base font-bold text-[#153426]">Order Fulfillment Funnel</h3>
+                  <button type="button" onClick={() => setActiveTab("orders")} className="text-xs text-gold-deep font-bold hover:underline">
                     Manage Orders →
                   </button>
                 </div>
                 <div className="mt-5 space-y-3.5">
                   <div>
                     <div className="flex justify-between text-xs mb-1">
-                      <span className="text-zinc-300">Delivered &amp; Blessed ({deliveredOrdersCount})</span>
-                      <span className="text-emerald-400 font-semibold">
+                      <span className="text-[#3b4740] font-medium">Delivered &amp; Blessed ({deliveredOrdersCount})</span>
+                      <span className="text-emerald-700 font-bold">
                         {totalOrdersCount ? Math.round((deliveredOrdersCount / totalOrdersCount) * 100) : 0}%
                       </span>
                     </div>
-                    <div className="h-2 w-full rounded-full bg-zinc-800 overflow-hidden">
+                    <div className="h-2 w-full rounded-full bg-[#ede6d6] overflow-hidden">
                       <div
-                        className="h-full bg-emerald-500 rounded-full"
+                        className="h-full bg-emerald-600 rounded-full"
                         style={{ width: `${totalOrdersCount ? (deliveredOrdersCount / totalOrdersCount) * 100 : 0}%` }}
                       />
                     </div>
@@ -869,14 +878,14 @@ function AdminPage() {
 
                   <div>
                     <div className="flex justify-between text-xs mb-1">
-                      <span className="text-zinc-300">Shipped / In Transit ({shippedOrdersCount})</span>
-                      <span className="text-cyan-400 font-semibold">
+                      <span className="text-[#3b4740] font-medium">Shipped / In Transit ({shippedOrdersCount})</span>
+                      <span className="text-cyan-700 font-bold">
                         {totalOrdersCount ? Math.round((shippedOrdersCount / totalOrdersCount) * 100) : 0}%
                       </span>
                     </div>
-                    <div className="h-2 w-full rounded-full bg-zinc-800 overflow-hidden">
+                    <div className="h-2 w-full rounded-full bg-[#ede6d6] overflow-hidden">
                       <div
-                        className="h-full bg-cyan-500 rounded-full"
+                        className="h-full bg-cyan-600 rounded-full"
                         style={{ width: `${totalOrdersCount ? (shippedOrdersCount / totalOrdersCount) * 100 : 0}%` }}
                       />
                     </div>
@@ -884,14 +893,14 @@ function AdminPage() {
 
                   <div>
                     <div className="flex justify-between text-xs mb-1">
-                      <span className="text-zinc-300">Processing / Consecrated ({processingOrdersCount})</span>
-                      <span className="text-amber-400 font-semibold">
+                      <span className="text-[#3b4740] font-medium">Processing / Consecrated ({processingOrdersCount})</span>
+                      <span className="text-amber-700 font-bold">
                         {totalOrdersCount ? Math.round((processingOrdersCount / totalOrdersCount) * 100) : 0}%
                       </span>
                     </div>
-                    <div className="h-2 w-full rounded-full bg-zinc-800 overflow-hidden">
+                    <div className="h-2 w-full rounded-full bg-[#ede6d6] overflow-hidden">
                       <div
-                        className="h-full bg-amber-500 rounded-full"
+                        className="h-full bg-amber-600 rounded-full"
                         style={{ width: `${totalOrdersCount ? (processingOrdersCount / totalOrdersCount) * 100 : 0}%` }}
                       />
                     </div>
@@ -899,14 +908,14 @@ function AdminPage() {
 
                   <div>
                     <div className="flex justify-between text-xs mb-1">
-                      <span className="text-zinc-300">Pending / Awaiting Consecration ({pendingOrdersCount})</span>
-                      <span className="text-red-400 font-semibold">
+                      <span className="text-[#3b4740] font-medium">Pending / Awaiting Consecration ({pendingOrdersCount})</span>
+                      <span className="text-red-700 font-bold">
                         {totalOrdersCount ? Math.round((pendingOrdersCount / totalOrdersCount) * 100) : 0}%
                       </span>
                     </div>
-                    <div className="h-2 w-full rounded-full bg-zinc-800 overflow-hidden">
+                    <div className="h-2 w-full rounded-full bg-[#ede6d6] overflow-hidden">
                       <div
-                        className="h-full bg-red-500 rounded-full"
+                        className="h-full bg-red-600 rounded-full"
                         style={{ width: `${totalOrdersCount ? (pendingOrdersCount / totalOrdersCount) * 100 : 0}%` }}
                       />
                     </div>
@@ -915,10 +924,10 @@ function AdminPage() {
               </div>
 
               {/* Portfolio Distribution */}
-              <div className="rounded-3xl border border-zinc-800 bg-[#132a20] p-6 shadow-sm">
-                <div className="flex items-center justify-between pb-3 border-b border-zinc-800">
-                  <h3 className="font-display text-base font-bold text-white">Portfolio Distribution</h3>
-                  <button type="button" onClick={() => setActiveTab("products")} className="text-xs text-gold hover:underline">
+              <div className="rounded-3xl border border-[#e6dfcf] bg-white p-6 shadow-sm">
+                <div className="flex items-center justify-between pb-3 border-b border-[#eee8db]">
+                  <h3 className="font-display text-base font-bold text-[#153426]">Portfolio Distribution</h3>
+                  <button type="button" onClick={() => setActiveTab("products")} className="text-xs text-gold-deep font-bold hover:underline">
                     View Catalog →
                   </button>
                 </div>
@@ -926,9 +935,9 @@ function AdminPage() {
                   {["Crystal Trees", "Crystal Pyramids", "Crystal Bracelets", "Malas", "Vastu Products"].map((cat) => {
                     const count = productsList.filter((p) => p.category === cat).length;
                     return (
-                      <div key={cat} className="rounded-2xl border border-zinc-800 bg-black/30 p-3.5">
-                        <span className="text-zinc-400 text-[0.68rem] block truncate">{cat}</span>
-                        <p className="font-display text-lg font-bold text-white mt-1">{count} Remedies</p>
+                      <div key={cat} className="rounded-2xl border border-[#e6dfcf] bg-[#fbf9f4] p-3.5">
+                        <span className="text-[#63726a] text-[0.68rem] font-medium block truncate">{cat}</span>
+                        <p className="font-display text-lg font-bold text-[#153426] mt-1">{count} Remedies</p>
                       </div>
                     );
                   })}
@@ -937,24 +946,24 @@ function AdminPage() {
             </div>
 
             {/* Live Orders Stream */}
-            <div className="rounded-3xl border border-zinc-800 bg-[#132a20] p-6 shadow-sm">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-zinc-800 gap-2">
+            <div className="rounded-3xl border border-[#e6dfcf] bg-white p-6 shadow-sm">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-[#eee8db] gap-2">
                 <div>
-                  <h3 className="font-display text-lg font-bold text-white">Recent Orders &amp; Checkouts</h3>
-                  <p className="text-xs text-zinc-400">Live feed of orders placed through the website</p>
+                  <h3 className="font-display text-lg font-bold text-[#153426]">Recent Orders &amp; Checkouts</h3>
+                  <p className="text-xs text-[#63726a]">Live feed of orders placed through the website</p>
                 </div>
                 <button
                   type="button"
                   onClick={() => setActiveTab("orders")}
-                  className="rounded-xl border border-zinc-700 bg-black/30 px-3.5 py-1.5 text-xs text-gold hover:text-white transition-colors"
+                  className="rounded-xl border border-[#d8cfbe] bg-[#fbf9f4] px-3.5 py-1.5 text-xs text-gold-deep font-bold hover:bg-[#153426] hover:text-white transition-colors"
                 >
                   View All Orders →
                 </button>
               </div>
 
               <div className="mt-4 overflow-x-auto">
-                <table className="w-full text-left text-xs text-zinc-300">
-                  <thead className="border-b border-zinc-800 text-[0.68rem] uppercase tracking-wider text-zinc-400">
+                <table className="w-full text-left text-xs text-[#2b3831]">
+                  <thead className="border-b border-[#e6dfcf] bg-[#f5f1e6] text-[0.68rem] uppercase tracking-wider text-[#153426] font-bold">
                     <tr>
                       <th className="py-3 px-3">Order ID</th>
                       <th className="py-3 px-3">Customer</th>
@@ -965,34 +974,34 @@ function AdminPage() {
                       <th className="py-3 px-3 text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-800/60">
+                  <tbody className="divide-y divide-[#eee8db]">
                     {ordersList.slice(0, 6).map((ord) => (
-                      <tr key={ord.orderId} className="hover:bg-black/20 transition-colors">
-                        <td className="py-3 px-3 font-semibold text-gold">{ord.orderId}</td>
+                      <tr key={ord.orderId} className="hover:bg-[#fcfbf7] transition-colors">
+                        <td className="py-3 px-3 font-bold text-gold-deep">{ord.orderId}</td>
                         <td className="py-3 px-3">
-                          <p className="font-medium text-white">{ord.fullName}</p>
-                          <p className="text-[0.68rem] text-zinc-400">+91 {ord.phone}</p>
+                          <p className="font-bold text-[#153426]">{ord.fullName}</p>
+                          <p className="text-[0.68rem] text-[#63726a]">+91 {ord.phone}</p>
                         </td>
-                        <td className="py-3 px-3 max-w-[200px] truncate">
+                        <td className="py-3 px-3 max-w-[200px] truncate text-[#3d4a42]">
                           {ord.items.map((it) => `${it.qty}x ${it.name}`).join(", ")}
                         </td>
-                        <td className="py-3 px-3 font-bold text-white">{inr(ord.total)}</td>
+                        <td className="py-3 px-3 font-bold text-[#153426]">{inr(ord.total)}</td>
                         <td className="py-3 px-3">
                           <span
                             className={`rounded-full px-2.5 py-1 text-[0.65rem] font-bold uppercase tracking-wider ${
                               ord.status === "Delivered"
-                                ? "bg-emerald-950 text-emerald-300 border border-emerald-800"
+                                ? "bg-emerald-100 text-emerald-800 border border-emerald-300"
                                 : ord.status === "Shipped"
-                                ? "bg-cyan-950 text-cyan-300 border border-cyan-800"
+                                ? "bg-cyan-100 text-cyan-800 border border-cyan-300"
                                 : ord.status === "Processing"
-                                ? "bg-amber-950 text-amber-300 border border-amber-800"
-                                : "bg-red-950 text-red-300 border border-red-800"
+                                ? "bg-amber-100 text-amber-800 border border-amber-300"
+                                : "bg-rose-100 text-rose-800 border border-rose-300"
                             }`}
                           >
                             {ord.status}
                           </span>
                         </td>
-                        <td className="py-3 px-3 text-zinc-400">{ord.date}</td>
+                        <td className="py-3 px-3 text-[#63726a]">{ord.date}</td>
                         <td className="py-3 px-3 text-right">
                           <a
                             href={`${STORE.whatsapp}?text=${encodeURIComponent(
@@ -1000,7 +1009,7 @@ function AdminPage() {
                             )}`}
                             target="_blank"
                             rel="noreferrer"
-                            className="inline-flex items-center gap-1 text-[0.7rem] text-emerald-400 hover:text-emerald-300 font-semibold"
+                            className="inline-flex items-center gap-1 text-[0.7rem] text-emerald-800 hover:text-emerald-950 font-bold"
                           >
                             <span>WhatsApp</span>
                             <span aria-hidden="true">↗</span>
@@ -1022,28 +1031,28 @@ function AdminPage() {
           <div className="space-y-6 animate-in fade-in duration-300">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <span className="text-xs uppercase tracking-widest text-gold font-bold">Inventory Control</span>
-                <h2 className="font-display text-2xl sm:text-3xl font-bold text-white mt-0.5">Products Catalog</h2>
+                <span className="text-xs uppercase tracking-widest text-gold-deep font-bold">Inventory Control</span>
+                <h2 className="font-display text-2xl sm:text-3xl font-bold text-[#153426] mt-0.5">Products Catalog</h2>
               </div>
               <div className="flex flex-wrap items-center gap-2.5">
                 <button
                   type="button"
                   onClick={handleOpenAddProduct}
-                  className="rounded-xl bg-gold px-4 py-2 text-xs font-bold text-forest hover:bg-gold-deep hover:text-white transition-all shadow"
+                  className="rounded-xl bg-[#153426] px-4 py-2 text-xs font-bold text-white hover:bg-[#1e4a36] transition-all shadow"
                 >
                   + Add Product
                 </button>
                 <button
                   type="button"
                   onClick={exportProductsCSV}
-                  className="rounded-xl border border-zinc-700 bg-[#132a20] px-3.5 py-2 text-xs font-semibold text-zinc-300 hover:border-gold hover:text-white transition-colors"
+                  className="rounded-xl border border-[#d8cfbe] bg-white px-3.5 py-2 text-xs font-semibold text-[#153426] hover:border-gold transition-colors shadow-xs"
                 >
                   Export Catalog CSV
                 </button>
                 <button
                   type="button"
                   onClick={handleResetCatalog}
-                  className="rounded-xl border border-zinc-700 bg-red-950/40 px-3.5 py-2 text-xs font-semibold text-red-300 hover:bg-red-900 transition-colors"
+                  className="rounded-xl border border-red-300 bg-red-50 px-3.5 py-2 text-xs font-semibold text-red-800 hover:bg-red-100 transition-colors"
                 >
                   Reset Defaults
                 </button>
@@ -1057,12 +1066,12 @@ function AdminPage() {
                 placeholder="Search products by title..."
                 value={productSearch}
                 onChange={(e) => setProductSearch(e.target.value)}
-                className="w-full sm:w-80 bg-[#132a20] border border-zinc-700 rounded-xl px-3.5 py-2 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-gold"
+                className="w-full sm:w-80 bg-white border border-[#d8cfbe] rounded-xl px-3.5 py-2 text-xs text-[#153426] placeholder:text-zinc-400 focus:outline-none focus:border-[#153426]"
               />
               <select
                 value={productCategoryFilter}
                 onChange={(e) => setProductCategoryFilter(e.target.value)}
-                className="w-full sm:w-60 bg-[#132a20] border border-zinc-700 rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-gold"
+                className="w-full sm:w-60 bg-white border border-[#d8cfbe] rounded-xl px-3.5 py-2 text-xs text-[#153426] focus:outline-none focus:border-[#153426]"
               >
                 <option value="All">All Categories ({productsList.length})</option>
                 <option value="Crystal Trees">Crystal Trees</option>
@@ -1074,10 +1083,10 @@ function AdminPage() {
             </div>
 
             {/* Products Table */}
-            <div className="rounded-3xl border border-zinc-800 bg-[#132a20] overflow-hidden shadow-sm">
+            <div className="rounded-3xl border border-[#e6dfcf] bg-white overflow-hidden shadow-sm">
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs text-zinc-300">
-                  <thead className="border-b border-zinc-800 bg-black/40 text-[0.68rem] uppercase tracking-wider text-zinc-400">
+                <table className="w-full text-left text-xs text-[#2b3831]">
+                  <thead className="border-b border-[#e6dfcf] bg-[#f5f1e6] text-[0.68rem] uppercase tracking-wider text-[#153426] font-bold">
                     <tr>
                       <th className="py-3 px-4">Image</th>
                       <th className="py-3 px-4">Name &amp; Remedy Notes</th>
@@ -1088,7 +1097,7 @@ function AdminPage() {
                       <th className="py-3 px-4 text-right">Actions</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-800/60">
+                  <tbody className="divide-y divide-[#eee8db]">
                     {productsList
                       .filter((p) => {
                         const matchesCat = productCategoryFilter === "All" || p.category === productCategoryFilter;
@@ -1096,39 +1105,39 @@ function AdminPage() {
                         return matchesCat && matchesSearch;
                       })
                       .map((prod) => (
-                        <tr key={prod.slug} className="hover:bg-black/20 transition-colors">
+                        <tr key={prod.slug} className="hover:bg-[#fcfbf7] transition-colors">
                           <td className="py-3 px-4">
                             <img
                               src={prod.image}
                               alt={prod.name}
-                              className="h-12 w-12 rounded-xl object-cover border border-zinc-700 bg-black/40"
+                              className="h-12 w-12 rounded-xl object-cover border border-[#d8cfbe] bg-[#f7f5ed]"
                             />
                           </td>
                           <td className="py-3 px-4 max-w-[280px]">
-                            <p className="font-semibold text-white">{prod.name}</p>
-                            <p className="text-[0.68rem] text-zinc-400 truncate">{prod.blurb}</p>
+                            <p className="font-bold text-[#153426]">{prod.name}</p>
+                            <p className="text-[0.68rem] text-[#63726a] truncate">{prod.blurb}</p>
                           </td>
                           <td className="py-3 px-4">
-                            <span className="rounded-full bg-zinc-800 px-2.5 py-1 text-[0.65rem] text-zinc-300 font-medium">
+                            <span className="rounded-full bg-[#eee8db] px-2.5 py-1 text-[0.65rem] text-[#153426] font-semibold">
                               {prod.category}
                             </span>
                           </td>
                           <td className="py-3 px-4">
-                            <p className="font-bold text-white">{inr(prod.price)}</p>
+                            <p className="font-bold text-[#153426]">{inr(prod.price)}</p>
                             {prod.mrp > prod.price && (
-                              <p className="text-[0.65rem] text-zinc-500 line-through">MRP {inr(prod.mrp)}</p>
+                              <p className="text-[0.65rem] text-[#808f86] line-through">MRP {inr(prod.mrp)}</p>
                             )}
                           </td>
-                          <td className="py-3 px-4 text-gold">
-                            ★ {prod.rating} <span className="text-zinc-500 text-[0.68rem]">({prod.reviewsCount})</span>
+                          <td className="py-3 px-4 text-amber-700 font-bold">
+                            ★ {prod.rating} <span className="text-[#808f86] text-[0.68rem]">({prod.reviewsCount})</span>
                           </td>
                           <td className="py-3 px-4">
                             {prod.isBestseller ? (
-                              <span className="rounded-full bg-amber-950 text-amber-300 border border-amber-800 px-2 py-0.5 text-[0.65rem] font-bold">
+                              <span className="rounded-full bg-amber-100 text-amber-900 border border-amber-300 px-2 py-0.5 text-[0.65rem] font-bold">
                                 Bestseller
                               </span>
                             ) : (
-                              <span className="rounded-full bg-zinc-800 text-zinc-400 px-2 py-0.5 text-[0.65rem]">
+                              <span className="rounded-full bg-[#eee8db] text-[#55635b] px-2 py-0.5 text-[0.65rem] font-medium">
                                 Active
                               </span>
                             )}
@@ -1137,14 +1146,14 @@ function AdminPage() {
                             <button
                               type="button"
                               onClick={() => handleOpenEditProduct(prod)}
-                              className="text-xs text-gold hover:underline font-semibold"
+                              className="text-xs text-gold-deep hover:underline font-bold"
                             >
                               Edit
                             </button>
                             <button
                               type="button"
                               onClick={() => handleDeleteProduct(prod.slug)}
-                              className="text-xs text-red-400 hover:underline"
+                              className="text-xs text-red-600 hover:underline font-medium"
                             >
                               Delete
                             </button>
@@ -1165,14 +1174,14 @@ function AdminPage() {
           <div className="space-y-6 animate-in fade-in duration-300">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <span className="text-xs uppercase tracking-widest text-gold font-bold">Fulfillment &amp; Shipping</span>
-                <h2 className="font-display text-2xl sm:text-3xl font-bold text-white mt-0.5">Orders &amp; Logistics</h2>
+                <span className="text-xs uppercase tracking-widest text-gold-deep font-bold">Fulfillment &amp; Shipping</span>
+                <h2 className="font-display text-2xl sm:text-3xl font-bold text-[#153426] mt-0.5">Orders &amp; Logistics</h2>
               </div>
               <div className="flex items-center gap-2.5">
                 <button
                   type="button"
                   onClick={exportOrdersCSV}
-                  className="rounded-xl border border-zinc-700 bg-[#132a20] px-4 py-2 text-xs font-semibold text-zinc-300 hover:border-gold hover:text-white transition-colors"
+                  className="rounded-xl border border-[#d8cfbe] bg-white px-4 py-2 text-xs font-semibold text-[#153426] hover:border-gold transition-colors shadow-xs"
                 >
                   Export Orders CSV
                 </button>
@@ -1187,10 +1196,10 @@ function AdminPage() {
                     key={st}
                     type="button"
                     onClick={() => setOrderStatusFilter(st)}
-                    className={`rounded-xl px-3.5 py-1.5 text-xs font-semibold transition-all ${
+                    className={`rounded-xl px-3.5 py-1.5 text-xs font-bold transition-all ${
                       orderStatusFilter === st
-                        ? "bg-forest text-gold border border-gold/40 shadow"
-                        : "bg-[#132a20] text-zinc-400 hover:text-white"
+                        ? "bg-[#153426] text-white shadow"
+                        : "bg-white text-[#55635b] border border-[#d8cfbe] hover:bg-[#fbf9f4]"
                     }`}
                   >
                     {st}
@@ -1203,7 +1212,7 @@ function AdminPage() {
                 placeholder="Search by customer name, phone, or Order ID..."
                 value={orderSearch}
                 onChange={(e) => setOrderSearch(e.target.value)}
-                className="w-full sm:w-80 bg-[#132a20] border border-zinc-700 rounded-xl px-3.5 py-2 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-gold"
+                className="w-full sm:w-80 bg-white border border-[#d8cfbe] rounded-xl px-3.5 py-2 text-xs text-[#153426] placeholder:text-zinc-400 focus:outline-none focus:border-[#153426]"
               />
             </div>
 
@@ -1222,31 +1231,31 @@ function AdminPage() {
                 .map((ord) => (
                   <div
                     key={ord.orderId}
-                    className="rounded-3xl border border-zinc-800 bg-[#132a20] p-5 sm:p-6 shadow-sm hover:border-gold/30 transition-all"
+                    className="rounded-3xl border border-[#e6dfcf] bg-white p-5 sm:p-6 shadow-sm hover:border-gold transition-all"
                   >
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-zinc-800 gap-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-[#eee8db] gap-3">
                       <div>
                         <div className="flex items-center gap-2">
-                          <span className="font-display font-bold text-gold text-base">{ord.orderId}</span>
+                          <span className="font-display font-bold text-gold-deep text-base">{ord.orderId}</span>
                           <span
                             className={`rounded-full px-2.5 py-0.5 text-[0.65rem] font-bold uppercase tracking-wider ${
                               ord.status === "Delivered"
-                                ? "bg-emerald-950 text-emerald-300 border border-emerald-800"
+                                ? "bg-emerald-100 text-emerald-800 border border-emerald-300"
                                 : ord.status === "Shipped"
-                                ? "bg-cyan-950 text-cyan-300 border border-cyan-800"
+                                ? "bg-cyan-100 text-cyan-800 border border-cyan-300"
                                 : ord.status === "Processing"
-                                ? "bg-amber-950 text-amber-300 border border-amber-800"
-                                : "bg-red-950 text-red-300 border border-red-800"
+                                ? "bg-amber-100 text-amber-800 border border-amber-300"
+                                : "bg-rose-100 text-rose-800 border border-rose-300"
                             }`}
                           >
                             {ord.status}
                           </span>
-                          <span className="text-[0.7rem] text-zinc-400">Placed on {ord.date}</span>
+                          <span className="text-[0.7rem] text-[#63726a]">Placed on {ord.date}</span>
                         </div>
-                        <p className="text-xs text-zinc-300 mt-1">
+                        <p className="text-xs text-[#3d4a42] mt-1">
                           Payment:{" "}
-                          <strong className="text-white uppercase">{ord.paymentMethod === "cod" ? "Cash on Delivery" : "Prepaid UPI"}</strong>{" "}
-                          • Consecration Sankalp: <span className="text-gold">{ord.sankalpName}</span>
+                          <strong className="text-[#153426] uppercase">{ord.paymentMethod === "cod" ? "Cash on Delivery" : "Prepaid UPI"}</strong>{" "}
+                          • Consecration Sankalp: <span className="text-gold-deep font-semibold">{ord.sankalpName}</span>
                         </p>
                       </div>
 
@@ -1255,7 +1264,7 @@ function AdminPage() {
                         <select
                           value={ord.status}
                           onChange={(e) => handleUpdateOrderStatus(ord.orderId, e.target.value as AdminOrder["status"])}
-                          className="rounded-xl border border-zinc-700 bg-black/40 px-3 py-1.5 text-xs text-white focus:outline-none focus:border-gold"
+                          className="rounded-xl border border-[#d8cfbe] bg-[#fbf9f4] px-3 py-1.5 text-xs text-[#153426] font-semibold focus:outline-none focus:border-[#153426]"
                         >
                           <option value="Pending">Pending</option>
                           <option value="Processing">Processing</option>
@@ -1269,7 +1278,7 @@ function AdminPage() {
                           )}`}
                           target="_blank"
                           rel="noreferrer"
-                          className="rounded-xl bg-forest border border-emerald-700/60 px-3 py-1.5 text-xs font-semibold text-emerald-300 hover:bg-emerald-900 transition-colors"
+                          className="rounded-xl bg-emerald-50 border border-emerald-600/40 px-3 py-1.5 text-xs font-bold text-emerald-900 hover:bg-emerald-100 transition-colors"
                         >
                           WhatsApp Customer
                         </a>
@@ -1279,34 +1288,34 @@ function AdminPage() {
                     {/* Order Details Grid */}
                     <div className="mt-4 grid gap-4 sm:grid-cols-12 text-xs">
                       {/* Customer Address */}
-                      <div className="sm:col-span-5 bg-black/25 rounded-2xl p-3.5 border border-zinc-800/80">
-                        <span className="text-[0.68rem] uppercase tracking-wider text-zinc-400 font-bold block mb-1">
+                      <div className="sm:col-span-5 bg-[#fbf9f4] rounded-2xl p-3.5 border border-[#eee8db]">
+                        <span className="text-[0.68rem] uppercase tracking-wider text-[#63726a] font-bold block mb-1">
                           Delivery Recipient
                         </span>
-                        <p className="font-semibold text-white">{ord.fullName}</p>
-                        <p className="text-zinc-300">{ord.addressLine1}, {ord.addressLine2}</p>
-                        <p className="text-zinc-300">{ord.city}, {ord.state} - {ord.pincode}</p>
-                        <p className="text-gold font-medium mt-1">Phone: +91 {ord.phone}</p>
+                        <p className="font-bold text-[#153426]">{ord.fullName}</p>
+                        <p className="text-[#3d4a42]">{ord.addressLine1}, {ord.addressLine2}</p>
+                        <p className="text-[#3d4a42]">{ord.city}, {ord.state} - {ord.pincode}</p>
+                        <p className="text-gold-deep font-bold mt-1">Phone: +91 {ord.phone}</p>
                       </div>
 
                       {/* Items Ordered */}
-                      <div className="sm:col-span-7 bg-black/25 rounded-2xl p-3.5 border border-zinc-800/80">
-                        <span className="text-[0.68rem] uppercase tracking-wider text-zinc-400 font-bold block mb-1">
+                      <div className="sm:col-span-7 bg-[#fbf9f4] rounded-2xl p-3.5 border border-[#eee8db]">
+                        <span className="text-[0.68rem] uppercase tracking-wider text-[#63726a] font-bold block mb-1">
                           Cart Formulation ({ord.items.length} items)
                         </span>
-                        <div className="divide-y divide-zinc-800/60">
+                        <div className="divide-y divide-[#eee8db]">
                           {ord.items.map((it, idx) => (
                             <div key={idx} className="py-1.5 flex justify-between items-center text-xs">
-                              <span className="text-zinc-200">
-                                <strong className="text-gold">{it.qty}x</strong> {it.name}
+                              <span className="text-[#3d4a42]">
+                                <strong className="text-[#153426]">{it.qty}x</strong> {it.name}
                               </span>
-                              <span className="font-semibold text-white">{inr(it.price * it.qty)}</span>
+                              <span className="font-bold text-[#153426]">{inr(it.price * it.qty)}</span>
                             </div>
                           ))}
                         </div>
-                        <div className="mt-2 pt-2 border-t border-zinc-800 flex justify-between font-bold text-sm">
-                          <span className="text-zinc-300">Total Payable:</span>
-                          <span className="text-gold">{inr(ord.total)}</span>
+                        <div className="mt-2 pt-2 border-t border-[#eee8db] flex justify-between font-bold text-sm">
+                          <span className="text-[#55635b]">Total Payable:</span>
+                          <span className="text-gold-deep">{inr(ord.total)}</span>
                         </div>
                       </div>
                     </div>
@@ -1323,13 +1332,13 @@ function AdminPage() {
           <div className="space-y-6 animate-in fade-in duration-300">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <span className="text-xs uppercase tracking-widest text-gold font-bold">Customer Relationships</span>
-                <h2 className="font-display text-2xl sm:text-3xl font-bold text-white mt-0.5">Patron CRM Directory</h2>
+                <span className="text-xs uppercase tracking-widest text-gold-deep font-bold">Customer Relationships</span>
+                <h2 className="font-display text-2xl sm:text-3xl font-bold text-[#153426] mt-0.5">Patron CRM Directory</h2>
               </div>
               <button
                 type="button"
                 onClick={exportCustomersCSV}
-                className="rounded-xl border border-zinc-700 bg-[#132a20] px-4 py-2 text-xs font-semibold text-zinc-300 hover:border-gold hover:text-white transition-colors"
+                className="rounded-xl border border-[#d8cfbe] bg-white px-4 py-2 text-xs font-semibold text-[#153426] hover:border-gold transition-colors shadow-xs"
               >
                 Export Customers CSV
               </button>
@@ -1340,13 +1349,13 @@ function AdminPage() {
               placeholder="Search patrons by name, city, or phone..."
               value={customerSearch}
               onChange={(e) => setCustomerSearch(e.target.value)}
-              className="w-full sm:w-80 bg-[#132a20] border border-zinc-700 rounded-xl px-3.5 py-2 text-xs text-white placeholder:text-zinc-500 focus:outline-none focus:border-gold"
+              className="w-full sm:w-80 bg-white border border-[#d8cfbe] rounded-xl px-3.5 py-2 text-xs text-[#153426] placeholder:text-zinc-400 focus:outline-none focus:border-[#153426]"
             />
 
-            <div className="rounded-3xl border border-zinc-800 bg-[#132a20] overflow-hidden shadow-sm">
+            <div className="rounded-3xl border border-[#e6dfcf] bg-white overflow-hidden shadow-sm">
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs text-zinc-300">
-                  <thead className="border-b border-zinc-800 bg-black/40 text-[0.68rem] uppercase tracking-wider text-zinc-400">
+                <table className="w-full text-left text-xs text-[#2b3831]">
+                  <thead className="border-b border-[#e6dfcf] bg-[#f5f1e6] text-[0.68rem] uppercase tracking-wider text-[#153426] font-bold">
                     <tr>
                       <th className="py-3 px-4">Patron Name</th>
                       <th className="py-3 px-4">Contact</th>
@@ -1358,7 +1367,7 @@ function AdminPage() {
                       <th className="py-3 px-4 text-right">Direct Concierge</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-800/60">
+                  <tbody className="divide-y divide-[#eee8db]">
                     {customersList
                       .filter((c) => {
                         const q = customerSearch.toLowerCase();
@@ -1369,29 +1378,29 @@ function AdminPage() {
                         );
                       })
                       .map((cust) => (
-                        <tr key={cust.id} className="hover:bg-black/20 transition-colors">
-                          <td className="py-3 px-4 font-semibold text-white">{cust.name}</td>
+                        <tr key={cust.id} className="hover:bg-[#fcfbf7] transition-colors">
+                          <td className="py-3 px-4 font-bold text-[#153426]">{cust.name}</td>
                           <td className="py-3 px-4">
-                            <p className="text-zinc-300">+91 {cust.phone}</p>
-                            <p className="text-[0.68rem] text-zinc-500">{cust.email}</p>
+                            <p className="text-[#3d4a42] font-medium">+91 {cust.phone}</p>
+                            <p className="text-[0.68rem] text-[#63726a]">{cust.email}</p>
                           </td>
-                          <td className="py-3 px-4 text-zinc-400">
+                          <td className="py-3 px-4 text-[#3d4a42]">
                             {cust.city}, {cust.state}
                           </td>
                           <td className="py-3 px-4">
                             <span
                               className={`rounded-full px-2.5 py-0.5 text-[0.65rem] font-bold ${
                                 cust.segment === "VIP Patron"
-                                  ? "bg-amber-950 text-gold border border-amber-800"
-                                  : "bg-zinc-800 text-zinc-300"
+                                  ? "bg-amber-100 text-amber-900 border border-amber-300"
+                                  : "bg-[#eee8db] text-[#3d4a42]"
                               }`}
                             >
                               {cust.segment}
                             </span>
                           </td>
-                          <td className="py-3 px-4 font-bold text-white">{cust.ordersCount}</td>
-                          <td className="py-3 px-4 font-bold text-gold">{inr(cust.totalSpend)}</td>
-                          <td className="py-3 px-4 text-zinc-400">{cust.lastOrderDate}</td>
+                          <td className="py-3 px-4 font-bold text-[#153426]">{cust.ordersCount}</td>
+                          <td className="py-3 px-4 font-bold text-gold-deep">{inr(cust.totalSpend)}</td>
+                          <td className="py-3 px-4 text-[#63726a]">{cust.lastOrderDate}</td>
                           <td className="py-3 px-4 text-right">
                             <a
                               href={`${STORE.whatsapp}?text=${encodeURIComponent(
@@ -1399,7 +1408,7 @@ function AdminPage() {
                               )}`}
                               target="_blank"
                               rel="noreferrer"
-                              className="text-emerald-400 hover:text-emerald-300 font-semibold"
+                              className="text-emerald-800 hover:text-emerald-950 font-bold"
                             >
                               WhatsApp ↗
                             </a>
@@ -1420,33 +1429,33 @@ function AdminPage() {
           <div className="space-y-6 animate-in fade-in duration-300">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <span className="text-xs uppercase tracking-widest text-gold font-bold">Wholesale &amp; Bulk Orders</span>
-                <h2 className="font-display text-2xl sm:text-3xl font-bold text-white mt-0.5">Inquiries &amp; Leads</h2>
+                <span className="text-xs uppercase tracking-widest text-gold-deep font-bold">Wholesale &amp; Bulk Orders</span>
+                <h2 className="font-display text-2xl sm:text-3xl font-bold text-[#153426] mt-0.5">Inquiries &amp; Leads</h2>
               </div>
             </div>
 
             <div className="space-y-4">
               {inquiriesList.map((inq) => (
-                <div key={inq.id} className="rounded-3xl border border-zinc-800 bg-[#132a20] p-5 shadow-sm">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-zinc-800 gap-2">
+                <div key={inq.id} className="rounded-3xl border border-[#e6dfcf] bg-white p-5 shadow-sm">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-[#eee8db] gap-2">
                     <div>
-                      <span className="font-bold text-white text-base">{inq.name}</span>
-                      <span className="ml-3 text-xs text-gold font-semibold">{inq.interest}</span>
+                      <span className="font-bold text-[#153426] text-base">{inq.name}</span>
+                      <span className="ml-3 text-xs text-gold-deep font-bold">{inq.interest}</span>
                     </div>
-                    <span className="text-xs text-zinc-400">{inq.date}</span>
+                    <span className="text-xs text-[#63726a]">{inq.date}</span>
                   </div>
-                  <p className="mt-3 text-xs text-zinc-300 leading-relaxed bg-black/25 p-3 rounded-xl border border-zinc-800">
+                  <p className="mt-3 text-xs text-[#3d4a42] leading-relaxed bg-[#fbf9f4] p-3 rounded-xl border border-[#eee8db]">
                     "{inq.message}"
                   </p>
                   <div className="mt-3 flex items-center justify-between text-xs">
-                    <span className="text-zinc-400">Phone: +91 {inq.phone} • {inq.email}</span>
+                    <span className="text-[#63726a]">Phone: +91 {inq.phone} • {inq.email}</span>
                     <a
                       href={`${STORE.whatsapp}?text=${encodeURIComponent(
                         `Namaste ${inq.name}! We received your inquiry regarding "${inq.interest}". We would love to assist you.`,
                       )}`}
                       target="_blank"
                       rel="noreferrer"
-                      className="rounded-xl bg-forest border border-emerald-700/60 px-3.5 py-1 text-xs font-bold text-emerald-300 hover:bg-emerald-900 transition-colors"
+                      className="rounded-xl bg-emerald-50 border border-emerald-600/40 px-3.5 py-1 text-xs font-bold text-emerald-900 hover:bg-emerald-100 transition-colors"
                     >
                       Connect on WhatsApp
                     </a>
@@ -1459,19 +1468,19 @@ function AdminPage() {
       </main>
 
       {/* ========================================================
-          ADD / EDIT PRODUCT MODAL
+          ADD / EDIT PRODUCT MODAL (GREEN & BEIGE THEME)
           ======================================================== */}
       {isProductModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto">
-          <div className="w-full max-w-xl rounded-3xl border border-gold/40 bg-[#132a20] p-6 sm:p-8 shadow-2xl relative my-8 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between pb-4 border-b border-zinc-800">
-              <h3 className="font-display text-xl font-bold text-white">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto">
+          <div className="w-full max-w-xl rounded-3xl border border-[#e6dfcf] bg-white p-6 sm:p-8 shadow-2xl relative my-8 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-4 border-b border-[#eee8db]">
+              <h3 className="font-display text-xl font-bold text-[#153426]">
                 {editingProductSlug ? "Edit Product Remedy" : "Add New Remedy to Catalog"}
               </h3>
               <button
                 type="button"
                 onClick={() => setIsProductModalOpen(false)}
-                className="text-zinc-400 hover:text-white text-lg font-bold"
+                className="text-[#63726a] hover:text-[#153426] text-lg font-bold"
               >
                 ✕
               </button>
@@ -1479,24 +1488,24 @@ function AdminPage() {
 
             <form onSubmit={handleSaveProduct} className="mt-5 space-y-4 text-xs">
               <div>
-                <label className="block font-semibold text-zinc-300 mb-1">Product Title</label>
+                <label className="block font-bold text-[#153426] mb-1">Product Title</label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Golden Pyrite Wealth Tree"
                   value={formName}
                   onChange={(e) => setFormName(e.target.value)}
-                  className="w-full bg-[#0a1811] border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-gold"
+                  className="w-full bg-[#fbf9f4] border border-[#d8cfbe] rounded-xl px-3.5 py-2.5 text-[#153426] font-medium focus:outline-none focus:border-[#153426]"
                 />
               </div>
 
               <div className="grid gap-3 sm:grid-cols-2">
                 <div>
-                  <label className="block font-semibold text-zinc-300 mb-1">Category</label>
+                  <label className="block font-bold text-[#153426] mb-1">Category</label>
                   <select
                     value={formCategory}
                     onChange={(e) => setFormCategory(e.target.value)}
-                    className="w-full bg-[#0a1811] border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-gold"
+                    className="w-full bg-[#fbf9f4] border border-[#d8cfbe] rounded-xl px-3.5 py-2.5 text-[#153426] font-medium focus:outline-none focus:border-[#153426]"
                   >
                     <option value="Crystal Trees">Crystal Trees</option>
                     <option value="Crystal Pyramids">Crystal Pyramids</option>
@@ -1507,29 +1516,29 @@ function AdminPage() {
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-zinc-300 mb-1">Selling Price (₹)</label>
+                  <label className="block font-bold text-[#153426] mb-1">Selling Price (₹)</label>
                   <input
                     type="number"
                     required
                     value={formPrice}
                     onChange={(e) => setFormPrice(Number(e.target.value))}
-                    className="w-full bg-[#0a1811] border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-gold"
+                    className="w-full bg-[#fbf9f4] border border-[#d8cfbe] rounded-xl px-3.5 py-2.5 text-[#153426] font-medium focus:outline-none focus:border-[#153426]"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-zinc-300 mb-1">MRP (₹)</label>
+                  <label className="block font-bold text-[#153426] mb-1">MRP (₹)</label>
                   <input
                     type="number"
                     required
                     value={formMrp}
                     onChange={(e) => setFormMrp(Number(e.target.value))}
-                    className="w-full bg-[#0a1811] border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-gold"
+                    className="w-full bg-[#fbf9f4] border border-[#d8cfbe] rounded-xl px-3.5 py-2.5 text-[#153426] font-medium focus:outline-none focus:border-[#153426]"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-zinc-300 mb-1">Star Rating</label>
+                  <label className="block font-bold text-[#153426] mb-1">Star Rating</label>
                   <input
                     type="number"
                     step="0.1"
@@ -1537,30 +1546,30 @@ function AdminPage() {
                     max="5"
                     value={formRating}
                     onChange={(e) => setFormRating(Number(e.target.value))}
-                    className="w-full bg-[#0a1811] border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-gold"
+                    className="w-full bg-[#fbf9f4] border border-[#d8cfbe] rounded-xl px-3.5 py-2.5 text-[#153426] font-medium focus:outline-none focus:border-[#153426]"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block font-semibold text-zinc-300 mb-1">Image URL or Asset Path</label>
+                <label className="block font-bold text-[#153426] mb-1">Image URL or Asset Path</label>
                 <input
                   type="text"
                   placeholder="/assets/hero-tree.jpg or https://..."
                   value={formImage}
                   onChange={(e) => setFormImage(e.target.value)}
-                  className="w-full bg-[#0a1811] border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-gold"
+                  className="w-full bg-[#fbf9f4] border border-[#d8cfbe] rounded-xl px-3.5 py-2.5 text-[#153426] font-medium focus:outline-none focus:border-[#153426]"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-zinc-300 mb-1">Short Remedy Blurb</label>
+                <label className="block font-bold text-[#153426] mb-1">Short Remedy Blurb</label>
                 <textarea
                   rows={2}
                   value={formBlurb}
                   onChange={(e) => setFormBlurb(e.target.value)}
                   placeholder="Quick summary of spiritual intention and benefits..."
-                  className="w-full bg-[#0a1811] border border-zinc-700 rounded-xl px-3.5 py-2.5 text-white focus:outline-none focus:border-gold"
+                  className="w-full bg-[#fbf9f4] border border-[#d8cfbe] rounded-xl px-3.5 py-2.5 text-[#153426] font-medium focus:outline-none focus:border-[#153426]"
                 />
               </div>
 
@@ -1570,24 +1579,24 @@ function AdminPage() {
                   id="bestsellerCheck"
                   checked={formIsBestseller}
                   onChange={(e) => setFormIsBestseller(e.target.checked)}
-                  className="accent-gold h-4 w-4"
+                  className="accent-[#153426] h-4 w-4"
                 />
-                <label htmlFor="bestsellerCheck" className="text-zinc-300 font-semibold cursor-pointer">
+                <label htmlFor="bestsellerCheck" className="text-[#153426] font-bold cursor-pointer">
                   Mark as Bestseller Remedy (shows special badge)
                 </label>
               </div>
 
-              <div className="pt-4 flex items-center justify-end gap-3 border-t border-zinc-800">
+              <div className="pt-4 flex items-center justify-end gap-3 border-t border-[#eee8db]">
                 <button
                   type="button"
                   onClick={() => setIsProductModalOpen(false)}
-                  className="rounded-xl border border-zinc-700 px-4 py-2 text-zinc-400 hover:text-white"
+                  className="rounded-xl border border-[#d8cfbe] px-4 py-2 text-[#55635b] hover:text-[#153426]"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="rounded-xl bg-gold px-6 py-2 text-forest font-bold hover:bg-gold-deep hover:text-white transition-all shadow"
+                  className="rounded-xl bg-[#153426] px-6 py-2 text-white font-bold hover:bg-[#1e4a36] transition-all shadow"
                 >
                   Save Remedy
                 </button>
